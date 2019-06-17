@@ -1,0 +1,27 @@
+2019-06-15	Fabrice Nicol <fabnicol@users.sourceforge.net>
+		* Numerous fixes 10 years after and and new Qt4.8 interface. 
+		* Using new builds for cdrecord and mkisofs, as well as a fresh dvda-author static build.
+		
+2009-08-11  Fabrice Nicol <fabnicol@users.sourceforge.net>
+		* Fix: default output directory bug on *nix platforms and correct doc.
+
+2009-01-29   
+         * Add: Menus, toolbar, drag-and-drop support.
+
+2009-01-12
+         * Add: project manager, full screen, XML project file authoring.
+
+2009-01-10
+         * Add: Burn button, cdrecord and startsector options .
+         * Add: help icon and direct launch of local html help 
+           page. 
+         * Add: configure and Exit icons. 
+         * Add: burn progress bar and correspodning kill button.
+         * Minor layout changes.
+         * New: spec file and rmp/deb builds.
+         * Update doc.
+
+2008-12-28
+         * Add: mingwm10.dll for Windows platforms. 
+         * New feature: Extract button. Enhanced tree refresh.
+	 * Change: Run label to Encode.
