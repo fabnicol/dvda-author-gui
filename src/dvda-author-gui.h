@@ -38,21 +38,33 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include <QDialog>
 #include <QProcess>
-#include <QtGui/QLabel>
-#include <QtGui/QToolButton>
-#include <QtGui/QLayout>
-#include <QtGui/QProgressBar>
+#include <QLabel>
+#include <QToolButton>
+#include <QLayout>
+#include <QProgressBar>
 #include <QListWidget>
 #include <QFileSystemModel>
+#include <QtGui>
+#include <QFile>
+#include <QAbstractButton>
+#include <QCheckBox>
+#include <QPushButton>
+#include <QCheckBox>
+#include <QTreeWidget>
+#include <QLineEdit>
+#include <QModelIndex>
+#include <QTextEdit>
+#include <QtXml>
+#include <QMessageBox>
+#include <QtWidgets>
+
 #ifdef QT_FILE_DIALOG
 #include <QFileDialog>
 #endif
 
-#include <QCheckBox>
-#include <QTreeWidget>
 
 #ifndef VERSION
-#define VERSION  "09.02"
+#define VERSION  "19.06"
 #endif
 
 /* Build with make for non-local HTML doc and with make HTMLDIR=-DLOCAL for a local webpage */
@@ -60,7 +72,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #ifndef LOCAL
 #define HTMLDIR "/usr/local/share/dvda-author-gui-" VERSION
 #else
-#define HTMLDIR "."
+#define HTMLDIR QDir::currentPath()
 #endif
 
 class QAction;
@@ -99,7 +111,7 @@ class MainWindow : public QMainWindow
 
     private slots:
 
-        void on_exitButton_clicked();
+        void on_exitButton_clicked() ;
         void showMainWidget();
         void openProjectFile();
         void about();
@@ -137,7 +149,6 @@ class MainWindow : public QMainWindow
         QAction* saveAction;
         QAction* burnAction;
         QAction* encodeAction;
-        QAction* encodeVideoAction;
         QAction* decodeAction;
         QAction* inputAction;
         QAction* outputAction;
@@ -166,17 +177,13 @@ class options : public QDialog
         bool log, runMkisofs;
         bool sox;
         bool debug;
-        bool videozone;
-        bool audiozone;
         bool burnDisc;
         QString startsector;
         QString dvdwriterPath;
-        bool hasVideozone;
-        bool hasAudiozone;
-
-    signals:
-
-        void defaultClick (bool);
+        QCheckBox*   mkisofsBox, *logBox;
+        QCheckBox* debugBox;
+        QCheckBox* soxBox;
+        QCheckBox* cdrecordBox;
 
     private slots:
 #ifdef QT_FILE_DIALOG
@@ -193,31 +200,16 @@ class options : public QDialog
         void on_dvdwriterLineEdit_changed (const QString& dvdwriterValue);
         void on_cdrecordBox_checked();
 
-        void on_audiozoneBox_checked();
-        void on_videozoneBox_checked();
-        void on_hasVideozoneBox_checked();
-        void on_hasAudiozoneBox_checked();
-
     private:
 
         QPushButton* okButton, *logButton, *mkisofsButton;
-        QCheckBox*   mkisofsBox, *logBox;
+
 #ifdef        QT_FILE_DIALOG
         QFileDialog logDialog;
 #endif        
         QVBoxLayout* optionsLayout;
         QLabel*      startsectorLabel;
         QLineEdit*   startsectorLineEdit, *dvdwriterLineEdit;
-
-        QCheckBox* debugBox;
-        QCheckBox* videozoneBox;
-        QCheckBox* audiozoneBox;
-        QCheckBox* soxBox;
-        QCheckBox* cdrecordBox;
-        QCheckBox* hasVideozoneBox;
-        QCheckBox* hasAudiozoneBox;
-
-        void checkZones();
 
 };
 
@@ -230,7 +222,7 @@ class dvda : public QDialog
 
         dvda (QWidget* parent);
         void setOutputTextEdit (QString filename);
-        void writeSettings();
+
         MainWindow* parent;
         enum { MaxRecentFiles = 5 };
         void addDraggedFiles (QList<QUrl> urls);
@@ -238,12 +230,6 @@ class dvda : public QDialog
         QTabWidget* tab2Widget;
         QTabWidget* tabWidget;
         QString tempdir;
-
-    public slots:
-
-        void on_hasVideozoneBox_toggled (bool);
-        void on_hasAudiozoneBox_toggled (bool);
-
 
     private slots:
 
@@ -257,12 +243,13 @@ class dvda : public QDialog
 
         void on_cdrecordButton_clicked();
         void on_openTreeWidgetButton_clicked();
-
+#if 0
         void extract();
+#endif
         void createDirectory();
         void remove();
-        void run();
-        void runLplex();
+        bool run();
+        bool runLplex();
         void processFinished (int exitCode, QProcess::ExitStatus exitStatus);
         void processLplexFinished (int exitCode, QProcess::ExitStatus exitStatus);
         void process2Finished (int exitCode,  QProcess::ExitStatus exitStatus);
@@ -281,6 +268,9 @@ class dvda : public QDialog
         void assignGroupFiles (int group_index, QString file);
         void assignVariables (QString& variable, QString& value);
         void runMkisofs();
+
+        void remove (const QString& path);
+        void selectOutput (const QString& path = "", bool = true);
 
     private:
 
@@ -318,26 +308,24 @@ class dvda : public QDialog
 
         bool startProgressBar, startProgressBar2, startProgressBar3;
 
-        qint64 inputSizeCount;
-        qint64 inputSize[9];
-        qint64 inputTotalSize;
-        qint64 value;
+        qint64 inputSizeCount = 0;
+        qint64 inputSize[9] = {0};
+        qint64 inputTotalSize = 0;
+        qint64 value =0;
 
 
-        int currentIndex;
-        int currentMainTabIndex;
-        int currentIndexMax;
+        int currentIndex= 0;
+        int currentMainTabIndex = 0;
+        int currentIndexMax = 0;
 
         void initialize();
         qint64 scanDirectory (const QString& path, const QStringList& filters);
         bool removeDirectory (const QString& path);
         void addFileToProject (QListWidget* project, int& currentIndex, int&  currentMainTabIndex);
         float discShare (qint64 directorySize);
-        void readSettings();
-        void remove (const QString& path);
-        void selectOutput (const QString& path = "", bool = true);
+
         options* dialog;
-        void run_dvda(bool modify_command_line);
+        bool run_dvda();
 
     protected:
 
@@ -353,19 +341,17 @@ class dvda : public QDialog
         QString     g_command_line;
         QString     outputType;
 
-        int rank;
-        int video_rank;
-        int maxRange;
-        int videoTitleRank;
+        int rank = 0;
+        int video_rank = 0;
+        int maxRange = 0;
+        int videoTitleRank = 1;
 
-        bool g_syntax_enabled[9];
-        bool video_syntax_enabled[99];
-        bool i_syntax_enabled;
-        bool o_syntax_enabled;
-        bool V_syntax_enabled;
+        bool i_syntax_enabled = false;
+        bool o_syntax_enabled = false;
+        bool V_syntax_enabled = false;
 
-        bool extractSwitch;
-        bool project_manager_enabled;
+        bool extractSwitch = false;
+        bool project_manager_enabled = false;
 };
 
 class DomParser : public dvda

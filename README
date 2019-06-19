@@ -1,0 +1,64 @@
+release of the dvda-author-gui version 10.05,  31 May 2010 (Qt 4.6.2 build)
+
+To build from source, please install Qt4.4 on your machine or later.
+(http://qt.nokia.com)
+
+INSTALL instructions
+
+under windows, run the installer. 
+
+The latests dynamic library mingwm10.dll is provided for convenience.
+In rare cases, this version might be incompatible with an already installed one. In this case, 
+- if your version is newer, erase the distributed version and check that your mingwm10.dll is in your PATH;
+- if your version is older, it is advised to replace it with the distributed one.
+
+Under MSYS or CYGWIN, you may run the Makefile without installing mingwm10.dll provided that you have a MinGW
+distribution with mingwm10.dll in your PATH.
+
+under linux, enter make to build the executable, then (sudo/root) copy gui to a /usr/bin or /usr/local/bin directory.
+
+
+DEPENDENCIES
+
+You should have a recent dvda-author executable installed in your PATH, 
+as well as a patched version of mkisofs (see How to section on the webpage for instructions to build the patch),
+if you want to use the ISO file creation feature.
+You should have cdrecord installed to be able to burn discs.
+
+Linux note
+----------
+On Debian linux at least, if you want to compile cdrecord from fresh Jorg Schilling source code, use a recent package 
+(version a57 was tested to build) and build with Gmake.linux (root-) copied to/usr/bin.
+Another option is to use wodim (Debian fork of cdrecord) and edit a symlink to wodim as cdrecord.
+
+Options usage
+-------------
+
+If you want to burn a disc with cdrecord, first check the "Burn disc with cdrecord" then enter a path in the line edit.
+It will be kept in memory until changed.
+On many linux distribution, you will be able to enter a "standard" path like /dev/scd0. 
+If this does not work you can also enter a SCSI bus code, like: 2,0,0
+To know which kind of path/bus code you should enter, open a command line window and type cdrecord -devices and cdrecord -scanbus
+if this fails.
+On Ubuntu, cdrecord -devices yields the following output:
+
+cdrecord -devices
+wodim: Overview of accessible drives (1 found) :
+-------------------------------------------------------------------------
+ 0  dev='/dev/scd0'     rwrw-- : 'TSSTcorp' 'CD/DVDW SH-S182M'
+-------------------------------------------------------------------------
+
+To build under windows, define LOCAL with -DLOCAL at compile time, which may be specified in the .pro file with DEFINES += LOCAL
+
+
+LICENSE
+
+This package is distributed under GPL version 3 license terms, combined with usual Qt 4.4 licensing terms. 
+
+See further details on the GUI webpage http://dvd-audio.sourceforge.net/GUI.shtml
+
+
+AUTHORS
+
+This package was created by Fabrice Nicol.
+

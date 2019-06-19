@@ -246,7 +246,7 @@ SectionEnd
 Section  $(Sec2Name) sec2 ; binary
 
   SetOutPath $INSTDIR ; for working directory
-  File  "${srcdir}\${guiexe}.exe"  "${srcdir}\lplex.exe" "${srcdir}\mkisofs.exe" "${srcdir}\cdrecord.exe" "${srcdir}\*.dll"  "${srcdir}\*.conf"  "${srcdir}\*.ico"  
+  File  "${srcdir}\${guiexe}.exe"  "${srcdir}\lplex.exe"  "${srcdir}\*.dll"  "${srcdir}\*.conf"  "${srcdir}\*.ico"  
 
 SectionEnd
 
@@ -260,8 +260,8 @@ SectionEnd
 Section $(Sec4Name) sec4 ; source code
 
   SetOutPath $INSTDIR ; for working directory
-  File "${srcdir}\*.cpp" "${srcdir}\*.h" 
-  File "${srcdir}\Makefile" "${srcdir}\*.pro*" "${srcdir}\Makefile.Release"  "${srcdir}\*.nsi"  "${srcdir}\*.qrc" 
+  File "${srcdir}\*.cpp"  
+  File  "${srcdir}\*.pro*" "${srcdir}\Makefile.Release"  "${srcdir}\*.nsi"  "${srcdir}\src\*.qrc" 
 
 SectionEnd
 

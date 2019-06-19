@@ -1,3 +1,5 @@
+2019-06-18 
+		*	Move to Qt5
 2019-06-15	Fabrice Nicol <fabnicol@users.sourceforge.net>
 		* Numerous fixes 10 years after and and new Qt4.8 interface. 
 		* Using new builds for cdrecord and mkisofs, as well as a fresh dvda-author static build.

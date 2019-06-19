@@ -2,16 +2,14 @@
 #include <QFile>
 #include <QtGui>
 #include <QtXml>
+#include <QAction>
+#include <QMenuBar>
 #include "dvda-author-gui.h"
 
-/* AUTHOR NOTE
-   MainWindow code is strongly inspired by code written by Jasmin Blanchette and Mark Summerfiled for their original bok C++ GUI programming with Qt4, 2006 */
-
 /*
-
 mainWindow.cpp  - Main Window for dvda-author-gui
 
-This application uses Qt4.4 . Check Qt's licensing details on http://trolltech.com
+This application uses Qt5.12 . Check Q5t's licensing details.
 
 
 Copyright Fabrice Nicol <fabnicol@users.sourceforge.net> Feb 2009
@@ -39,7 +37,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 MainWindow::MainWindow()
 {
-    dvda_author = new dvda (0);
+    dvda_author = new dvda (nullptr);
     dvda_author->parent = this;
     setCentralWidget (dvda_author);
     dvda_author->setAcceptDrops (false);
@@ -138,8 +136,6 @@ void MainWindow::createMenus()
     editMenu->addAction (displayManagerAction);
     processMenu->addAction (burnAction);
     processMenu->addAction (encodeAction);
-    processMenu->addAction (encodeVideoAction);
-    processMenu->addAction (decodeAction);
     ioMenu->addAction (inputAction);
     ioMenu->addAction (videoAction);
     ioMenu->addAction (outputAction);
@@ -152,21 +148,21 @@ void MainWindow::about()
 {
     QMessageBox::about (this, tr ("About dvda-author"),
                         tr ("<h2>dvda-author graphical user interface " VERSION "</h2>"
-                            "<p>Copyright &copy; 2009 Fabrice Nicol</p>"
-                            "<p>dvda-author-gui is a Qt4.4 graphical user interface for dvda-author.</p>"
+                            "<p>Copyright &copy; 2019 Fabrice Nicol</p>"
+                            "<p>dvda-author-gui is a Qt5 graphical user interface for dvda-author.</p>"
                             "<p>dvda-author-gui is licensed under the terms of the General Public Licence, version 3 or higher, "
-                            "combined with Qt's specific open-source licensing conditions, check  <a href=\"http://trolltech.com\">Trolltech's site</a>.</p>"
+                            "combined with Qt's specific open-source licensing conditions, check  <a href=\"http://ww.qt.io\">Qt's site</a>.</p>"
                             "</p>"
                             "<p>This application uses dvda-author as its data-processing software to build a DVD-Audio disc.</p>"
                             "<p>This application optionally uses Lplex as its data-processing software to build an audio DVD-Video disc.</p>"
                             "<p></p>"
                             "<h2>dvda-author</h2>"
-                            "<p>Copyright &copy; 2005-2009 David Chapman, Fabrice Nicol, Lee and Tim Feldkamp</p>"
+                            "<p>Copyright &copy; 2005-2006 David Chapman; 2006-2019 Fabrice Nicol</p>"
                             "<p>dvda-author creates high-definition DVD-Audio discs.</p>"
                             "<p>dvda-author is licensed under the terms of the General Public Licence, version 3 or higher.</p>"
                             "<p></p>"
                             "<h2>Lplex</h2>"
-                            "<p>Copyright &copy; Bahman Negahban</p>"
+                            "<p>Copyright &copy; Bahman Negahban 2006-2011, revised Fabrice NIcol(2018-2019)</p>"
                             "<p>Lplex creates high-definition audio DVD-Video discs.</p>"
                             "<p>Lplex is licensed under the terms of the General Public Licence, version 2 or higher.</p>"
                             "<p></p>"
@@ -218,12 +214,12 @@ void MainWindow::createActions()
     encodeAction = new QAction (tr ("&Encode all disc"), this);
     encodeAction->setIcon (QIcon (":/images/encode.png") );
     connect (encodeAction, SIGNAL (triggered() ), dvda_author, SLOT (run() ) );
-    encodeVideoAction = new QAction (tr ("En&code VIDEO_TS"), this);
-    encodeVideoAction->setIcon (QIcon (":/images/encodeVideo.png") );
-    connect (encodeVideoAction, SIGNAL (triggered() ), dvda_author, SLOT (runLplex() ) );
+
+#if 0
     decodeAction = new QAction (tr ("&Decode"), this);
     decodeAction->setIcon (QIcon (":/images/decode.png") );
     connect (decodeAction, SIGNAL (triggered() ), dvda_author, SLOT (extract() ) );
+#endif
     inputAction = new QAction (tr ("&Audio input"), this);
     inputAction->setIcon (QIcon (":/images/input.png") );
     connect (inputAction, SIGNAL (triggered() ), dvda_author, SLOT (selectInput() ) );
@@ -272,9 +268,8 @@ void MainWindow::openProjectFile()
         }
 }
 
-void MainWindow::on_exitButton_clicked()
+void  MainWindow::on_exitButton_clicked()
 {
-    dvda_author->writeSettings();
     exit (1);
 }
 
@@ -301,8 +296,6 @@ void MainWindow::createToolBars()
     editToolBar->addAction (displayManagerAction);
     processToolBar->addAction (burnAction);
     processToolBar->addAction (encodeAction);
-    processToolBar->addAction (encodeVideoAction);
-    processToolBar->addAction (decodeAction);
     ioToolBar->addAction (inputAction);
     ioToolBar->addAction (videoAction);
     ioToolBar->addAction (outputAction);

@@ -30,24 +30,20 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 
 
-#include <QtGui>
-#include <QFile>
+
 #include <sys/stat.h>
 #include <errno.h>
-#include <QModelIndex>
-
-#include <QtXml>
+#include <QDesktopServices>
 #include "dvda-author-gui.h"
 
 
 void dvda::addDraggedFiles (QList<QUrl> urls)
 {
     currentIndex = tabWidget->currentIndex();
-    g_syntax_enabled[currentIndex] = 1;
 
     for (int i = 0; i < urls.size(); ++i)
         {
-            selectedFile[i] = (QString) urls.at (i).toLocalFile();
+            selectedFile[i] = urls.at (i).toLocalFile();
             project[currentIndex]->addItem (selectedFile[i]);
             inputSize[currentIndex] += QFileInfo (selectedFile[i]).size();
             inputSizeCount += QFileInfo (selectedFile[i]).size();
@@ -62,31 +58,25 @@ void dvda::initialize()
 {
     adjustSize();
     rank = video_rank = 0;
-    inputSizeCount = 0;
+
     memset (inputSize, 0, 9 * sizeof (qint64) );
-    memset (g_syntax_enabled, 0, 9 * sizeof (bool) );
-    memset (video_syntax_enabled, 0, 99 * sizeof (bool) );
-    i_syntax_enabled = o_syntax_enabled = V_syntax_enabled = 0;
-    extractSwitch = 0;
-    project_manager_enabled = 0;
-    videoTitleRank = 1;
+
     startProgressBar = startProgressBar2 = startProgressBar3 = 0;
     inputTotalSize = 0;
 
     for (int i = 0; i < 9; ++i)
         {
-            project[i] = NULL;
+            project[i] = nullptr;
         }
 
     for (int i = 0; i < 99; ++i)
         {
-            project2[i] = NULL;
+            project2[i] = nullptr;
         }
 
-    progress2 = progress3 = NULL;
-    treeWidget = NULL;
+    progress2 = progress3 = nullptr;
+    treeWidget = nullptr;
     tempdir = QDir::homePath ();
-    readSettings();
 }
 
 
@@ -187,11 +177,15 @@ dvda::dvda (QWidget* parent)  : QDialog (parent)
     tabWidget = new QTabWidget;
     project[0] = new QListWidget (this);
     project2[0] = new QListWidget (this);
-    tab2Widget = NULL;
-    on_hasAudiozoneBox_toggled (dialog->hasAudiozone);
-    on_hasVideozoneBox_toggled (dialog->hasVideozone);
+    tab2Widget = new QTabWidget;
+    mainTabWidget->insertTab (0, tabWidget, tr ("AUDIO") );
     tabWidget->addTab (project[0], tr ("group 1") );
     tabWidget->setToolTip (tr ("List files in each audio group tab") );
+
+    mainTabWidget->insertTab (1, tab2Widget, tr ("VIDEO") );
+    tab2Widget->addTab (project2[currentIndex], tr ("titleset 1") );
+    tab2Widget->setToolTip (tr ("List files in each video titleset tab") );
+
     mkdirButton = new QToolButton (this);
     mkdirButton->setToolTip (tr ("Create Directory...") );
     const QIcon iconCreate = QIcon (QString::fromUtf8 ( ":/images/folder-new.png") );
@@ -293,6 +287,7 @@ dvda::dvda (QWidget* parent)  : QDialog (parent)
     setWindowTitle (tr ("dvda-author") );
     const QIcon dvdaIcon = QIcon (QString::fromUtf8 ( ":/images/dvda-author.png") );
     setWindowIcon (dvdaIcon);
+
 }
 
 
@@ -325,9 +320,8 @@ void dvda::recentProjectFile (const QString& projectFile)
 
 void dvda::on_helpButton_clicked()
 {
-    QStringList args;
-    args  << QString::fromUtf8 (HTMLDIR "/GUI.shtml") ;
-    helpProcess.start ("firefox", args);
+    const QString &arg = HTMLDIR  + QString("/GUI.shtml") ;
+    QDesktopServices::openUrl(QUrl(arg));
 }
 
 void dvda::on_openTreeWidgetButton_clicked()
@@ -426,7 +420,6 @@ void dvda::deleteGroup()
                 }
 
             rank--;
-            g_syntax_enabled[currentIndex] = 0;
             inputSizeCount -= inputSize[currentIndex];
             outputTextEdit->append (tr ("Deleted audio group %1:\n  total size is now %2").arg (QString::number (currentIndex + 1),
                                     QString::number (inputSizeCount) ) );
@@ -453,7 +446,7 @@ void dvda::deleteGroup()
                 }
 
             video_rank--;
-            video_syntax_enabled[currentIndex] = 0;
+
             outputTextEdit->append (tr ("Deleted video titleset %1:\n  total size is now %2").arg (QString::number (
                                         currentIndex + 1), QString::number (inputSizeCount) ) );
         }
@@ -471,7 +464,7 @@ void dvda::addFileToProject (QListWidget* project, int& currentIndex, int&  curr
             return;
         }
 
-    //selectedFile = QDir::convertSeparators(model->filePath(index));
+    //selectedFile = QDir::toNativeSeparators(model->filePath(index));
     QString group_type = (currentMainTabIndex == 0) ? "audio group" : "video group";
     QModelIndex index;
 
@@ -505,7 +498,7 @@ void dvda::on_rightButton_clicked()
     if (currentMainTabIndex)
         {
             currentIndex = tab2Widget->currentIndex();
-            video_syntax_enabled[currentIndex] = 1;
+
             addFileToProject (project2[currentIndex], currentIndex, currentMainTabIndex);
             currentIndexMax = (currentIndex > currentIndexMax) ? currentIndex : currentIndexMax;
         }
@@ -513,7 +506,6 @@ void dvda::on_rightButton_clicked()
     else
         {
             currentIndex = tabWidget->currentIndex();
-            g_syntax_enabled[currentIndex] = 1;
             addFileToProject (project[currentIndex], currentIndex, currentMainTabIndex);
         }
 }
@@ -639,17 +631,17 @@ void dvda::createDirectory()
 
 void dvda::remove()
 {
-    remove (NULL);
+    remove (nullptr);
 }
 
 void dvda::remove (const QString& path)
 {
     bool ok;
 
-    if (path == NULL)
+    if (path == nullptr)
         {
             QModelIndex index  = treeView->currentIndex();
-            QModelIndex parent = model->parent (index);
+
 
             if (!index.isValid() )
                 {
@@ -680,7 +672,7 @@ void dvda::remove (const QString& path)
 
                 if (!ok)
                     QMessageBox::information (this, tr ("Remove"),
-                                              tr ("Failed to remove %1").arg (QDir::convertSeparators (path) ) );
+                                              tr ("Failed to remove %1").arg (QDir::toNativeSeparators(path) ) );
             }
 }
 
@@ -696,38 +688,46 @@ bool dvda::removeDirectory (const QString& path)
 
     QDir dir(path);
     bool ok = dir.exists();
-    if ( ok )
-    {
-        QFileInfoList entries = dir.entryInfoList( QDir::NoDotAndDotDot |
-                                                  QDir::Dirs | QDir::Files );
-        foreach ( QFileInfo entryInfo, entries )
-        {
-            QString path = entryInfo.absoluteFilePath();
-            if ( entryInfo.isDir() )
-            {
-                if ( ! removeDirectory(  path ) )
-                {
-                    ok = false;
-                    break;
-                }
-            }
-            else
-            {
-                QFile file( path );
-                if ( ! file.remove() )
-                {
-                    ok = false;
-                    break;
-                }
-            }
-        }
-    }
+    if (! ok ) return true;
 
-    if ( ok && ! dir.rmdir( dir.absolutePath() ) )
-        ok = false;
+
+        if (QT_VERSION_MAJOR >= 5)
+        {
+            dir.removeRecursively();
+            ok = ! dir.exists();
+        }
+        else
+        {
+            QFileInfoList entries = dir.entryInfoList( QDir::NoDotAndDotDot |
+                                                      QDir::Dirs | QDir::Files );
+            foreach ( QFileInfo entryInfo, entries )
+            {
+                QString path = entryInfo.absoluteFilePath();
+                if ( entryInfo.isDir() )
+                {
+                    if ( ! removeDirectory(  path ) )
+                    {
+                        ok = false;
+                        break;
+                    }
+                }
+                else
+                {
+                    QFile file( path );
+                    if ( ! file.remove() )
+                    {
+                        ok = false;
+                        break;
+                    }
+                }
+            }
+
+            if (! dir.rmdir( dir.absolutePath() ) )
+                ok = false;
+
+        }
 
     return ok;
-
 }
 
 void dvda::selectInput()
@@ -741,11 +741,12 @@ void dvda::selectInput()
 
     sourceDir = model->filePath (index);
     outputTextEdit->clear();
-    i_syntax_enabled = 1;
+
 
     if (model->fileInfo (index).isDir() )
         {
             outputTextEdit->append (tr ("Selected input directory: %1").arg (sourceDir) );
+            i_syntax_enabled = 1;
         }
 
     else
@@ -780,7 +781,7 @@ void dvda::selectOutput (const QString& path, bool recreate)
         if (recreate)
         {
             if (QMessageBox::warning (this, tr ("Directory scan"),
-                                      tr ("Directory %1 is not empty. Erase and recreate? ").arg (QDir::convertSeparators (targetDir) ),
+                                      tr ("Directory %1 is not empty. Erase and recreate? ").arg (QDir::toNativeSeparators(targetDir) ),
                                       QMessageBox::Ok | QMessageBox::Cancel)
                     == QMessageBox::Ok)
                 {
@@ -798,7 +799,7 @@ void dvda::selectOutput (const QString& path, bool recreate)
                 }
         }
 
-        outputTextEdit->append (tr ("Selected output directory: %1").arg (QDir::convertSeparators(targetDir)) );
+        outputTextEdit->append (tr ("Selected output directory: %1").arg (QDir::toNativeSeparators(targetDir)) );
     o_syntax_enabled = 1;
 }
 
@@ -817,22 +818,22 @@ void dvda::selectVideo()
         {
             outputTextEdit->append (tr ("Selected VIDEO_TS directory: %1").arg (videoDir) );
             bool ok;
-            int i = QInputDialog::getInteger (this, tr ("Rank"),
-                                              tr ("Enter rank of video title"), 1, 1, 99, 1, &ok);
+           // int i = QInputDialog::getInteger (this, tr ("Rank"),
+             //                                 tr ("Enter rank of video title"), 1, 1, 99, 1, &ok);
 
-            if (ok)
-                {
-                    videoTitleRank = i;
-                }
+            //if (ok)
+              //  {
+                  //  videoTitleRank = i;
+                //}
 
-            else
-                {
-                    QMessageBox::warning (this, tr ("Video title"), tr ("No title rank was entered. By default, title rank = 1"),
-                                          QMessageBox::Ok );
-                    videoTitleRank = 1;
-                }
+//            else
+//                {
+//                    QMessageBox::warning (this, tr ("Video title"), tr ("No title rank was entered. By default, title rank = 1"),
+//                                          QMessageBox::Ok );
+//                    videoTitleRank = 1;
+//                }
 
-            V_syntax_enabled = 1;
+//            V_syntax_enabled = 1;
         }
 
     else
@@ -852,14 +853,15 @@ float dvda::discShare (qint64 directorySize)
 }
 
 
-void dvda::run_dvda(bool modify_command_line)
+bool dvda::run_dvda()
 {
     QStringList args;
     QString command;
     qint64 totalSize, inputSizeCount = 0;
     progress->reset();
 
-    if (progress3 != NULL)
+
+    if (progress3 != nullptr)
     {
         if (!dialog->burnDisc)
         {
@@ -867,7 +869,7 @@ void dvda::run_dvda(bool modify_command_line)
             delete (progress3);
             progressLayout->removeWidget (killCdrecordButton);
             delete (killCdrecordButton);
-            progress3 = NULL;
+            progress3 = nullptr;
         }
 
         else
@@ -876,7 +878,7 @@ void dvda::run_dvda(bool modify_command_line)
         }
     }
 
-    if (progress2 != NULL)
+    if (progress2 != nullptr)
     {
         if (!dialog->runMkisofs)
         {
@@ -884,7 +886,7 @@ void dvda::run_dvda(bool modify_command_line)
             delete (progress2);
             progressLayout->removeWidget (killMkisofsButton);
             delete (killMkisofsButton);
-            progress2 = NULL;
+            progress2 = nullptr;
         }
 
         else
@@ -894,16 +896,10 @@ void dvda::run_dvda(bool modify_command_line)
     }
 
     for (int i = 0; i < 9; ++i)
-        if (g_syntax_enabled[i])
+        if (project[i] && project[i]->count())
         {
             inputSizeCount += inputSize[i];
         }
-
-    if ( (!i_syntax_enabled) && (!g_syntax_enabled) )
-    {
-        i_syntax_enabled = 1;
-        sourceDir = QString::fromUtf8 ("/input");
-    }
 
     totalSize = (sourceDir.isEmpty() ) ? 0 : scanDirectory (sourceDir, QStringList() << "*.*");
     totalSize += inputSizeCount;
@@ -912,10 +908,30 @@ void dvda::run_dvda(bool modify_command_line)
     if (totalSize == 0)
     {
         processFinished (EXIT_FAILURE, QProcess::NormalExit);
-        return;
+        return false;
     }
 
-    args << "-n" << "-P0" << "-W";
+    for (int i = 0; i < 9; ++i)
+    {
+            if (project[i] == nullptr || project[i]->count() == 0) continue;
+
+            QStringList args2;
+
+            for (int row = 0; project[i] && row < project[i]->count() &&  project[i]->item (row) != nullptr; ++row)
+            {
+                const QString &file = project[i]->item (row)->text();
+                if (! file.isEmpty()) args2 << file ;
+            }
+
+            if (args2.isEmpty()) continue;
+            else
+               args << "-g " + args2.join(" ");
+
+    }
+
+    if (args.isEmpty()) return false;
+
+    args << "-P0" << "-W";
 
     if (dialog->sox)
     {
@@ -927,11 +943,13 @@ void dvda::run_dvda(bool modify_command_line)
         args << "-d";
     }
 
-    if (modify_command_line && dialog->videozone && video_syntax_enabled && video_syntax_enabled[0])
+    QDir d = QDir(targetDir + "/VIDEO_TS");
+    if (d.exists())
     {
-        args << "-n";
-        args << "--no-refresh-outdir";
+      args << "-n";
+      args << "--no-refresh-outdir";
     }
+
 
     if (dialog->startsector != "")
     {
@@ -960,94 +978,114 @@ void dvda::run_dvda(bool modify_command_line)
         args << "-l" << dialog->logPath;
     }
 
-    for (int i = 0; i < 9; ++i)
-    {
-        if (g_syntax_enabled[i])
-        {
-            args << "-g" ;
-
-            for (int row = 0; project[i]->item (row) != 0; ++row)
-            {
-                args <<  project[i]->item (row)->text();
-            }
-        }
-    }
-
     outputTextEdit->append (tr ("Processing input directory...") );
     outputTextEdit->append (tr ("Size of input %1").arg (QString::number (totalSize) ) );
-    command = args.join (" ");
-    outputTextEdit->append (tr ("Command line : %1").arg (QDir::convertSeparators (command) ) );
+#ifdef WIN32
+    QString binary = "dvda-author";
+#else
+    QString binary =  "dvda-author-dev";
+#endif
+
+    command = QDir::toNativeSeparators(QString(binary) + " " + args.join (" "));
+    outputTextEdit->append (tr ("Command line : %1").arg ( command ) );
     startProgressBar = 1;
     outputType = "DVD-Audio authoring";
-    process.start (/*"konsole"*/ "dvda-author-dev", args);
+
+    process.start (command);
+    return true;
 }
 
 
-void dvda::run()
+bool dvda::run()
 {
 
-    if (dialog->videozone && video_syntax_enabled && video_syntax_enabled[0])
+    if (!o_syntax_enabled)
     {
-        runLplex();
+        o_syntax_enabled = 1;
+        /* If no explicit path is entered, output directory will be adjacent to executable */
+        targetDir = tempdir + QDir::separator() + QString::fromUtf8 ("output");
     }
-    else
-    run_dvda(false);
+
+    bool res2 = (project2[0] != nullptr && project2[0]->count());
+    bool res1 = (project[0] != nullptr && project[0]->count());
+
+    if (! res1 && ! res2)
+    {
+        outputTextEdit->append("\n*** No audio files ! ***\n");
+        dialog->runMkisofs = false;
+        dialog->burnDisc = false;
+        return false;
+
+    }
+
+    if (res2) runLplex();
+    else run_dvda();
+
+
+    return (res1 || res2);
  }
 
-void dvda::runLplex()
+bool dvda::runLplex()
 {
     QStringList args;
     QString command;
-    QString workpath = QDir::convertSeparators(QCoreApplication::applicationDirPath() + "/temp");
-
-    removeDirectory(QDir::convertSeparators(targetDir));
-    removeDirectory(QDir::convertSeparators(workpath));
+    QString workpath = QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + "/temp");
 
     if (!o_syntax_enabled)
-        {
-            o_syntax_enabled = 1;
-            /* If no explicit path is entered, output directory will be adjacent to executable */
-            targetDir = tempdir + QDir::separator() + QString::fromUtf8 ("output");
-        }
+    {
+        o_syntax_enabled = 1;
+        /* If no explicit path is entered, output directory will be adjacent to executable */
+        targetDir = tempdir + QDir::separator() + QString::fromUtf8 ("output");
+    }
 
-    for (int i = 0; i < 99 && project2 != NULL && project2[i] != NULL; ++i)
+    removeDirectory(QDir::toNativeSeparators(targetDir));
+    removeDirectory(QDir::toNativeSeparators(workpath));
+
+    for (int i = 0; i < 99 && project2[i] != nullptr && project2[i]->count(); ++i)
         {
-            if (video_syntax_enabled[i])
+            QStringList args2;
+
+            for (int row = 0; row < project2[i]->count() && project2[i]->item (row) != nullptr; ++row)
                 {
-                    if (i)
-                        {
-                            args << "ts" ;
-                        }
-
-                    for (int row = 0; project2[i]->item (row) != 0; ++row)
-                        {
-                            args <<  project2[i]->item (row)->text();
-                        }
+                    const QString &file = project2[i]->item (row)->text();
+                    if (! file.isEmpty()) args2 <<  file;
                 }
+
+                if (args2.isEmpty()) continue;
+
+                if (i)
+                {
+                    args << "ts" ;
+                }
+
+                args << args2.join(" ");
+
         }
 
-    args << "--create" << "dvd" << "--dir" << QDir::convertSeparators(targetDir) << "-P" << "no" << "--video" << "pal" << "--jpeg" << QDir::convertSeparators(QCoreApplication::applicationDirPath()  + "/data/black_PAL_720x576.jpg") << "--workpath" << workpath << "-x" << "no";
-    outputTextEdit->append (tr ("Processing input directory...") );
-    command = args.join (" ");
-    outputTextEdit->append (tr ("Command line : lplex %1").arg (QDir::convertSeparators (command) ) );
-    startProgressBar = 1;
-    outputType = "audio DVD-Video disc authoring";
+    if (args.isEmpty()) return false;
 
-    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    args << "--create" << "dvd" << "--dir" << QDir::toNativeSeparators(targetDir) << "-P" << "no" << "--video" << "pal" << "--jpeg" << QDir::toNativeSeparators(QCoreApplication::applicationDirPath()  + "/data/black_PAL_720x576.jpg") << "--workpath" << workpath << "-x" << "no";
+    outputTextEdit->append (tr ("Processing input directory...") );
+
+
 #if defined __unix__ || defined __apple__ || defined __linux__
     env.insert("LD_LIBRARY_PATH", "$PWD/bin");
-    env.insert("PATH", "$PWD:$PATH:bin");
-
+    env.insert("PATH", "$PWD:$PATH:$PWD/bin");
+    const QString &binary = "lplex";
 #else
 #if defined _WIN32
 
-   env.insert("PATH", "%PATH%;bin");
+    const QString &binary = "lplex.exe";
 #endif
 #endif
-    process.setProcessEnvironment(env);
-    processLplex.start("lplex " + command);
 
+    command = QDir::toNativeSeparators(binary + " " + args.join (" "));
+    outputTextEdit->append (tr ("Command line : %1").arg(command));
+    startProgressBar = 1;
+    outputType = "audio DVD-Video disc authoring";
 
+    processLplex.start(command);
+    return true;
 }
 
 
@@ -1062,7 +1100,7 @@ void dvda::processLplexFinished (int exitCode,  QProcess::ExitStatus exitStatus)
     }
 
     else
-        if (exitCode == EXIT_FAILURE)
+    if (exitCode == EXIT_FAILURE)
     {
         outputTextEdit->append (outputType + tr (" failed") );
         progress->setValue (0);
@@ -1071,23 +1109,36 @@ void dvda::processLplexFinished (int exitCode,  QProcess::ExitStatus exitStatus)
 
     removeDirectory("temp");
 
-
-    if (dialog->audiozone && g_syntax_enabled && g_syntax_enabled[0])
+    if (project[0] && project[0]->count())
     {
         progress->setValue (maxRange/2);
-        run_dvda(true);
+        run_dvda();
     }
 }
 
 
 void dvda::runMkisofs()
 {
-    QStringList  argsMkisofs;
-    argsMkisofs << "-dvd-hybrid" << "-o" << dialog->mkisofsPath << targetDir;
+    QStringList  args;
+    QStringList cli;
+
+    if (project[0] != nullptr && project[0]->count() )
+        cli << "-dvd-audio";
+
+    if (project2[0] != nullptr && project2[0]->count() )
+        cli << "-dvd-video";
+
+    if (cli.isEmpty()) {
+        outputTextEdit -> append("\n"
+                               "*** ISO file creation impossible without audio files ! **\n");
+        process2.terminate();
+    }
+
+    args << cli.join(" ") << "-o" << dialog->mkisofsPath << targetDir;
 
     QFile(dialog->mkisofsPath).remove();
 
-    if (progress2 == NULL)
+    if (progress2 == nullptr)
     {
         killMkisofsButton = new QToolButton (this);
         killMkisofsButton->setToolTip (tr ("Kill mkisofs") );
@@ -1106,11 +1157,26 @@ void dvda::runMkisofs()
 
     progress2->reset();
     startProgressBar2 = 1;
-    outputTextEdit->append (tr ("Starting Mkisofs...") );
-    process2.start ("bin/mkisofs", argsMkisofs);
+    outputTextEdit->append (tr ("Starting mkisofs...") );
+
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    process.setProcessEnvironment(env);
+
+#if defined __unix__ || defined __apple__ || defined __linux__
+    env.insert("LD_LIBRARY_PATH", "$PWD/bin");
+    const QString &binary = "bin/mkisofs";
+#else
+#if defined _WIN32
+      const QString &binary = "bin\\mkisofs.exe";
+#endif
+#endif
+
+    const QString &command = binary + " " + QDir::toNativeSeparators(args.join (" "));
+    outputTextEdit->append (tr ("Command line : %1").arg(command));
+
+    process2.start (command);
     if (process2.waitForStarted())
         outputTextEdit->append (tr ("Mkisofs started...") );
-
 }
 
 
@@ -1137,7 +1203,7 @@ void dvda::processFinished (int exitCode,  QProcess::ExitStatus exitStatus)
 
         else
             {
-                outputTextEdit->append ("\n" + outputType + tr (" completed, output directory is %1").arg (QDir::convertSeparators(targetDir)) );
+                outputTextEdit->append ("\n" + outputType + tr (" completed, output directory is %1").arg (QDir::toNativeSeparators(targetDir)) );
                 scanDirectory (targetDir, QStringList() << "*.*");
                 progress->setValue (maxRange);
 
@@ -1167,13 +1233,19 @@ void dvda::process2Finished (int exitCode,  QProcess::ExitStatus exitStatus)
 
         else
             {
-                outputTextEdit->append (tr ("\nISO file %1 created").arg (dialog->mkisofsPath) );
-                progress2->setValue (maxRange);
-                outputTextEdit->append (tr ("You can now burn your DVD-Audio disc") );
-                if (dialog->burnDisc)
+                if (exitCode == 0)
                 {
-                    on_cdrecordButton_clicked();
+                    outputTextEdit->append (tr ("\nISO file %1 created").arg (dialog->mkisofsPath) );
+                    progress2->setValue (maxRange);
+                    outputTextEdit->append (tr ("You can now burn your DVD-Audio disc") );
+                    if (dialog->burnDisc)
+                    {
+                        on_cdrecordButton_clicked();
+                    }
+
                 }
+                else
+                    outputTextEdit->append (tr ("ISO file creation failed.") );
             }
 }
 
@@ -1196,10 +1268,17 @@ void dvda::process3Finished (int exitCode,  QProcess::ExitStatus exitStatus)
 
         else
             {
-                progress3->setValue (maxRange);
+                if (exitCode == 0)
+                {
+                    progress3->setValue (maxRange);
 
-                process3.close();
-                outputTextEdit->append (tr ("Disc burned.") );
+                    process3.close();
+                    outputTextEdit->append (tr ("Disc burned.") );
+                }
+                else
+                {
+                    outputTextEdit->append (tr ("Disc burning failed.") );
+                }
             }
 }
 
@@ -1219,7 +1298,7 @@ qint64 dvda::scanDirectory (const QString& path, const QStringList& filters)
             size += scanDirectory (path + QDir::separator() + subDir, filters);
         }
 
-    outputTextEdit->append ( (tr ("Size of ") + QDir::convertSeparators (path) + tr (" is %1") ).arg (QString::number (
+    outputTextEdit->append ( (tr ("Size of ") + QDir::toNativeSeparators(path) + tr (" is %1") ).arg (QString::number (
                                  size) ) );
     return size;
 }
@@ -1265,7 +1344,7 @@ void dvda::on_cdrecordButton_clicked()
     argsCdrecord << "-eject" << "blank=fast" << "dev=" + dialog->dvdwriterPath << dialog->mkisofsPath;
     outputTextEdit->append (tr ("Command line: cdrecord %1").arg (argsCdrecord.join (" ") ) );
 
-    if (progress3 == NULL)
+    if (progress3 == nullptr)
         {
             progress3 = new QProgressBar (this);
             killCdrecordButton = new QToolButton (this);
@@ -1284,52 +1363,29 @@ void dvda::on_cdrecordButton_clicked()
     progress3->setToolTip (tr ("Burning DVD-Audio disc with cdrecord") );
     progress3->reset();
     startProgressBar3 = 1;
-    process3.start ("bin/cdrecord", argsCdrecord);
+
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    process.setProcessEnvironment(env);
+
+#if defined __unix__ || defined __apple__ || defined __linux__
+    env.insert("LD_LIBRARY_PATH", "$PWD/bin");
+    const QString &binary = "bin/cdrecord";
+#else
+#if defined _WIN32
+    const QString &binary = "bin\\cdrecord.exe";
+#endif
+#endif
+
+    const QString &command = binary + " " + QDir::toNativeSeparators(argsCdrecord.join (" "));
+    outputTextEdit->append (tr ("Command line : %1").arg(command));
+
+    process2.start (command);
+    if (process2.waitForStarted())
+        outputTextEdit->append (tr ("Cdrecord started...") );
+
+    process3.start (command);
     process3.waitForFinished();
-
 }
-
-void dvda::writeSettings()
-{
-    if (!dialog)
-        {
-            return;
-        }
-
-    QSettings settings ("dvda-author", "GUI");
-    settings.setValue ("runMkisofs", dialog->runMkisofs);
-    settings.setValue ("log", dialog->log);
-    settings.setValue ("burnDisc", dialog->burnDisc);
-    settings.setValue ("dvdwriterPath", dialog->dvdwriterPath);
-    settings.setValue ("mkisofsPath", dialog->mkisofsPath);
-    settings.setValue ("logPath", dialog->logPath);
-    settings.setValue ("sox", dialog->sox);
-    settings.setValue ("debug", dialog->debug);
-    settings.setValue ("videozone", dialog->videozone);
-    settings.setValue ("audiozone", dialog->audiozone);
-    settings.setValue ("startsector", dialog->startsector);
-    settings.setValue ("hasVideozone", dialog->hasVideozone);
-    settings.setValue ("hasAudiozone", dialog->hasAudiozone);
-}
-
-void dvda::readSettings()
-{
-    QSettings settings ("dvda-author", "GUI");
-    dialog->runMkisofs = settings.value ("runMkisofs", false).toBool();
-    dialog->log = settings.value ("log", false).toBool();
-    dialog->mkisofsPath = settings.value ("mkisofsPath").toString();
-    dialog->logPath = settings.value ("logPath").toString();
-    dialog->sox = settings.value ("sox", true).toBool();
-    dialog->debug = settings.value ("debug", true).toBool();
-    dialog->startsector = settings.value ("startsector", "").toString();
-    dialog->burnDisc = settings.value ("burnDisc", dialog->burnDisc).toBool();
-    dialog->dvdwriterPath = settings.value ("dvdwriterPath", dialog->dvdwriterPath).toString();
-    dialog->videozone = settings.value ("videozone", true).toBool();
-    dialog->videozone = settings.value ("audiozone", true).toBool();
-    dialog->hasVideozone = settings.value ("hasVideozone", true).toBool();
-    dialog->hasAudiozone = settings.value ("hasAudiozone", true).toBool();
-}
-
 
 bool dvda::on_optionsButton_clicked()
 {
@@ -1364,63 +1420,8 @@ void dvda::killCdrecord()
     process3Finished (EXIT_FAILURE, QProcess::NormalExit);
 }
 
-void dvda::on_hasVideozoneBox_toggled (bool checked)
-{
-    currentIndex = 0;
-    int count = mainTabWidget->count();
 
-    if (checked == true)
-        {
-            if (tab2Widget == NULL)
-                {
-                    tab2Widget = new QTabWidget;
-                }
-
-            mainTabWidget->insertTab (1, tab2Widget, tr ("VIDEO") );
-            tab2Widget->addTab (project2[currentIndex], tr ("titleset 1") );
-            tab2Widget->setToolTip (tr ("List files in each video titleset tab") );
-        }
-
-    else
-        {
-            if (tab2Widget != NULL)
-                {
-                    if (count)
-                        {
-                            mainTabWidget->removeTab (count - 1);
-                        }
-
-                    tab2Widget = NULL;
-                }
-        }
-}
-
-void dvda::on_hasAudiozoneBox_toggled (bool checked)
-{
-    currentIndex = 0;
-
-    if (checked == true)
-        {
-            if (tabWidget == NULL)
-                {
-                    tabWidget = new QTabWidget;
-                }
-
-            mainTabWidget->insertTab (0, tabWidget, tr ("AUDIO") );
-            tabWidget->addTab (project[currentIndex], tr ("group 1") );
-            tabWidget->setToolTip (tr ("List files in each audio group tab") );
-        }
-
-    else
-        {
-            if (tabWidget != NULL)
-                {
-                    mainTabWidget->removeTab (0);
-                    tabWidget = NULL;
-                }
-        }
-}
-
+#if 0
 void dvda::extract()
 {
     QStringList args;
@@ -1442,7 +1443,7 @@ void dvda::extract()
     if (!o_syntax_enabled)
         {
             o_syntax_enabled = 1;
-            /* PATCH 09.08: previous default output not user-friendly (/usr/bin/output) for *nix */
+
             targetDir = tempdir + QString::fromUtf8 ("/output");
         }
 
@@ -1469,7 +1470,7 @@ void dvda::extract()
     dialog->runMkisofs = 0;
     process.start (/*"konsole"*/ "dvda-author", args);
 }
-
+#endif
 #ifdef QT_FILE_DIALOG
 void dvda::saveProject()
 {
@@ -1500,10 +1501,6 @@ void dvda::saveProject()
     out << " <system>\n";
     out << SWITCH ("startsector") << dialog->startsector << EO_SWITCH;
     out << SWITCH ("sox") << QString::number (dialog->sox) << EO_SWITCH;
-    out << SWITCH ("videozone") << QString::number (dialog->videozone) << EO_SWITCH;
-    out << SWITCH ("audiozone") << QString::number (dialog->audiozone) << EO_SWITCH;
-    out << SWITCH ("hasAudiozone") << QString::number (tabWidget != NULL) << EO_SWITCH;
-    out << SWITCH ("hasVideozone") << QString::number (tab2Widget != NULL) << EO_SWITCH;
     out << SWITCH ("log") << QString::number (dialog->log) << EO_SWITCH;
 
     if (dialog->log)
@@ -1534,9 +1531,11 @@ void dvda::saveProject()
 
     for (int i = 0; i <= rank; ++i)
         {
-            out << GROUP ("group " + QString::number (i + 1) ) ;
+        if (project[i] == nullptr ||  project[i]->count() == 0) continue;
 
-            for (int row = 0; project[i]->item (row) != 0; ++row)
+           out << GROUP ("group " + QString::number (i + 1) ) ;
+
+           for (int row = 0; row < project[i]->count() && project[i]->item (row) != nullptr; ++row)
                 {
                     out << "    <file>" << project[i]->item (row)->text() << "</file>\n";
                 }
@@ -1576,10 +1575,6 @@ void dvda::assignVariables (QString& variable, QString& value)
 {
     ASSIGN (startsector)
     ASSIGN_BOOL (sox)
-    else  ASSIGN_BOOL (videozone)
-        else  ASSIGN_BOOL (audiozone)
-            else  ASSIGN_BOOL (hasVideozone)
-                else  ASSIGN_BOOL (hasAudiozone)
                     else  ASSIGN_BOOL (log)
                         else
                             // if (dialog->log)
@@ -1615,7 +1610,6 @@ void dvda::assignGroupFiles (int group_index, QString file)
             last_group_index = group_index;
         }
 
-    g_syntax_enabled[group_index] = 1;
     project[group_index]->addItem (file);
     update();
 }
