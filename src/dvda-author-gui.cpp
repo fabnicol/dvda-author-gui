@@ -1073,8 +1073,10 @@ bool dvda::runLplex()
 
 
 #if defined __unix__ || defined __apple__ || defined __linux__
-    env.insert("LD_LIBRARY_PATH", "$PWD/bin");
-    env.insert("PATH", "$PWD:$PATH:$PWD/bin");
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    process.setProcessEnvironment(env);
+    env.insert("LD_LIBRARY_PATH", "$PWD/linux");
+    env.insert("PATH", "$PWD:$PATH:$PWD/linux");
     const QString &binary = "lplex";
 #else
 #if defined _WIN32
@@ -1179,12 +1181,12 @@ void dvda::runMkisofs()
     startProgressBar2 = 1;
     outputTextEdit->append (tr ("Starting mkisofs...") );
 
-    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-    process.setProcessEnvironment(env);
 
 #if defined __unix__ || defined __apple__ || defined __linux__
-    env.insert("LD_LIBRARY_PATH", "$PWD/bin");
-    const QString &binary = "bin/mkisofs";
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    process.setProcessEnvironment(env);
+    env.insert("LD_LIBRARY_PATH", "$PWD/linux");
+    const QString &binary = "linux/mkisofs";
 #else
 #if defined _WIN32
       const QString &binary = "bin\\mkisofs.exe";
@@ -1388,8 +1390,8 @@ void dvda::on_cdrecordButton_clicked()
     process.setProcessEnvironment(env);
 
 #if defined __unix__ || defined __apple__ || defined __linux__
-    env.insert("LD_LIBRARY_PATH", "$PWD/bin");
-    const QString &binary = "bin/cdrecord";
+    env.insert("LD_LIBRARY_PATH", "$PWD/linux");
+    const QString &binary = "linux/cdrecord";
 #else
 #if defined _WIN32
     const QString &binary = "bin\\cdrecord.exe";

@@ -3,9 +3,9 @@ TEMPLATE = app
 
 DEPENDPATH += .
 DEFINES += QT_FILE_DIALOG
-win32 {
+
 DEFINES += LOCAL
-}
+
 QMAKE_CXXFLAGS += -static -static-libgcc -static-libstdc++ -pthread  -O3
 
 
@@ -15,13 +15,13 @@ equals(QT_MAJOR_VERSION, 5) {
 TARGET = dvda-author-gui-qt5
 
 QMAKE_LFLAGS += -Wl,-O2
-QMAKE_LIBS +=   -lQt5Gui -lQt5Xml -lQt5Core -pthread C:/msys64/mingw64/lib/libjasper.a
+QMAKE_LIBS +=   -lQt5Gui -lQt5Xml -lQt5Core -pthread
 
 win32 {
 INCLUDEPATH += . c:/msys64/mingw64/include
 QMAKE_CXX = c:/msys64/mingw64/bin/g++
 QMAKE_LINK = c:/msys64/mingw64/bin/g++
-
+QMAKE_LIBS +=   C:/msys64/mingw64/lib/libjasper.a
 # Windows: using MSYS2 under Mingw64
 }
 
