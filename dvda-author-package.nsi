@@ -260,7 +260,7 @@ SectionEnd
 Section $(Sec4Name) sec4 ; source code
 
   SetOutPath $INSTDIR ; for working directory
-  File "${srcdir}\*.cpp"  
+  
   File  "${srcdir}\*.pro*" "${srcdir}\Makefile.Release"  "${srcdir}\*.nsi"  "${srcdir}\src\*.qrc" 
 
 SectionEnd

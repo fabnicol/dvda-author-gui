@@ -18,16 +18,17 @@
 <!--#include virtual="/include/header.html" -->
 <!--#include virtual="/include/links.html" -->
 <a ><img
-src="images/dvda-author.png" alt="dvda-author-08.12" style="border: 0px"
+src="images/dvda-author.png" alt="dvda-author-19.06" style="border: 0px"
 /></a> 
 
 <h1><span style="color: Red;">DVDA-Author Qt GUI how to</span></h1>
 
 <p></p>
 
-<p>The new Qt 4.4 graphical user interface aims at facilitating disc
+<p>The new Qt5 graphical user interface aims at facilitating disc
 authoring.<br />
-This webpage documents version 09.02 of the GUI. 
+This webpage documents version 19.06r5 of the GUI built with Qt5.12.4. <br/>
+Some of the pictures of this HTML page are obsolete and will soon be updated.<br/>
 
 <p>It may optionally launch mkisofs after dvda-author. In this case, the
 output will be an .iso file that may be burned by common tools.<br />
@@ -42,7 +43,7 @@ Almost all command lines switches of the processing application are implemented.
 
 <p></p>
 
-<p><img alt="screenshot" src="images/web/dvda-author-gui-09.02-1.png" /></p>
+<p><img alt="screenshot" src="images/web/dvda-author-gui-19.06.PNG" /></p>
 
 <p></p>
 
@@ -234,8 +235,6 @@ method, selecting each audio file in the tree view.</p>
 					            <li>Display/Close project manager <img src="images/view-list-tree.png" /></li>
 					   </ul>
     <li>process buttons</li>     <ul><li>Burn <img src="images/burn.png" /></li>
-                                <li>Encode <img src="images/encode.png" /></li>
-			                    <li>Decode <img src="images/decode.png" /></li>
 			                    </ul>
 					   </li>
     <li>data buttons: <ul><li>Input <img src="images/input.png" /></li>
@@ -279,20 +278,9 @@ height="115" /></p>
 
 <p></p>
 
-<p>To create a DVD-Audio file structure press on Encode. If the run mkisofs
-option has been selected in the Options dialog, an ISO file will also be
-generated out of the DVD-Audio structure (see below Options).</p>
+<p>To create a DVD-Audio disc press on the Burn icon. You can deselect ISO file creation and burning in the options dialog to just create the file 
+structure under the default output repertory (in you home directory), or under the selected Output directory.</p>
 
-<p></p>
-
-<p>To extract .wav audio files from a DVD-Audio file structure or burned
-disc, press instead on Decode. Files will be packed in the output directory
-selected by pressing on the Output button.</p>
-
-<p>Each title belonging to audio group N in the disc structure will be
-extracted under subdirectory gN of the output directory.</p>
-
-<p></p>
 
 <h3><span style="color: Red;">Log messages</span></h3>
 

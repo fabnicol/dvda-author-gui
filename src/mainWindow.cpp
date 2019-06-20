@@ -135,7 +135,6 @@ void MainWindow::createMenus()
     editMenu->addAction (displayAction);
     editMenu->addAction (displayManagerAction);
     processMenu->addAction (burnAction);
-    processMenu->addAction (encodeAction);
     ioMenu->addAction (inputAction);
     ioMenu->addAction (videoAction);
     ioMenu->addAction (outputAction);
@@ -210,10 +209,7 @@ void MainWindow::createActions()
     connect (saveAction, SIGNAL (triggered() ), dvda_author, SLOT (saveProject() ) );
     burnAction = new QAction (tr ("&Burn"), this);
     burnAction->setIcon (QIcon (":/images/burn.png") );
-    connect (burnAction, SIGNAL (triggered() ), dvda_author, SLOT (on_cdrecordButton_clicked() ) );
-    encodeAction = new QAction (tr ("&Encode all disc"), this);
-    encodeAction->setIcon (QIcon (":/images/encode.png") );
-    connect (encodeAction, SIGNAL (triggered() ), dvda_author, SLOT (run() ) );
+    connect (burnAction, SIGNAL (triggered() ), dvda_author, SLOT (run()));
 
 #if 0
     decodeAction = new QAction (tr ("&Decode"), this);
@@ -295,7 +291,6 @@ void MainWindow::createToolBars()
     editToolBar->addAction (displayAction);
     editToolBar->addAction (displayManagerAction);
     processToolBar->addAction (burnAction);
-    processToolBar->addAction (encodeAction);
     ioToolBar->addAction (inputAction);
     ioToolBar->addAction (videoAction);
     ioToolBar->addAction (outputAction);

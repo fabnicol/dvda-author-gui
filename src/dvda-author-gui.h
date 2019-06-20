@@ -148,7 +148,6 @@ class MainWindow : public QMainWindow
         QAction* openAction;
         QAction* saveAction;
         QAction* burnAction;
-        QAction* encodeAction;
         QAction* decodeAction;
         QAction* inputAction;
         QAction* outputAction;
@@ -241,7 +240,7 @@ class dvda : public QDialog
         void on_retrieveItemButton_clicked();
         bool on_optionsButton_clicked();
 
-        void on_cdrecordButton_clicked();
+
         void on_openTreeWidgetButton_clicked();
 #if 0
         void extract();
@@ -326,6 +325,7 @@ class dvda : public QDialog
 
         options* dialog;
         bool run_dvda();
+        void on_cdrecordButton_clicked();
 
     protected:
 

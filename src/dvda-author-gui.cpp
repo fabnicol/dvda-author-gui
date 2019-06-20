@@ -488,6 +488,10 @@ void dvda::addFileToProject (QListWidget* project, int& currentIndex, int&  curr
                 QMessageBox::information (this, tr ("Select"),
                                           tr ("%1 is not a file, try again.").arg (selectedFile[i]) );
         }
+
+    if (progress) progress->setValue (0);
+    if (progress2) progress2->setValue (0);
+    if (progress3) progress3->setValue (0);
 }
 
 void dvda::on_rightButton_clicked()
@@ -679,7 +683,7 @@ void dvda::remove (const QString& path)
 
 bool dvda::removeDirectory (const QString& path)
 {
-    outputTextEdit -> append("remove top directory: " + path);
+    outputTextEdit -> append("Remove top directory: " + path);
     if (path.isEmpty())
     {
         outputTextEdit->append("Path is empty");
@@ -944,7 +948,7 @@ bool dvda::run_dvda()
     }
 
     QDir d = QDir(targetDir + "/VIDEO_TS");
-    if (d.exists())
+    if (d.exists() && project2[0] != nullptr && project2[0]->count())
     {
       args << "-n";
       args << "--no-refresh-outdir";
@@ -1083,7 +1087,7 @@ bool dvda::runLplex()
     outputTextEdit->append (tr ("Command line : %1").arg(command));
     startProgressBar = 1;
     outputType = "audio DVD-Video disc authoring";
-
+    processLplex.setWorkingDirectory(QDir::currentPath());
     processLplex.start(command);
     return true;
 }
@@ -1106,14 +1110,30 @@ void dvda::processLplexFinished (int exitCode,  QProcess::ExitStatus exitStatus)
         progress->setValue (0);
         return;
     }
+    else
+    {
+        outputTextEdit->append ("lplex exited with code: " + QString::number(exitCode));
+        outputTextEdit->append ("\n" + outputType + tr (" completed, output directory is %1").arg (QDir::toNativeSeparators(targetDir)) );
+        scanDirectory (targetDir, QStringList() << "*.*");
+    }
 
     removeDirectory("temp");
 
-    if (project[0] && project[0]->count())
+   if (project[0] && project[0]->count())
     {
         progress->setValue (maxRange/2);
         run_dvda();
     }
+    else
+    {
+      progress->setValue (maxRange);
+
+      if (dialog->runMkisofs)
+        {
+                runMkisofs();
+        }
+    }
+
 }
 
 
@@ -1379,12 +1399,10 @@ void dvda::on_cdrecordButton_clicked()
     const QString &command = binary + " " + QDir::toNativeSeparators(argsCdrecord.join (" "));
     outputTextEdit->append (tr ("Command line : %1").arg(command));
 
-    process2.start (command);
-    if (process2.waitForStarted())
+    process3.start (command);
+    if (process3.waitForStarted())
         outputTextEdit->append (tr ("Cdrecord started...") );
 
-    process3.start (command);
-    process3.waitForFinished();
 }
 
 bool dvda::on_optionsButton_clicked()

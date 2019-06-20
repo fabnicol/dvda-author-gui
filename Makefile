@@ -70,7 +70,6 @@ Makefile: dvda-author-gui.pro ../../../../msys64/mingw64/qt5-static/share/qt5/mk
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/common/gcc-base.conf \
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/common/g++-base.conf \
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/common/angle.conf \
-		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/features/win32/windows_vulkan_sdk.prf \
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/common/windows-vulkan.conf \
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/common/g++-win32.conf \
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/qconfig.pri \
@@ -171,6 +170,7 @@ Makefile: dvda-author-gui.pro ../../../../msys64/mingw64/qt5-static/share/qt5/mk
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_quickcontrols2_private.pri \
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_quickparticles_private.pri \
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_quickshapes_private.pri \
+		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_quicktemplates2.pri \
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_quicktemplates2_private.pri \
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_quickwidgets.pri \
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_quickwidgets_private.pri \
@@ -204,6 +204,7 @@ Makefile: dvda-author-gui.pro ../../../../msys64/mingw64/qt5-static/share/qt5/mk
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_uitools_private.pri \
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_virtualkeyboard.pri \
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_virtualkeyboard_private.pri \
+		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_vulkan_support_private.pri \
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_webchannel.pri \
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_webchannel_private.pri \
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_websockets.pri \
@@ -231,7 +232,6 @@ Makefile: dvda-author-gui.pro ../../../../msys64/mingw64/qt5-static/share/qt5/mk
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_qgif.pri \
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_qicns.pri \
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_qico.pri \
-		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_qjp2.pri \
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_qjpeg.pri \
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_qminimal.pri \
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_qmldbg_debugger.pri \
@@ -283,7 +283,6 @@ Makefile: dvda-author-gui.pro ../../../../msys64/mingw64/qt5-static/share/qt5/mk
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_qwebp.pri \
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_qwindows.pri \
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_qwindowsvistastyle.pri \
-		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_qxdgdesktopportal.pri \
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_scene2d.pri \
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_sdl2gamepad.pri \
 		../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_windowsprintersupport.pri \
@@ -322,7 +321,6 @@ Makefile: dvda-author-gui.pro ../../../../msys64/mingw64/qt5-static/share/qt5/mk
 		../../../../msys64/mingw64/qt5-static/share/qt5/plugins/imageformats/qgif.prl \
 		../../../../msys64/mingw64/qt5-static/share/qt5/plugins/imageformats/qicns.prl \
 		../../../../msys64/mingw64/qt5-static/share/qt5/plugins/imageformats/qico.prl \
-		../../../../msys64/mingw64/qt5-static/share/qt5/plugins/imageformats/qjp2.prl \
 		../../../../msys64/mingw64/qt5-static/share/qt5/plugins/imageformats/qjpeg.prl \
 		../../../../msys64/mingw64/qt5-static/share/qt5/plugins/imageformats/qtga.prl \
 		../../../../msys64/mingw64/qt5-static/share/qt5/plugins/imageformats/qtiff.prl \
@@ -341,7 +339,6 @@ Makefile: dvda-author-gui.pro ../../../../msys64/mingw64/qt5-static/share/qt5/mk
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/common/gcc-base.conf:
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/common/g++-base.conf:
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/common/angle.conf:
-../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/features/win32/windows_vulkan_sdk.prf:
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/common/windows-vulkan.conf:
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/common/g++-win32.conf:
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/qconfig.pri:
@@ -442,6 +439,7 @@ Makefile: dvda-author-gui.pro ../../../../msys64/mingw64/qt5-static/share/qt5/mk
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_quickcontrols2_private.pri:
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_quickparticles_private.pri:
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_quickshapes_private.pri:
+../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_quicktemplates2.pri:
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_quicktemplates2_private.pri:
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_quickwidgets.pri:
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_quickwidgets_private.pri:
@@ -475,6 +473,7 @@ Makefile: dvda-author-gui.pro ../../../../msys64/mingw64/qt5-static/share/qt5/mk
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_uitools_private.pri:
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_virtualkeyboard.pri:
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_virtualkeyboard_private.pri:
+../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_vulkan_support_private.pri:
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_webchannel.pri:
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_webchannel_private.pri:
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_lib_websockets.pri:
@@ -502,7 +501,6 @@ Makefile: dvda-author-gui.pro ../../../../msys64/mingw64/qt5-static/share/qt5/mk
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_qgif.pri:
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_qicns.pri:
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_qico.pri:
-../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_qjp2.pri:
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_qjpeg.pri:
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_qminimal.pri:
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_qmldbg_debugger.pri:
@@ -554,7 +552,6 @@ Makefile: dvda-author-gui.pro ../../../../msys64/mingw64/qt5-static/share/qt5/mk
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_qwebp.pri:
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_qwindows.pri:
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_qwindowsvistastyle.pri:
-../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_qxdgdesktopportal.pri:
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_scene2d.pri:
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_sdl2gamepad.pri:
 ../../../../msys64/mingw64/qt5-static/share/qt5/mkspecs/modules/qt_plugin_windowsprintersupport.pri:
@@ -593,7 +590,6 @@ dvda-author-gui.pro:
 ../../../../msys64/mingw64/qt5-static/share/qt5/plugins/imageformats/qgif.prl:
 ../../../../msys64/mingw64/qt5-static/share/qt5/plugins/imageformats/qicns.prl:
 ../../../../msys64/mingw64/qt5-static/share/qt5/plugins/imageformats/qico.prl:
-../../../../msys64/mingw64/qt5-static/share/qt5/plugins/imageformats/qjp2.prl:
 ../../../../msys64/mingw64/qt5-static/share/qt5/plugins/imageformats/qjpeg.prl:
 ../../../../msys64/mingw64/qt5-static/share/qt5/plugins/imageformats/qtga.prl:
 ../../../../msys64/mingw64/qt5-static/share/qt5/plugins/imageformats/qtiff.prl:
