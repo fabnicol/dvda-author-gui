@@ -235,10 +235,12 @@ Section  ; allways done
   File "${srcdir}\README"
   File "${srcdir}\COPYING"
   File "${srcdir}\ChangeLog" 
-  File "${srcdir}\GUI.shtml" 
+  File "${srcdir}\GUI.html" 
+  File "${srcdir}\GUI.pdf" 
   File /r  "${srcdir}\images"  
   File /r  "${srcdir}\bin"  
   File /r  "${srcdir}\data"  
+  File /r  "${srcdir}\menu"  
  
 SectionEnd
 

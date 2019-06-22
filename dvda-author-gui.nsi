@@ -239,7 +239,7 @@ SectionEnd
 Section $(Sec3Name) sec3 ; source code
 
   SetOutPath $INSTDIR ; for working directory
-  File "${srcdir}\*.cpp" "${srcdir}\*.h"
+  File /r "${srcdir}\src"  
   File "${srcdir}\Makefile" "${srcdir}\*.pro" "${srcdir}\Makefile.Release"  "${srcdir}\*.nsi"  
 
 SectionEnd
