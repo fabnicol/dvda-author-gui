@@ -14,11 +14,12 @@ options::options (dvda* parent)
     menuBox = new QCheckBox (tr ("Create DVD menu"), this) ;
     menuBox->setChecked(true);
 
-    inputRankBox = new QComboBox (this);
+    inputRankBox[0] = new QComboBox (this);
     QLabel* rankLabel = new QLabel("Link to video titleset");
-    rankList << "1";
-    inputRankBox->addItems(rankList);
-    inputRankBox->setEnabled(false);
+    rankList << "No" << "1";
+    inputRankBox[0]->addItems(rankList);
+    inputRankBox[0]->setEnabled(false);
+    inputRankBox[0]->setToolTip("Add link to DVD-VIDEO titleset rank #1");
 
     mkisofsBox = new QCheckBox (tr ("Create ISO file with mkisofs"), this);
     mkisofsBox->setChecked(true);
@@ -38,11 +39,11 @@ options::options (dvda* parent)
     menu = true;
     startsector = "";
 
-    QHBoxLayout* menuLayout = new QHBoxLayout;
+    menuLayout = new QHBoxLayout;
     menuLayout->addWidget (menuBox);
     menuLayout->addStretch();
     menuLayout->addWidget(rankLabel);
-    menuLayout->addWidget (inputRankBox);
+    menuLayout->addWidget (inputRankBox[0]);
 
     QHBoxLayout* mkisofsLayout = new QHBoxLayout;
     mkisofsLayout->addWidget (mkisofsBox);
@@ -107,7 +108,12 @@ options::options (dvda* parent)
     connect (cdrecordBox, SIGNAL (clicked() ), this, SLOT (on_cdrecordBox_checked() ) );
     connect (dvdwriterLineEdit, SIGNAL (textChanged (const QString&) ), this, SLOT (on_dvdwriterLineEdit_changed (const QString&) ) );
     connect (menuBox, SIGNAL (clicked() ), this,     SLOT (on_menuBox_checked() ) );
-    connect(inputRankBox, SIGNAL(currentIndexChanged(int)), this, SLOT(selectVideoLinkRank(int)));
+    connect(inputRankBox[0],
+            QOverload<int>::of(&QComboBox::activated),
+            [this] {
+                emit(sendMessageToConsole("Setting video link to titleset #1"));
+                videoTitleRank[0] = inputRankBox[0]->currentIndex();
+            });
     setWindowTitle (tr ("Options") );
 }
 
@@ -118,12 +124,42 @@ void options::on_startsectorLineEdit_changed (const QString& startsectorValue)
 }
 #endif
 
-
-void options::selectVideoLinkRank(int i)
+void options::addInputRankBox(int i)
 {
-     videoTitleRank = i + 1;
+    if ( inputRankBox[i] == nullptr)
+    {
+        inputRankBox[i] = new QComboBox (this);
+        inputRankBox[i]->setToolTip("Add link to DVD-VIDEO titleset rank #" + QString::number(i + 1));
+        menuLayout->addWidget (inputRankBox[i]);
+
+        connect(inputRankBox[i],
+                    QOverload<int>::of(&QComboBox::activated),
+                    [this, i] {
+                        emit(sendMessageToConsole("Setting video link to titleset #" + QString::number(i + 1)));
+                        videoTitleRank[i] = inputRankBox[i]->currentIndex();
+                    });
+    }
+    else inputRankBox[i]->show();
+    rankList << QString::number(i+1);
+    for (int r = 0 ; r <= i; ++r)
+    {
+      inputRankBox[r]->clear();
+      inputRankBox[r]->addItems(rankList);
+    }
+    inputRankBox[i]->setEnabled(false);
 }
 
+void options::removeInputRankBox(int i)
+{
+    if (inputRankBox[i] != nullptr) inputRankBox[i]->hide();
+    for (int r = 0; r < i ; ++r) inputRankBox[r]->removeItem(i + 1);
+    rankList.removeLast();
+    for (int r = 0 ; r <= i; ++r)
+    {
+        inputRankBox[r]->clear();
+        inputRankBox[r]->addItems(rankList);
+    }
+}
 
 void options::on_dvdwriterLineEdit_changed (const QString& dvdwriterValue)
 {

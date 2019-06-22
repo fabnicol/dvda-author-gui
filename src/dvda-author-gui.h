@@ -179,7 +179,7 @@ class options : public QDialog
         bool menu;
         bool debug;
         bool burnDisc;
-        int  videoTitleRank = 1;
+        int  videoTitleRank[9] = {0};
         QString startsector;
         QString dvdwriterPath;
         QStringList rankList;
@@ -187,7 +187,10 @@ class options : public QDialog
         QCheckBox* debugBox;
         QCheckBox* soxBox;
         QCheckBox* cdrecordBox;
-        QComboBox *inputRankBox;
+        QComboBox *inputRankBox[9] = {nullptr};
+        void addInputRankBox(int);
+        void removeInputRankBox(int);
+        QLineEdit*   dvdwriterLineEdit;
 
     private slots:
 #ifdef QT_FILE_DIALOG
@@ -204,11 +207,12 @@ class options : public QDialog
 #endif
         void on_dvdwriterLineEdit_changed (const QString& dvdwriterValue);
         void on_cdrecordBox_checked();
-        void selectVideoLinkRank(int);
+
 
     private:
 
         QPushButton* okButton, *logButton, *mkisofsButton;
+        QHBoxLayout* menuLayout;
 
 #ifdef        QT_FILE_DIALOG
         QFileDialog logDialog;
@@ -219,7 +223,10 @@ class options : public QDialog
         QLineEdit*   startsectorLineEdit;
         QLabel*      startsectorLabel;
 #endif
-        QLineEdit*   dvdwriterLineEdit;
+
+
+    signals:
+        void sendMessageToConsole(const QString& msg);
 
 };
 
@@ -240,6 +247,7 @@ class dvda : public QDialog
         QTabWidget* tab2Widget;
         QTabWidget* tabWidget;
         QString tempdir;
+        QTextEdit*  outputTextEdit;
 
 
     private slots:
@@ -252,8 +260,6 @@ class dvda : public QDialog
         void on_moveDownItemButton_clicked();
         void on_retrieveItemButton_clicked();
         bool on_optionsButton_clicked();
-
-
         void on_openTreeWidgetButton_clicked();
 #if 0
         void extract();
@@ -283,6 +289,7 @@ class dvda : public QDialog
 
         void remove (const QString& path);
         void selectOutput (const QString& path = "", bool = true);
+        void onMsgSent(const QString&);
 
     private:
 
@@ -344,7 +351,7 @@ class dvda : public QDialog
 
     protected:
 
-        QTextEdit*  outputTextEdit;
+
         QTreeWidget* treeWidget;
         QListWidget* project[9];
         QListWidget* project2[99];

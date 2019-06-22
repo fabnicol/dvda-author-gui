@@ -57,12 +57,10 @@ RESOURCES += \
     images/arrow-up.png \
     images/burn.png \
     images/configure.png \
-    images/encode.png \
     images/document-import.png \
     images/document-save.png \
     images/dvda-author.png \
     images/edit-delete.png \
-    images/encode.png \
     images/folder-new.png \
     images/help-contents.png \
     images/input.png \
@@ -90,8 +88,6 @@ DISTFILES += \
     images/document-save.png \
     images/dvda-author.png \
     images/edit-delete.png \
-    images/encode.png \
-    images/encodeVideo.png \
     images/folder-new.png \
     images/help-contents.png \
     images/input.png \

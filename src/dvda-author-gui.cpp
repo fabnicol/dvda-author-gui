@@ -252,6 +252,7 @@ dvda::dvda (QWidget* parent)  : QDialog (parent)
     connect (moveUpItemButton, SIGNAL (clicked() ), this, SLOT (on_moveUpItemButton_clicked() ) );
     connect (moveDownItemButton, SIGNAL (clicked() ), this, SLOT (on_moveDownItemButton_clicked() ) );
     connect (retrieveItemButton, SIGNAL (clicked() ), this, SLOT (on_retrieveItemButton_clicked() ) );
+    connect (dialog, SIGNAL(sendMessageToConsole(const QString& )), this, SLOT(onMsgSent(const QString&)) );
     QHBoxLayout* projectLayout = new QHBoxLayout;
     QVBoxLayout* updownLayout = new QVBoxLayout;
     QVBoxLayout* mkdirLayout = new QVBoxLayout;
@@ -288,6 +289,12 @@ dvda::dvda (QWidget* parent)  : QDialog (parent)
     const QIcon dvdaIcon = QIcon (QString::fromUtf8 ( ":/images/dvda-author.png") );
     setWindowIcon (dvdaIcon);
 
+}
+
+
+void dvda::onMsgSent(const QString& msg)
+{
+    outputTextEdit->append(msg);
 }
 
 
@@ -393,6 +400,7 @@ void dvda::addGroup()
             /* There will be a limited memory leak in case of multiple delete/addGroup operations but this is negliglible */
             tab2Widget->insertTab (video_rank, project2[video_rank] = new QListWidget (this), tr ("titleset %1").arg (number) );
             tab2Widget->setCurrentIndex (video_rank);
+            if (video_rank < 9) dialog->addInputRankBox(video_rank);
         }
 }
 
@@ -434,6 +442,7 @@ void dvda::deleteGroup()
             for (int i = currentIndex; i <= video_rank ; ++i)
                 {
                     tab2Widget->removeTab (i);
+                    if (i < 9) dialog->removeInputRankBox(i);
                     outputTextEdit->append (tr ("Removing tab %1").arg (QString::number (i + 1) ) );
                 }
 
@@ -444,8 +453,10 @@ void dvda::deleteGroup()
                             project2[j]->clear();
                             project2[j] = project2[j + 1];
                             tab2Widget->insertTab (j, project2[j], tr ("titleset %1").arg (QString::number (j + 1) ) );
+                            if (j < 8) dialog->addInputRankBox(j);
                         }
                 }
+                else  project2[video_rank]->clear();
 
             video_rank--;
 
@@ -504,14 +515,15 @@ void dvda::on_rightButton_clicked()
     if (currentMainTabIndex)
         {
             currentIndex = tab2Widget->currentIndex();
-            dialog->inputRankBox->setEnabled(true);
+            dialog->inputRankBox[currentIndex]->setEnabled(true);
             addFileToProject (project2[currentIndex], currentIndex, currentMainTabIndex);
             maxVideoIndex = (currentIndex > maxVideoIndex) ? currentIndex : maxVideoIndex;
             if (dialog->rankList.count() < maxVideoIndex + 1)
             {
                const QString N = QString::number(maxVideoIndex + 1);
                dialog->rankList << N;
-               dialog->inputRankBox->addItem(N);
+               for (int r = currentIndex; r < 9; ++r)
+                  dialog->inputRankBox[r]->addItem(N);
             }
         }
 
@@ -986,10 +998,27 @@ bool dvda::run_dvda()
        outputTextEdit->append ("Adding VIDEO_TS directory authored by lplex...");
     }
 
-    const QString N = QString::number (dialog->videoTitleRank);
-    args << "-V" <<  videoDir << "-T" << N ;
 
-    outputTextEdit->append ("Adding Track link to DVD-Video titleset " + N);
+    for (int r = 0; r < 9; ++r)
+    {
+        if (dialog->videoTitleRank[r])
+        {
+            args << "-V" << videoDir;
+            break;
+        }
+    }
+
+    for (int r = 0; r < 9; ++r)
+    {
+        if (dialog->videoTitleRank[r] != 0)
+        {
+           const QString N = QString::number (dialog->videoTitleRank[r]);
+           args << "-T" <<  N;
+           outputTextEdit->append ("Adding Track link to DVD-Video titleset " + N);
+        }
+    }
+
+
  }
 
 
@@ -1358,14 +1387,13 @@ void dvda::on_cdrecordButton_clicked()
             return;
         }
 
-    dialog->burnDisc = (!dialog->dvdwriterPath.isEmpty() );
-
     if (dialog->dvdwriterPath.isEmpty() )
         {
             QMessageBox::warning (this, tr ("Record"), tr ("You need to enter the path to a valid DVD writer device.<br>By defaut, choosing 0,0,0...."),
                                   QMessageBox::Ok );
 
             dialog->dvdwriterPath = "0,0,0";
+            dialog->dvdwriterLineEdit->setText("0,0,0");
          }
 
     QFileInfo f (dialog->mkisofsPath);
@@ -1566,7 +1594,7 @@ void dvda::saveProject()
     out << " </system>\n";
     out << " <data>\n";
     out << SWITCH ("videodir") << videoDir << EO_SWITCH;
-    out << SWITCH ("videoTitleRank") << QString::number (dialog->videoTitleRank) << EO_SWITCH;
+    out << SWITCH ("videoTitleRank") << QString::number (dialog->videoTitleRank[0]) << EO_SWITCH;
     out << SWITCH ("sourceDir") << sourceDir << EO_SWITCH;
 
     for (int i = 0; i <= rank; ++i)
@@ -1629,7 +1657,7 @@ void dvda::assignVariables (QString& variable, QString& value)
                                                 //if (dialog->burnDisc)
                                                 ASSIGN (dvdwriterPath)
                                                 else  ASSIGN_MAIN (videoDir, V_syntax_enabled)
-                                                    else  ASSIGN_MAIN_INT (dialog->videoTitleRank)
+                                                    else  ASSIGN_MAIN_INT (dialog->videoTitleRank[0])
                                                         else  ASSIGN_MAIN (sourceDir, i_syntax_enabled)
                                                             else  ASSIGN_MAIN (targetDir, o_syntax_enabled)
                                                                 else  ASSIGN_RECENT (parent->recentFiles[4])
