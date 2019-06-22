@@ -4,7 +4,7 @@ TEMPLATE = app
 DEPENDPATH += .
 DEFINES += QT_FILE_DIALOG
 
-DEFINES += LOCAL
+DEFINES += LOCAL WITHOUT_STARTSECTOR
 
 QMAKE_CXXFLAGS += -static -static-libgcc -static-libstdc++ -pthread  -O3
 

@@ -57,6 +57,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #include <QtXml>
 #include <QMessageBox>
 #include <QtWidgets>
+#include <QComboBox>
 
 #ifdef QT_FILE_DIALOG
 #include <QFileDialog>
@@ -175,14 +176,18 @@ class options : public QDialog
         QString mkisofsPath, logPath;
         bool log, runMkisofs;
         bool sox;
+        bool menu;
         bool debug;
         bool burnDisc;
+        int  videoTitleRank = 1;
         QString startsector;
         QString dvdwriterPath;
-        QCheckBox*   mkisofsBox, *logBox;
+        QStringList rankList;
+        QCheckBox*   mkisofsBox, *logBox, *menuBox;
         QCheckBox* debugBox;
         QCheckBox* soxBox;
         QCheckBox* cdrecordBox;
+        QComboBox *inputRankBox;
 
     private slots:
 #ifdef QT_FILE_DIALOG
@@ -191,13 +196,15 @@ class options : public QDialog
 #endif        
         void on_logBox_checked();
         void on_mkisofsBox_checked();
-
+        void on_menuBox_checked();
         void on_soxBox_checked();
         void on_debugBox_checked();
-
+#ifndef WITHOUT_STARTSECTOR
         void on_startsectorLineEdit_changed (const QString& startsectorValue);
+#endif
         void on_dvdwriterLineEdit_changed (const QString& dvdwriterValue);
         void on_cdrecordBox_checked();
+        void selectVideoLinkRank(int);
 
     private:
 
@@ -207,8 +214,12 @@ class options : public QDialog
         QFileDialog logDialog;
 #endif        
         QVBoxLayout* optionsLayout;
+
+#ifndef WITHOUT_STARTSECTOR
+        QLineEdit*   startsectorLineEdit;
         QLabel*      startsectorLabel;
-        QLineEdit*   startsectorLineEdit, *dvdwriterLineEdit;
+#endif
+        QLineEdit*   dvdwriterLineEdit;
 
 };
 
@@ -230,10 +241,12 @@ class dvda : public QDialog
         QTabWidget* tabWidget;
         QString tempdir;
 
+
     private slots:
 
         void selectInput();
         void selectVideo();
+
         void on_rightButton_clicked();
         void on_moveUpItemButton_clicked();
         void on_moveDownItemButton_clicked();
@@ -315,7 +328,7 @@ class dvda : public QDialog
 
         int currentIndex= 0;
         int currentMainTabIndex = 0;
-        int currentIndexMax = 0;
+        int maxVideoIndex = 0;
 
         void initialize();
         qint64 scanDirectory (const QString& path, const QStringList& filters);
@@ -326,6 +339,8 @@ class dvda : public QDialog
         options* dialog;
         bool run_dvda();
         void on_cdrecordButton_clicked();
+
+        void createTreeWidget();
 
     protected:
 
@@ -344,14 +359,13 @@ class dvda : public QDialog
         int rank = 0;
         int video_rank = 0;
         int maxRange = 0;
-        int videoTitleRank = 1;
 
         bool i_syntax_enabled = false;
         bool o_syntax_enabled = false;
         bool V_syntax_enabled = false;
 
         bool extractSwitch = false;
-        bool project_manager_enabled = false;
+        bool project_manager_enabled = true;
 };
 
 class DomParser : public dvda

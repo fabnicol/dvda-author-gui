@@ -1,7 +1,7 @@
 
 
 #include "dvda-author-gui.h"
-
+#include <QComboBox>
 
 options::options (dvda* parent)
 {
@@ -10,6 +10,16 @@ options::options (dvda* parent)
     mkisofsButton = new QPushButton (tr ("Browse...") );
 
     logBox = new QCheckBox (tr ("Log process"), this) ;
+
+    menuBox = new QCheckBox (tr ("Create DVD menu"), this) ;
+    menuBox->setChecked(true);
+
+    inputRankBox = new QComboBox (this);
+    QLabel* rankLabel = new QLabel("Link to video titleset");
+    rankList << "1";
+    inputRankBox->addItems(rankList);
+    inputRankBox->setEnabled(false);
+
     mkisofsBox = new QCheckBox (tr ("Create ISO file with mkisofs"), this);
     mkisofsBox->setChecked(true);
 
@@ -20,17 +30,19 @@ options::options (dvda* parent)
 
     soxBox = new QCheckBox (tr ("Enable multiformat input") );
     soxBox->setChecked (true);
-
-    startsectorLabel = new QLabel (tr ("&Start sector:") );
-    startsectorLineEdit = new QLineEdit;
-    startsectorLabel->setBuddy (startsectorLineEdit);
-
     log = false;
     runMkisofs = true;
     debug = false;
     burnDisc = true;
     sox = true;
+    menu = true;
     startsector = "";
+
+    QHBoxLayout* menuLayout = new QHBoxLayout;
+    menuLayout->addWidget (menuBox);
+    menuLayout->addStretch();
+    menuLayout->addWidget(rankLabel);
+    menuLayout->addWidget (inputRankBox);
 
     QHBoxLayout* mkisofsLayout = new QHBoxLayout;
     mkisofsLayout->addWidget (mkisofsBox);
@@ -56,6 +68,8 @@ options::options (dvda* parent)
     logLayout->addWidget (logButton);
     QVBoxLayout* optionsLayout = new QVBoxLayout;
     QHBoxLayout* okLayout = new QHBoxLayout;
+
+    optionsLayout->addLayout (menuLayout);
     optionsLayout->addSpacing (25);
     optionsLayout->addLayout (mkisofsLayout);
     optionsLayout->addSpacing (25);
@@ -66,12 +80,19 @@ options::options (dvda* parent)
     optionsLayout->addWidget (soxBox);
     optionsLayout->addSpacing (25);
 
-    optionsLayout->addSpacing (25);
+#ifndef WITHOUT_STARTSECTOR
+    startsectorLabel = new QLabel (tr ("&Start sector:") );
     optionsLayout->addWidget (startsectorLabel);
+    startsectorLineEdit = new QLineEdit;
+    startsectorLabel->setBuddy (startsectorLineEdit);
+    connect (startsectorLineEdit, SIGNAL (textChanged (const QString&) ), this,
+             SLOT (on_startsectorLineEdit_changed (const QString&) ) );
     QHBoxLayout* startsectorLineEditLayout = new QHBoxLayout;
     startsectorLineEditLayout->addWidget (startsectorLineEdit);
     startsectorLineEditLayout->addStretch();
     optionsLayout->addLayout (startsectorLineEditLayout);
+#endif
+
     okLayout->addStretch();
     okLayout->addWidget (okButton);
     optionsLayout->addLayout (okLayout);
@@ -84,23 +105,34 @@ options::options (dvda* parent)
     connect (debugBox, SIGNAL (clicked() ), this, SLOT (on_debugBox_checked() ) );
     connect (soxBox, SIGNAL (clicked() ), this, SLOT (on_soxBox_checked() ) );
     connect (cdrecordBox, SIGNAL (clicked() ), this, SLOT (on_cdrecordBox_checked() ) );
-    connect (startsectorLineEdit, SIGNAL (textChanged (const QString&) ), this,
-             SLOT (on_startsectorLineEdit_changed (const QString&) ) );
-    connect (dvdwriterLineEdit, SIGNAL (textChanged (const QString&) ), this,
-             SLOT (on_dvdwriterLineEdit_changed (const QString&) ) );
-
-
+    connect (dvdwriterLineEdit, SIGNAL (textChanged (const QString&) ), this, SLOT (on_dvdwriterLineEdit_changed (const QString&) ) );
+    connect (menuBox, SIGNAL (clicked() ), this,     SLOT (on_menuBox_checked() ) );
+    connect(inputRankBox, SIGNAL(currentIndexChanged(int)), this, SLOT(selectVideoLinkRank(int)));
     setWindowTitle (tr ("Options") );
 }
 
+#ifndef WITHOUT_STARTSECTOR
 void options::on_startsectorLineEdit_changed (const QString& startsectorValue)
 {
     startsector = startsectorValue;
 }
+#endif
+
+
+void options::selectVideoLinkRank(int i)
+{
+     videoTitleRank = i + 1;
+}
+
 
 void options::on_dvdwriterLineEdit_changed (const QString& dvdwriterValue)
 {
     dvdwriterPath = dvdwriterValue;
+}
+
+void options::on_menuBox_checked()
+{
+    menu= menuBox->isChecked();
 }
 
 void options::on_logBox_checked()

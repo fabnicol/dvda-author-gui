@@ -38,7 +38,7 @@ int main (int argc, char* argv[])
     //  dvda_author.show();
     MainWindow* mainWin = new MainWindow;
     mainWin->show();
-
+    mainWin->setFont(QFont("Verdana"));
     mainWin->setWindowTitle ("dvd-author GUI");
     return app.exec();
 }
