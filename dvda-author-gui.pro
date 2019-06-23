@@ -15,7 +15,7 @@ equals(QT_MAJOR_VERSION, 5) {
 TARGET = dvda-author-gui-qt5
 
 QMAKE_LFLAGS += -Wl,-O2
-QMAKE_LIBS +=   -lQt5Gui -lQt5Xml -lQt5Core -pthread
+QMAKE_LIBS +=    -pthread
 
 win32 {
 INCLUDEPATH += . c:/msys64/mingw64/include

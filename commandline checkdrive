@@ -1,0 +1,2 @@
+ 
+ -checkdrive dev=10,0,0 2>&1 | grep DVD.*driver | cut -f 4 -d\ 
