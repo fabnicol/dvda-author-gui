@@ -12,11 +12,11 @@
 !include "MUI2.nsh"
 !include "x64.nsh"
 
-!define version  "19.06"
+!define version  "19.07r1"
 !define prodname "dvda-author-package"
 !define mainexe  "dvda-author"
 !define guiexe   "dvda-author-gui"
-!define setup    "${prodname}-${version}.win32.installer.exe"
+!define setup    "${prodname}-${version}.w10.x86_64.installer.exe"
 !define srcdir   "."
 !define website  "http://dvd-audio.sourceforge.net"
 
