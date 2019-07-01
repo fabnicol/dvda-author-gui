@@ -14,6 +14,10 @@ options::options (dvda* parent)
     menuBox = new QCheckBox (tr ("Create DVD menu"), this) ;
     menuBox->setChecked(true);
 
+    activeMenuBox = new QCheckBox (tr ("Active menu"), this) ;
+    activeMenuBox->setChecked(false);
+    activeMenuBox->setToolTip("Active menus remain visible on playback");
+
     inputRankBox[0] = new QComboBox (this);
     QLabel* rankLabel = new QLabel("Link to video titleset");
     rankList << "No" << "1";
@@ -45,6 +49,10 @@ options::options (dvda* parent)
     menuLayout->addWidget(rankLabel);
     menuLayout->addWidget (inputRankBox[0]);
 
+    QHBoxLayout* activeMenuLayout = new QHBoxLayout;
+    activeMenuLayout->addWidget (activeMenuBox);
+    activeMenuLayout->addStretch();
+
     QHBoxLayout* mkisofsLayout = new QHBoxLayout;
     mkisofsLayout->addWidget (mkisofsBox);
     mkisofsLayout->addStretch();
@@ -71,6 +79,8 @@ options::options (dvda* parent)
     QHBoxLayout* okLayout = new QHBoxLayout;
 
     optionsLayout->addLayout (menuLayout);
+    optionsLayout->addSpacing (25);
+    optionsLayout->addLayout (activeMenuLayout);
     optionsLayout->addSpacing (25);
     optionsLayout->addLayout (mkisofsLayout);
     optionsLayout->addSpacing (25);
@@ -108,6 +118,7 @@ options::options (dvda* parent)
     connect (cdrecordBox, SIGNAL (clicked() ), this, SLOT (on_cdrecordBox_checked() ) );
     connect (dvdwriterLineEdit, SIGNAL (textChanged (const QString&) ), this, SLOT (on_dvdwriterLineEdit_changed (const QString&) ) );
     connect (menuBox, SIGNAL (clicked() ), this,     SLOT (on_menuBox_checked() ) );
+    connect (activeMenuBox, SIGNAL (clicked() ), this,     SLOT (on_activeMenuBox_checked() ) );
     connect(inputRankBox[0],
             QOverload<int>::of(&QComboBox::activated),
             [this] {
@@ -169,6 +180,12 @@ void options::on_dvdwriterLineEdit_changed (const QString& dvdwriterValue)
 void options::on_menuBox_checked()
 {
     menu= menuBox->isChecked();
+}
+
+
+void options::on_activeMenuBox_checked()
+{
+    activeMenu = activeMenuBox->isChecked();
 }
 
 void options::on_logBox_checked()

@@ -917,19 +917,19 @@ bool dvda::run_dvda()
 
     for (int i = 0; i < 9; ++i)
     {
-            if (project[i] == nullptr || project[i]->count() == 0) continue;
+        if (project[i] == nullptr || project[i]->count() == 0) continue;
 
-            QStringList args2;
+        QStringList args2;
 
-            for (int row = 0; project[i] && row < project[i]->count() &&  project[i]->item (row) != nullptr; ++row)
-            {
-                const QString &file = project[i]->item (row)->text();
-                if (! file.isEmpty()) args2 << file ;
-            }
+        for (int row = 0; project[i] && row < project[i]->count() &&  project[i]->item (row) != nullptr; ++row)
+        {
+            const QString &file = project[i]->item (row)->text();
+            if (! file.isEmpty()) args2 << file ;
+        }
 
-            if (args2.isEmpty()) continue;
-            else
-               args << "-g " + args2.join(" ");
+        if (args2.isEmpty()) continue;
+        else
+           args << "-g " + args2.join(" ");
 
     }
 
@@ -954,7 +954,6 @@ bool dvda::run_dvda()
       args << "--no-refresh-outdir";
     }
 
-
     if (dialog->startsector != "")
     {
         args << "-p" << dialog->startsector;
@@ -969,57 +968,60 @@ bool dvda::run_dvda()
 
     args << "-o" << targetDir;
 
- if (dialog->menu)
-    {
-#if defined _WIN32 || defined __linux__
-     args << "--topmenu" << "--datadir" << QDir::currentPath() << "--bindir" << QDir::currentPath()
-#  ifdef _WIN32
-     +  "/bin";
-#  elif defined(__linux__)
-     +  "/linux";
-#  endif
-
-     outputTextEdit->append("Top menu editing...");
-#else
-     outputTextEdit->append("Top menu editing deactivated [only valid for Windows and GNU/Linux]");
-#endif
-    }
-
- if (project2[0] && project2[0]->count())
- {
-    if (V_syntax_enabled)
-    {
-        outputTextEdit->append ("Adding selected Video directory...");
-    }
-
-    if (videoDir.isEmpty())
-    {
-       videoDir = targetDir + "/VIDEO_TS";
-       outputTextEdit->append ("Adding VIDEO_TS directory authored by lplex...");
-    }
-
-
-    for (int r = 0; r < 9; ++r)
-    {
-        if (dialog->videoTitleRank[r])
+    if (dialog->menu)
         {
-            args << "-V" << videoDir;
-            break;
-        }
-    }
+#         if defined _WIN32 || defined __linux__
+                  args << "--topmenu" << "--datadir" << QDir::currentPath() << "--bindir" << QDir::currentPath()
+#           ifdef _WIN32
+                          +  "/bin";
+#           elif defined(__linux__)
+                          +  "/linux";
+#           endif
 
-    for (int r = 0; r < 9; ++r)
+            outputTextEdit->append("Top menu editing...");
+#         else
+            outputTextEdit->append("Top menu editing deactivated [only valid for Windows and GNU/Linux]");
+#         endif
+        }
+
+    if (dialog->activeMenu)
     {
-        if (dialog->videoTitleRank[r] != 0)
-        {
-           const QString N = QString::number (dialog->videoTitleRank[r]);
-           args << "-T" <<  N;
-           outputTextEdit->append ("Adding Track link to DVD-Video titleset " + N);
-        }
+        args << "--menustyle" << "active";
     }
 
+    if (project2[0] && project2[0]->count())
+     {
+        if (V_syntax_enabled)
+        {
+            outputTextEdit->append ("Adding selected Video directory...");
+        }
 
- }
+        if (videoDir.isEmpty())
+        {
+           videoDir = targetDir + "/VIDEO_TS";
+           outputTextEdit->append ("Adding VIDEO_TS directory authored by lplex...");
+        }
+
+
+        for (int r = 0; r < 9; ++r)
+        {
+            if (dialog->videoTitleRank[r])
+            {
+                args << "-V" << videoDir;
+                break;
+            }
+        }
+
+        for (int r = 0; r < 9; ++r)
+        {
+            if (dialog->videoTitleRank[r] != 0)
+            {
+               const QString N = QString::number (dialog->videoTitleRank[r]);
+               args << "-T" <<  N;
+               outputTextEdit->append ("Adding Track link to DVD-Video titleset " + N);
+            }
+        }
+     }
 
 
  if (dialog->log)

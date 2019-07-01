@@ -177,13 +177,14 @@ class options : public QDialog
         bool log, runMkisofs;
         bool sox;
         bool menu;
+        bool activeMenu;
         bool debug;
         bool burnDisc;
         int  videoTitleRank[9] = {0};
         QString startsector;
         QString dvdwriterPath;
         QStringList rankList;
-        QCheckBox*   mkisofsBox, *logBox, *menuBox;
+        QCheckBox*   mkisofsBox, *logBox, *menuBox, *activeMenuBox;
         QCheckBox* debugBox;
         QCheckBox* soxBox;
         QCheckBox* cdrecordBox;
@@ -200,6 +201,7 @@ class options : public QDialog
         void on_logBox_checked();
         void on_mkisofsBox_checked();
         void on_menuBox_checked();
+        void on_activeMenuBox_checked();
         void on_soxBox_checked();
         void on_debugBox_checked();
 #ifndef WITHOUT_STARTSECTOR
