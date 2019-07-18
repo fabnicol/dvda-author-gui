@@ -924,7 +924,7 @@ bool dvda::run_dvda()
         for (int row = 0; project[i] && row < project[i]->count() &&  project[i]->item (row) != nullptr; ++row)
         {
             const QString &file = project[i]->item (row)->text();
-            if (! file.isEmpty()) args2 << file ;
+            if (! file.isEmpty()) args2 << "\"" + file + "\"" ;
         }
 
         if (args2.isEmpty()) continue;
@@ -1072,7 +1072,6 @@ bool dvda::run()
     if (res2) runLplex();
     else run_dvda();
 
-
     return (res1 || res2);
  }
 
@@ -1099,7 +1098,7 @@ bool dvda::runLplex()
             for (int row = 0; row < project2[i]->count() && project2[i]->item (row) != nullptr; ++row)
                 {
                     const QString &file = project2[i]->item (row)->text();
-                    if (! file.isEmpty()) args2 <<  file;
+                    if (! file.isEmpty()) args2 <<  "\"" + file + "\"";
                 }
 
                 if (args2.isEmpty()) continue;
