@@ -150,7 +150,6 @@ class MainWindow : public QMainWindow
         QAction* saveAction;
         QAction* burnAction;
         QAction* decodeAction;
-        QAction* inputAction;
         QAction* outputAction;
         QAction* videoAction;
         QAction* aboutAction;
@@ -176,6 +175,7 @@ class options : public QDialog
         QString mkisofsPath, logPath;
         bool log, runMkisofs;
         bool sox;
+        bool decode;
         bool menu;
         bool activeMenu;
         bool debug;
@@ -187,6 +187,7 @@ class options : public QDialog
         QCheckBox*   mkisofsBox, *logBox, *menuBox, *activeMenuBox;
         QCheckBox* debugBox;
         QCheckBox* soxBox;
+        QCheckBox* decodeBox;
         QCheckBox* cdrecordBox;
         QComboBox *inputRankBox[9] = {nullptr};
         void addInputRankBox(int);
@@ -203,6 +204,7 @@ class options : public QDialog
         void on_menuBox_checked();
         void on_activeMenuBox_checked();
         void on_soxBox_checked();
+        void on_decodeBox_checked();
         void on_debugBox_checked();
 #ifndef WITHOUT_STARTSECTOR
         void on_startsectorLineEdit_changed (const QString& startsectorValue);
@@ -254,7 +256,6 @@ class dvda : public QDialog
 
     private slots:
 
-        void selectInput();
         void selectVideo();
 
         void on_rightButton_clicked();
@@ -327,7 +328,7 @@ class dvda : public QDialog
         QHBoxLayout* allLayout;
         QProgressBar* progress, *progress2, *progress3;
 
-        bool startProgressBar, startProgressBar2, startProgressBar3;
+        bool startProgressBar, startProgressBar2, startProgressBar3, extract;
 
         qint64 inputSizeCount = 0;
         qint64 inputSize[9] = {0};
@@ -342,13 +343,13 @@ class dvda : public QDialog
         void initialize();
         qint64 scanDirectory (const QString& path, const QStringList& filters);
         bool removeDirectory (const QString& path);
-        void addFileToProject (QListWidget* project, int& currentIndex, int&  currentMainTabIndex);
+        void addFileToProject (QListWidget* project);
         float discShare (qint64 directorySize);
 
         options* dialog;
         bool run_dvda();
         void on_cdrecordButton_clicked();
-
+        void addFileToProject(QListWidget*, const QFileInfo &info);
         void createTreeWidget();
 
     protected:
@@ -361,7 +362,7 @@ class dvda : public QDialog
         QString     sourceDir;
         QString     targetDir;
         QString     videoDir;
-        QString     selectedFile[100];
+        QFileInfo   selectedFile[100];
         QString     g_command_line;
         QString     outputType;
 

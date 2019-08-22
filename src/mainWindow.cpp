@@ -135,7 +135,7 @@ void MainWindow::createMenus()
     editMenu->addAction (displayAction);
     editMenu->addAction (displayManagerAction);
     processMenu->addAction (burnAction);
-    ioMenu->addAction (inputAction);
+
     ioMenu->addAction (videoAction);
     ioMenu->addAction (outputAction);
     optionsMenu->addAction (optionsAction);
@@ -216,9 +216,7 @@ void MainWindow::createActions()
     decodeAction->setIcon (QIcon (":/images/decode.png") );
     connect (decodeAction, SIGNAL (triggered() ), dvda_author, SLOT (extract() ) );
 #endif
-    inputAction = new QAction (tr ("&Audio input"), this);
-    inputAction->setIcon (QIcon (":/images/input.png") );
-    connect (inputAction, SIGNAL (triggered() ), dvda_author, SLOT (selectInput() ) );
+
     outputAction = new QAction (tr ("&Output"), this);
     outputAction->setIcon (QIcon (":/images/output.png") );
     connect (outputAction, SIGNAL (triggered() ), dvda_author, SLOT (selectOutput() ) );
@@ -291,7 +289,7 @@ void MainWindow::createToolBars()
     editToolBar->addAction (displayAction);
     editToolBar->addAction (displayManagerAction);
     processToolBar->addAction (burnAction);
-    ioToolBar->addAction (inputAction);
+
     ioToolBar->addAction (videoAction);
     ioToolBar->addAction (outputAction);
     optionsToolBar->addAction (optionsAction);

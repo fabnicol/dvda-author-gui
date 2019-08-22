@@ -35,11 +35,16 @@ options::options (dvda* parent)
 
     soxBox = new QCheckBox (tr ("Enable multiformat input") );
     soxBox->setChecked (true);
+
+    decodeBox = new QCheckBox (tr ("Decode MLP to WAV when extracting audio") );
+    decodeBox->setChecked (false);
+
     log = false;
     runMkisofs = true;
     debug = false;
     burnDisc = true;
     sox = true;
+    decode = false;
     menu = true;
     startsector = "";
 
@@ -90,6 +95,8 @@ options::options (dvda* parent)
     optionsLayout->addSpacing (25);
     optionsLayout->addWidget (soxBox);
     optionsLayout->addSpacing (25);
+    optionsLayout->addWidget (decodeBox);
+    optionsLayout->addSpacing (25);
 
 #ifndef WITHOUT_STARTSECTOR
     startsectorLabel = new QLabel (tr ("&Start sector:") );
@@ -115,6 +122,7 @@ options::options (dvda* parent)
     connect (mkisofsButton, SIGNAL (clicked() ), this, SLOT (on_mkisofsButton_clicked() ) );
     connect (debugBox, SIGNAL (clicked() ), this, SLOT (on_debugBox_checked() ) );
     connect (soxBox, SIGNAL (clicked() ), this, SLOT (on_soxBox_checked() ) );
+    connect (decodeBox, SIGNAL (clicked() ), this, SLOT (on_decodeBox_checked() ) );
     connect (cdrecordBox, SIGNAL (clicked() ), this, SLOT (on_cdrecordBox_checked() ) );
     connect (dvdwriterLineEdit, SIGNAL (textChanged (const QString&) ), this, SLOT (on_dvdwriterLineEdit_changed (const QString&) ) );
     connect (menuBox, SIGNAL (clicked() ), this,     SLOT (on_menuBox_checked() ) );
@@ -197,6 +205,12 @@ void options::on_soxBox_checked()
 {
     sox = soxBox->isChecked();
 }
+
+void options::on_decodeBox_checked()
+{
+    decode = decodeBox->isChecked();
+}
+
 
 void options::on_debugBox_checked()
 {

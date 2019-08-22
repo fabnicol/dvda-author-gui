@@ -6,7 +6,7 @@ DEFINES += QT_FILE_DIALOG
 
 DEFINES += LOCAL WITHOUT_STARTSECTOR
 
-QMAKE_CXXFLAGS += -static -static-libgcc -static-libstdc++ -pthread  -O3
+QMAKE_CXXFLAGS +=-pthread  -O3
 
 
 
@@ -41,7 +41,7 @@ win32:INCLUDEPATH += . C:/Qt/4.8.7/include
 linux:QMAKE_LFLAGS += -Wl,-O1 -Wl,-rpath,../qt-everywhere-opensource-src-4.8.7/qtbase/lib
 win32:QMAKE_LFLAGS += -Wl,-O1 -Wl,-rpath,C:/Qt/4.8.7/lib
 linux:LIBS +=  -L../qt-everywhere-opensource-src-4.8.7/qtbase/lib -lQtXml -lQtGui -L/usr/X11R6/lib -lQtCore -pthread  -lz -lm -ldl -lrt -ljpeg -lmng -ltiff   -lpng  -lfreetype -lSM -lICE -lXrender -lfontconfig -lfreetype -lXext -lX11  \
--L../qt-everywhere-opensource-src-4.8.7/qtbase/lib -lQtXml -lQtGui -L/usr/X11R6/lib -lQtCore -pthread  -lz -lm -ldl -lrt -ljpeg -lmng -ltiff   -lpng  -lfreetype -lSM -lICE -lXrender -lfontconfig -lfreetype -lXext -lX11
+-L../qt-everywhere-opensource-src-4.8.7/qtbase/lib -lQtXml -lQtGui -L/usr/X11R6/lib -lQtCore -pthread  -lz -lm -ldl -lrt -ljpeg -lmng -ltiff   -lpng  -lfreetype -lSM -lICE -lXrender -lfontconfig -lfreetype -lXext -lX11  -static -static-libgcc -static-libstdc++
 windows:QMAKE_LIBS +=  -LC:/Qt/4.8.7/lib -lQtGui -lQtXml -lQtCore -pthread
 
 }
