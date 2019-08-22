@@ -44,7 +44,7 @@ void dvda::addDraggedFiles (QList<QUrl> urls)
     for (int i = 0; i < urls.size(); ++i)
         {
             selectedFile[i] = urls.at (i).toLocalFile();
-            project[currentIndex]->addItem (selectedFile[i]);
+            project[currentIndex]->addItem (selectedFile[i].filePath());
             inputSize[currentIndex] += QFileInfo (selectedFile[i]).size();
             inputSizeCount += QFileInfo (selectedFile[i]).size();
             outputTextEdit->append (tr ("Added audio file to group %1:\n  size of group %2, total size %3").arg (QString::number (
@@ -91,6 +91,7 @@ dvda::dvda (QWidget* parent)  : QDialog (parent)
     model->setFilter (QDir::AllDirs | QDir::Files | QDir::NoDotAndDotDot);
     model->setNameFilterDisables (false);
     model->setNameFilters({"*.wav",
+                           "*.AOB",
                            "*.flac",
                            "*.oga",
                            "*.aif",
@@ -120,9 +121,9 @@ dvda::dvda (QWidget* parent)  : QDialog (parent)
                            "*.lpc10",
                            "*.lu",
                            "*.maud",
+                           "*.mlp",
                            "*.nist",
                            "*.ogg",
-                           "*.raw",
                            "*.s1",
                            "*.s16",
                            "*.s2",
@@ -465,41 +466,67 @@ void dvda::deleteGroup()
         }
 }
 
+void dvda::addFileToProject(QListWidget* project, const QFileInfo& info)
+{
+    if (info.isFile())
+        {
+            const QStringList &filters = model->nameFilters();
+            if (filters.contains(("*." + info.completeSuffix()), Qt::CaseInsensitive))
+                project->addItem (info.filePath());
+            inputSize[currentIndex] += info.size();
+            inputSizeCount += info.size();
+            outputTextEdit->append (tr (qPrintable ("Added audio file %1:\n  size of group %2, total size %3") ).arg (QString::number (currentIndex + 1),
+                                                            QString::number (inputSize[currentIndex]), QString::number (inputSizeCount) ) );
+        }
+    else
+    {
+        if (info.isDir())
+        {
+            QDir dir(info.absoluteFilePath());
+            QFileInfoList files = dir.entryInfoList(QStringList(), QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
+            for (const QFileInfo &info : files)
+            {
+              addFileToProject (project, QFileInfo(info));
+            }
+        }
+        else
+        QMessageBox::information (this, tr ("Select"),
+                                  tr ("%1 is not a file or a directory, try again.").arg (info.absoluteFilePath()) );
+    }
+}
 
-void dvda::addFileToProject (QListWidget* project, int& currentIndex, int&  currentMainTabIndex)
+void dvda::addFileToProject (QListWidget* project)
 {
     QItemSelectionModel* selectionModel = treeView->selectionModel();
     QModelIndexList  indexList = selectionModel->selectedIndexes();
 
-    //if (!index.isValid())  return;
     if (indexList.isEmpty() )
         {
             return;
         }
 
-    //selectedFile = QDir::toNativeSeparators(model->filePath(index));
-    QString group_type = (currentMainTabIndex == 0) ? "audio group" : "video group";
-    QModelIndex index;
-
-    for (int i = 0; i < indexList.size(); ++i)
+    for (const QModelIndex& index : indexList)
         {
-            index = indexList.at (i);
-            selectedFile[i] = model->filePath (index);
+            QFileInfo info = model->fileInfo(index);
 
-            //QVariant elementSelectionne = modele->data(listeSelections[i], Qt::DisplayRole);
-            if (model->fileInfo (index).isFile() )
+            if (info.isFile())
                 {
-                    project->addItem (selectedFile[i]);
-                    inputSize[currentIndex] += model->fileInfo (index).size();
-                    inputSizeCount += model->fileInfo (index).size();
-                    outputTextEdit->append (tr (qPrintable ("Added audio file to " + group_type  +
-                                                            " %1:\n  size of group %2, total size %3") ).arg (QString::number (currentIndex + 1),
-                                                                    QString::number (inputSize[currentIndex]), QString::number (inputSizeCount) ) );
+                   addFileToProject(project, info);
                 }
+            else
+                if (info.isDir())
+                {
+                    QDir dir(info.absoluteFilePath());
 
+                    QFileInfoList files = dir.entryInfoList(QStringList(), QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot);
+                    for (const QFileInfo &info : files)
+                    {
+                      addFileToProject (project, info);
+                    }
+                }
             else
                 QMessageBox::information (this, tr ("Select"),
-                                          tr ("%1 is not a file, try again.").arg (selectedFile[i]) );
+                                          tr ("%1 is not a file or a directory, try again.").arg (info.absoluteFilePath()) );
         }
 
     if (progress) progress->setValue (0);
@@ -516,7 +543,7 @@ void dvda::on_rightButton_clicked()
         {
             currentIndex = tab2Widget->currentIndex();
             dialog->inputRankBox[currentIndex]->setEnabled(true);
-            addFileToProject (project2[currentIndex], currentIndex, currentMainTabIndex);
+            addFileToProject (project2[currentIndex]);
             maxVideoIndex = (currentIndex > maxVideoIndex) ? currentIndex : maxVideoIndex;
             if (dialog->rankList.count() < maxVideoIndex + 1)
             {
@@ -530,7 +557,7 @@ void dvda::on_rightButton_clicked()
     else
         {
             currentIndex = tabWidget->currentIndex();
-            addFileToProject (project[currentIndex], currentIndex, currentMainTabIndex);
+            addFileToProject (project[currentIndex]);
         }
 }
 
@@ -754,30 +781,6 @@ bool dvda::removeDirectory (const QString& path)
     return ok;
 }
 
-void dvda::selectInput()
-{
-    QModelIndex index = treeView->currentIndex();
-
-    if (!index.isValid() )
-        {
-            return;
-        }
-
-    sourceDir = model->filePath (index);
-    outputTextEdit->clear();
-
-
-    if (model->fileInfo (index).isDir() )
-        {
-            outputTextEdit->append (tr ("Selected input directory: %1").arg (sourceDir) );
-            i_syntax_enabled = 1;
-        }
-
-    else
-        QMessageBox::information (this, tr ("Select"),
-                                  tr ("Failed to select %1, try again.").arg (sourceDir) );
-}
-
 
 void dvda::selectOutput (const QString& path, bool recreate)
 {
@@ -869,7 +872,6 @@ bool dvda::run_dvda()
     qint64 totalSize;
     progress->reset();
 
-
     if (progress3 != nullptr)
     {
         if (!dialog->burnDisc)
@@ -880,7 +882,6 @@ bool dvda::run_dvda()
             delete (killCdrecordButton);
             progress3 = nullptr;
         }
-
         else
         {
             progress3->reset();
@@ -897,132 +898,165 @@ bool dvda::run_dvda()
             delete (killMkisofsButton);
             progress2 = nullptr;
         }
-
         else
         {
             progress2->reset();
         }
     }
 
+    // Check if Extract mode or Create mode
 
-    if (project[0]->count() + project2[0]->count()
-            + (i_syntax_enabled ? scanDirectory (sourceDir, QStringList() << "*.*") : 0)
-            + (V_syntax_enabled ? scanDirectory (videoDir, QStringList() << "*.*") : 0)  == 0)
-    {
-        outputTextEdit->append("*** No audio files to process ! ***");
-        processFinished (EXIT_FAILURE, QProcess::NormalExit);
-        return false;
-    }
-
-
+    extract = false;
+    QStringList argsExtract;
     for (int i = 0; i < 9; ++i)
     {
         if (project[i] == nullptr || project[i]->count() == 0) continue;
-
-        QStringList args2;
-
         for (int row = 0; project[i] && row < project[i]->count() &&  project[i]->item (row) != nullptr; ++row)
         {
             const QString &file = project[i]->item (row)->text();
-            if (! file.isEmpty()) args2 << "\"" + file + "\"" ;
+            if (! file.isEmpty())
+            {
+                QRegExp q(".*ATS_0[1-9]_[1-9].AOB");
+                if (q.exactMatch(file))
+                {
+                    argsExtract << file;
+                    outputTextEdit->append("Detected AOB file in input: will ignore non-AOB files in tabs and only extract audio.");
+                    extract = true;
+                }
+                else
+                 if (extract)
+                {
+                    outputTextEdit->append("Will ignore " + file + " as non-AOB file mixed with AOB file.");
+                }
+            }
+        }
+    }
+
+    if (extract)
+    {
+      args << "--aob2wav" << argsExtract.join(",");
+      if (dialog->decode)
+          args << "--decode";
+    }
+    else
+    {
+        if (project[0]->count() + project2[0]->count()
+                + (i_syntax_enabled ? scanDirectory (sourceDir, QStringList() << "*.*") : 0)
+                + (V_syntax_enabled ? scanDirectory (videoDir, QStringList() << "*.*") : 0)  == 0)
+        {
+            outputTextEdit->append("*** No audio files to process ! ***");
+            processFinished (EXIT_FAILURE, QProcess::NormalExit);
+            return false;
         }
 
-        if (args2.isEmpty()) continue;
-        else
-           args << "-g " + args2.join(" ");
+        for (int i = 0; i < 9; ++i)
+        {
+            if (project[i] == nullptr || project[i]->count() == 0) continue;
 
+        QStringList args2;
+
+            for (int row = 0; project[i] && row < project[i]->count() &&  project[i]->item (row) != nullptr; ++row)
+            {
+                const QString &file = project[i]->item (row)->text();
+                if (! file.isEmpty()) args2 << "\"" + file + "\"" ;
+            }
+
+            if (args2.isEmpty()) continue;
+            else
+               args << "-g " + args2.join(" ");
+        }
     }
 
     if (args.isEmpty()) return false;
 
     args << "-P0" << "-W";
 
-    if (dialog->sox)
-    {
-        args << "-S";
-    }
-
     if (dialog->debug)
     {
         args << "-d";
     }
 
-    QDir d = QDir(targetDir + "/VIDEO_TS");
-    if (d.exists() && project2[0] != nullptr && project2[0]->count())
-    {
-      args << "-n";
-      args << "--no-refresh-outdir";
-    }
-
-    if (dialog->startsector != "")
-    {
-        args << "-p" << dialog->startsector;
-    }
-
     selectOutput (targetDir, false);
-
-    if (i_syntax_enabled)
-    {
-        args << "-i" << sourceDir;
-    }
 
     args << "-o" << targetDir;
 
-    if (dialog->menu)
-        {
-#         if defined _WIN32 || defined __linux__
-                  args << "--topmenu" << "--datadir" << QDir::currentPath() << "--bindir" << QDir::currentPath()
-#           ifdef _WIN32
-                          +  "/bin";
-#           elif defined(__linux__)
-                          +  "/linux";
-#           endif
-
-            outputTextEdit->append("Top menu editing...");
-#         else
-            outputTextEdit->append("Top menu editing deactivated [only valid for Windows and GNU/Linux]");
-#         endif
-        }
-
-    if (dialog->activeMenu)
+    if (! extract )
     {
-        args << "--menustyle" << "active";
+        if (dialog->sox)
+        {
+            args << "-S";
+        }
+
+        QDir d = QDir(targetDir + "/VIDEO_TS");
+        if (d.exists() && project2[0] != nullptr && project2[0]->count())
+        {
+          args << "-n";
+          args << "--no-refresh-outdir";
+        }
+
+        if (dialog->startsector != "")
+        {
+            args << "-p" << dialog->startsector;
+        }
+
+        if (i_syntax_enabled)
+        {
+            args << "-i" << sourceDir;
+        }
+
+        if (dialog->menu)
+            {
+    #         if defined _WIN32 || defined __linux__
+                      args << "--topmenu" << "--datadir" << QDir::currentPath() << "--bindir" << QDir::currentPath()
+    #           ifdef _WIN32
+                              +  "/bin";
+    #           elif defined(__linux__)
+                              +  "/linux";
+    #           endif
+                outputTextEdit->append("Top menu editing...");
+    #         else
+                outputTextEdit->append("Top menu editing deactivated [only valid for Windows and GNU/Linux]");
+    #         endif
+            }
+
+        if (dialog->activeMenu)
+        {
+            args << "--menustyle" << "active";
+        }
+
+        if (project2[0] && project2[0]->count())
+         {
+            if (V_syntax_enabled)
+            {
+                outputTextEdit->append ("Adding selected Video directory...");
+            }
+
+            if (videoDir.isEmpty())
+            {
+               videoDir = targetDir + "/VIDEO_TS";
+               outputTextEdit->append ("Adding VIDEO_TS directory authored by lplex...");
+            }
+
+            for (int r = 0; r < 9; ++r)
+            {
+                if (dialog->videoTitleRank[r])
+                {
+                    args << "-V" << videoDir;
+                    break;
+                }
+            }
+
+            for (int r = 0; r < 9; ++r)
+            {
+                if (dialog->videoTitleRank[r] != 0)
+                {
+                   const QString N = QString::number (dialog->videoTitleRank[r]);
+                   args << "-T" <<  N;
+                   outputTextEdit->append ("Adding Track link to DVD-Video titleset " + N);
+                }
+            }
+         }
     }
-
-    if (project2[0] && project2[0]->count())
-     {
-        if (V_syntax_enabled)
-        {
-            outputTextEdit->append ("Adding selected Video directory...");
-        }
-
-        if (videoDir.isEmpty())
-        {
-           videoDir = targetDir + "/VIDEO_TS";
-           outputTextEdit->append ("Adding VIDEO_TS directory authored by lplex...");
-        }
-
-
-        for (int r = 0; r < 9; ++r)
-        {
-            if (dialog->videoTitleRank[r])
-            {
-                args << "-V" << videoDir;
-                break;
-            }
-        }
-
-        for (int r = 0; r < 9; ++r)
-        {
-            if (dialog->videoTitleRank[r] != 0)
-            {
-               const QString N = QString::number (dialog->videoTitleRank[r]);
-               args << "-T" <<  N;
-               outputTextEdit->append ("Adding Track link to DVD-Video titleset " + N);
-            }
-        }
-     }
-
 
  if (dialog->log)
     {
@@ -1030,7 +1064,7 @@ bool dvda::run_dvda()
     }
 
     outputTextEdit->append (tr ("Processing input directory...") );
-    outputTextEdit->append (tr ("Size of input %1").arg (QString::number (totalSize) ) );
+
 #ifdef WIN32
     QString binary = "dvda-author.exe";
 #else
@@ -1041,7 +1075,6 @@ bool dvda::run_dvda()
     outputTextEdit->append (tr ("Command line : %1").arg ( command ) );
     startProgressBar = 1;
     outputType = "DVD-Audio authoring";
-
     process.start (command);
     return true;
 }
@@ -1049,7 +1082,6 @@ bool dvda::run_dvda()
 
 bool dvda::run()
 {
-
     if (!o_syntax_enabled)
     {
         o_syntax_enabled = 1;
@@ -1066,7 +1098,6 @@ bool dvda::run()
         dialog->runMkisofs = false;
         dialog->burnDisc = false;
         return false;
-
     }
 
     if (res2) runLplex();
@@ -1275,7 +1306,7 @@ void dvda::processFinished (int exitCode,  QProcess::ExitStatus exitStatus)
                 scanDirectory (targetDir, QStringList() << "*.*");
                 progress->setValue (maxRange);
 
-                if (dialog->runMkisofs)
+                if (dialog->runMkisofs && ! extract)
                     {
                        runMkisofs();
                     }
@@ -1306,7 +1337,7 @@ void dvda::process2Finished (int exitCode,  QProcess::ExitStatus exitStatus)
                     outputTextEdit->append (tr ("\nISO file %1 created").arg (dialog->mkisofsPath) );
                     progress2->setValue (maxRange);
 
-                    if (dialog->burnDisc)
+                    if (dialog->burnDisc && ! extract)
                     {
                         outputTextEdit->append (tr ("Now burning DVD... Please wait for completion.") );
                         on_cdrecordButton_clicked();
@@ -1314,7 +1345,7 @@ void dvda::process2Finished (int exitCode,  QProcess::ExitStatus exitStatus)
 
                 }
                 else
-                    outputTextEdit->append (tr ("ISO file creation failed.") );
+                    outputTextEdit->append (tr ("ISO file creation issue.") );
             }
 }
 
