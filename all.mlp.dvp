@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<project>
+ <system>
+  <switch label="startsector">
+    <value></value>
+  </switch>
+  <switch label="sox">
+    <value>1</value>
+  </switch>
+  <switch label="log">
+    <value>0</value>
+  </switch>
+  <switch label="runMkisofs">
+    <value>1</value>
+  </switch>
+  <switch label="mkisofsPath">
+    <value>dvd.iso</value>
+  </switch>
+  <switch label="burnDisc">
+    <value>1</value>
+  </switch>
+  <switch label="dvdwriterPath">
+    <value>0,0,0</value>
+  </switch>
+  <switch label="debug">
+    <value>0</value>
+  </switch>
+ </system>
+ <data>
+  <switch label="videodir">
+    <value></value>
+  </switch>
+  <switch label="videoTitleRank">
+    <value>0</value>
+  </switch>
+  <switch label="sourceDir">
+    <value></value>
+  </switch>
+  <switch label="group 1">
+    <file>C:/Users/Public/Dev/dvda-author/Docs/a1_16_44.mlp</file>
+    <file>C:/Users/Public/Dev/dvda-author/Docs/a1_16_48.mlp</file>
+    <file>C:/Users/Public/Dev/dvda-author/Docs/a1_16_88.mlp</file>
+    <file>C:/Users/Public/Dev/dvda-author/Docs/a1_16_96.mlp</file>
+    <file>C:/Users/Public/Dev/dvda-author/Docs/a1_16_176.mlp</file>
+    <file>C:/Users/Public/Dev/dvda-author/Docs/a1_16_192.mlp</file>
+  </switch>
+  <switch label="group 2">
+    <file>C:/Users/Public/Dev/dvda-author/Docs/a2_16_44.mlp</file>
+    <file>C:/Users/Public/Dev/dvda-author/Docs/a2_16_48.mlp</file>
+    <file>C:/Users/Public/Dev/dvda-author/Docs/a2_16_88.mlp</file>
+    <file>C:/Users/Public/Dev/dvda-author/Docs/a2_16_96.mlp</file>
+    <file>C:/Users/Public/Dev/dvda-author/Docs/a2_16_176.mlp</file>
+    <file>C:/Users/Public/Dev/dvda-author/Docs/a2_16_192.mlp</file>
+  </switch>
+  <switch label="group 3">
+    <file>C:/Users/Public/Dev/dvda-author/Docs/a3_16_44.mlp</file>
+    <file>C:/Users/Public/Dev/dvda-author/Docs/a3_16_48.mlp</file>
+    <file>C:/Users/Public/Dev/dvda-author/Docs/a3_16_88.mlp</file>
+    <file>C:/Users/Public/Dev/dvda-author/Docs/a3_16_96.mlp</file>
+  </switch>
+  <switch label="group 4">
+    <file>C:/Users/Public/Dev/dvda-author/Docs/a4_16_44.mlp</file>
+    <file>C:/Users/Public/Dev/dvda-author/Docs/a4_16_48.mlp</file>
+    <file>C:/Users/Public/Dev/dvda-author/Docs/a4_16_88.mlp</file>
+    <file>C:/Users/Public/Dev/dvda-author/Docs/a4_16_96.mlp</file>
+  </switch>
+  <switch label="group 5">
+    <file>C:/Users/Public/Dev/dvda-author/Docs/a5_16_44.mlp</file>
+    <file>C:/Users/Public/Dev/dvda-author/Docs/a5_16_48.mlp</file>
+    <file>C:/Users/Public/Dev/dvda-author/Docs/a5_16_88.mlp</file>
+    <file>C:/Users/Public/Dev/dvda-author/Docs/a5_16_96.mlp</file>
+  </switch>
+  <switch label="targetDir">
+    <value>C:/Users/fabrn\output</value>
+  </switch>
+ </data>
+</project>
