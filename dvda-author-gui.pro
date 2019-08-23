@@ -66,6 +66,8 @@ RESOURCES += \
     images/input.png \
     images/open-project.png \
     images/output.png \
+    images/player_play.png \
+    images/player_stop.png \
     images/process-stop.png \
     images/retrieve.png \
     images/show-maximized.png \
@@ -93,6 +95,8 @@ DISTFILES += \
     images/input.png \
     images/open-project.png \
     images/output.png \
+    images/player_play.png \
+    images/player_stop.png \
     images/process-stop.png \
     images/retrieve.png \
     images/show-maximized.png \
@@ -100,4 +104,6 @@ DISTFILES += \
     images/tab-close-other.png \
     images/tab-new.png \
     images/video.png \
-    images/view-list-tree.png
+    images/view-list-tree.png \
+    images/player_stop.png \
+    images/player_play.png

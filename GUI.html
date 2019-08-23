@@ -29,11 +29,11 @@ This webpage documents version 19.08r2 of the GUI built with Qt5.12.4. <br/>
 
 <h3><span style="color: Red;">Full view</span></h3>
 
-<p>On launching the full view is as below (here under Linux):</p>
+<p>Just befor burning a DVD the full view is as below (here under Linux):</p>
 
 <p>&nbsp;</p>
 
-<p><img alt="screenshot" src="images/web/dvda-author-gui-1908.png" /></p>
+<p><img alt="screenshot" src="images/web/dvda-author-gui-1908r4.png" /></p>
 
 <p>&nbsp;</p>
 
@@ -41,10 +41,10 @@ This webpage documents version 19.08r2 of the GUI built with Qt5.12.4. <br/>
 
 <p>The interface consists of four zones: </p>
 <ul>
-  <li>a directory view (top left), </li>
-  <li>a project maker (top right),</li>
-  <li>and a log window (lower half)</li>
-  <li>plus a foldable project manager (left panel).<br/>This panel can only be opened after launching a .dvp project file.
+  <li>a directory view (top left), which is used to select files to be imported</li>
+  <li>a central tab, with an AUDIO tab for DVD-Audio and a VIDEO tab for DVD-Video.</li>
+  <li>a log window (lower half)</li>
+  <li>a project manager (leftmost panel).<br/>This panel can only be opened after launching a pre-recorded .dvp project file.
   This can be done by selecting the menu option <i>File > Open project </i> or the first icon <img alt="open project" src="images/open-project.png" width="22" height="22" />&nbsp;.</li>
 </ul>
 
@@ -54,10 +54,15 @@ This webpage documents version 19.08r2 of the GUI built with Qt5.12.4. <br/>
 
 <p>&nbsp;</p>
 
-<p><img alt="directory viewer" src="images/web/dvda-author-gui2.png" /></p>
+<p><img alt="directory viewer" src="images/directory-viewer.png" /></p>
 
 <p>&nbsp;</p>
 
+<p>The directory view filters out all files with extensions that would not be recognized as adequate audio input.</p>
+<p>Multiple files can be selected by using the Ctrl and Shift keys.</p>
+<p>Audio files in the directory viewer can be played by clicking on the "Play" icon <img alt="play file" src="images/player_play.png" width="22" height="22" /> or the keyboard combination Alt+P followed by striking P alone.</p>
+<p>Several audio files can be selected for playing. They will be played in the top-down order of the directory view.</p>
+<p>Playback is stopped by clicking on the "Stop" icon <img alt="stop playback" src="images/player_stop.png" width="22" height="22" /> or the keyboard combination Alt+P followed by striking S alone. </p>
 <p>&nbsp;</p>
 
 
@@ -179,6 +184,8 @@ height="22" /></p>
    <li>process buttons</li>
       <ul>
                <li>Burn <img src="images/burn.png" /></li>
+               <li>Play <img src="images/player_play.png" /></li>
+               <li>Stop <img src="images/player_stop.png" /></li>
       </ul>
    </li>
    <li>data buttons:

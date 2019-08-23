@@ -153,6 +153,8 @@ class MainWindow : public QMainWindow
         QAction* outputAction;
         QAction* videoAction;
         QAction* aboutAction;
+        QAction* playAction;
+        QAction* stopAction;
         QAction* optionsAction;
         QAction* exitAction;
         QAction* helpAction;
@@ -293,6 +295,9 @@ class dvda : public QDialog
         void remove (const QString& path);
         void selectOutput (const QString& path = "", bool = true);
         void onMsgSent(const QString&);
+        void play();
+        void stop();
+        void playFinished (int e, QProcess::ExitStatus s);
 
     private:
 
@@ -301,6 +306,7 @@ class dvda : public QDialog
         QTreeView* treeView;
 
         QFileSystemModel* model;
+        QModelIndexList indexList;
 
         QToolButton* mkdirButton;
         QToolButton* removeButton;
@@ -314,7 +320,7 @@ class dvda : public QDialog
         QToolButton* killButton;
         QToolButton* killCdrecordButton;
 
-        QProcess process, process2, process3;
+        QProcess process, process2, process3, play_process;
         QProcess processLplex;
         QProcess helpProcess;
 
@@ -351,6 +357,7 @@ class dvda : public QDialog
         void on_cdrecordButton_clicked();
         void addFileToProject(QListWidget*, const QFileInfo &info);
         void createTreeWidget();
+        void play_file(const QModelIndex&);
 
     protected:
 

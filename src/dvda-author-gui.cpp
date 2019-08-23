@@ -37,6 +37,106 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #include "dvda-author-gui.h"
 
 
+void dvda::play_file(const QModelIndex& index)
+{
+        QFileInfo info = model->fileInfo(index);
+        QStringList args;
+        QString command;
+        args << "-nodisp" << "-autoexit" << info.absoluteFilePath();
+
+        #ifdef WIN32
+            QString binary = "bin\\ffplay.exe";
+        #else
+            QString binary = "linux/ffplay";
+        #endif
+
+        command = QDir::toNativeSeparators(QString(binary) + " " + args.join (" "));
+        outputTextEdit->append (tr ("Command line : %1").arg ( command ) );
+        startProgressBar = 1;
+        outputType = "Playback";
+        play_process.start (command);
+}
+
+void dvda::playFinished (int e, QProcess::ExitStatus s)
+{
+    static int i;
+    if (++i < indexList.size())
+    {
+       QModelIndex index = indexList.at(i);
+       play_file(index);
+    }
+}
+
+void dvda::play()
+{
+    QItemSelectionModel* selectionModel = treeView->selectionModel();
+    indexList = selectionModel->selectedIndexes();
+
+    if (indexList.isEmpty() )
+        {
+            return;
+        }
+
+    progress->reset();
+
+    if (progress3 != nullptr)
+    {
+        if (!dialog->burnDisc)
+        {
+            progressLayout->removeWidget (progress3);
+            delete (progress3);
+            progressLayout->removeWidget (killCdrecordButton);
+            delete (killCdrecordButton);
+            progress3 = nullptr;
+        }
+        else
+        {
+            progress3->reset();
+        }
+    }
+
+    if (progress2 != nullptr)
+    {
+        if (!dialog->runMkisofs)
+        {
+            progressLayout->removeWidget (progress2);
+            delete (progress2);
+            progressLayout->removeWidget (killMkisofsButton);
+            delete (killMkisofsButton);
+            progress2 = nullptr;
+        }
+        else
+        {
+            progress2->reset();
+        }
+    }
+
+
+    QModelIndex index = indexList.at(0);
+    play_file(index);
+
+    connect (&play_process, SIGNAL (finished (int, QProcess::ExitStatus) ), this, SLOT (playFinished (int, QProcess::ExitStatus) ) );
+
+}
+
+void dvda::stop()
+{
+    QItemSelectionModel* selectionModel = treeView->selectionModel();
+    QModelIndexList  indexList = selectionModel->selectedIndexes();
+
+    if (indexList.isEmpty() )
+        {
+            return;
+        }
+
+    progress->reset();
+
+    startProgressBar = 0;
+    outputType = "Playback";
+    play_process.kill();
+
+}
+
 void dvda::addDraggedFiles (QList<QUrl> urls)
 {
     currentIndex = tabWidget->currentIndex();

@@ -135,6 +135,8 @@ void MainWindow::createMenus()
     editMenu->addAction (displayAction);
     editMenu->addAction (displayManagerAction);
     processMenu->addAction (burnAction);
+    processMenu->addAction(playAction);
+    processMenu->addAction(stopAction);
 
     ioMenu->addAction (videoAction);
     ioMenu->addAction (outputAction);
@@ -217,23 +219,23 @@ void MainWindow::createActions()
     connect (decodeAction, SIGNAL (triggered() ), dvda_author, SLOT (extract() ) );
 #endif
 
-    outputAction = new QAction (tr ("&Output"), this);
+    outputAction = new QAction (tr ("O&utput"), this);
     outputAction->setIcon (QIcon (":/images/output.png") );
     connect (outputAction, SIGNAL (triggered() ), dvda_author, SLOT (selectOutput() ) );
     videoAction = new QAction (tr ("&Video input"), this);
     videoAction->setIcon (QIcon (":/images/video.png") );
     connect (videoAction, SIGNAL (triggered() ), dvda_author, SLOT (selectVideo() ) );
-    optionsAction = new QAction (tr ("&Options"), this);
+    optionsAction = new QAction (tr ("Op&tions"), this);
     optionsAction->setIcon (QIcon (":/images/configure.png") );
     connect (optionsAction, SIGNAL (triggered() ), dvda_author, SLOT (on_optionsButton_clicked() ) );
     helpAction = new QAction (tr ("&Help"), this);
     helpAction->setIcon (QIcon (":/images/help-contents.png") );
     connect (helpAction, SIGNAL (triggered() ), dvda_author, SLOT (on_helpButton_clicked() ) );
-    displayAction = new QAction (tr ("&Show maximized/normal"), this);
+    displayAction = new QAction (tr ("S&how maximized/normal"), this);
     displayAction->setIcon (QIcon (":/images/show-maximized.png") );
     connect (displayAction, SIGNAL (triggered() ), this, SLOT (showMainWidget() ) );
     displayManagerAction = new QAction (tr ("Show/Close &Manager"), this);
-    const QIcon iconViewList = QIcon (QString::fromUtf8 ( ":/images/view-list-tree.png") );
+    const QIcon iconViewList = QIcon ( ":/images/view-list-tree.png");
     displayManagerAction->setIcon (iconViewList);
     connect (displayManagerAction, SIGNAL (triggered() ), dvda_author, SLOT (on_openTreeWidgetButton_clicked() ) );
     exitAction = new QAction (tr ("&Exit"), this);
@@ -242,6 +244,12 @@ void MainWindow::createActions()
     aboutAction = new QAction (tr ("&About"), this);
     aboutAction->setIcon (QIcon (":/images/about.png") );
     connect (aboutAction, SIGNAL (triggered() ), this, SLOT (about() ) );
+    playAction = new QAction(tr("&Play"), this);
+    playAction->setIcon(QIcon (":/images/player_play.png"));
+    connect(playAction, SIGNAL( triggered()), dvda_author, SLOT(play()));
+    stopAction = new QAction(tr("&Stop"), this);
+    stopAction->setIcon(QIcon (":/images/player_stop.png"));
+    connect(stopAction, SIGNAL( triggered()), dvda_author, SLOT(stop()));
 
     for (int i = 0; i < MaxRecentFiles ; ++i)
         {
@@ -289,6 +297,8 @@ void MainWindow::createToolBars()
     editToolBar->addAction (displayAction);
     editToolBar->addAction (displayManagerAction);
     processToolBar->addAction (burnAction);
+    processToolBar->addAction(playAction);
+    processToolBar->addAction(stopAction);
 
     ioToolBar->addAction (videoAction);
     ioToolBar->addAction (outputAction);
@@ -296,8 +306,6 @@ void MainWindow::createToolBars()
     aboutToolBar->addAction (helpAction);
     aboutToolBar->addAction (aboutAction);
 }
-
-
 
 void MainWindow::showMainWidget()
 {
@@ -314,3 +322,4 @@ void MainWindow::showMainWidget()
             displayAction->setIcon (QIcon (":/images/show-maximized.png") );
         }
 }
+
