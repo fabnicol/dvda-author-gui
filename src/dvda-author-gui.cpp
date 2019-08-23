@@ -1053,7 +1053,7 @@ bool dvda::run_dvda()
         {
             if (project[i] == nullptr || project[i]->count() == 0) continue;
 
-            QStringList args2;
+        QStringList args2;
 
             for (int row = 0; project[i] && row < project[i]->count() &&  project[i]->item (row) != nullptr; ++row)
             {
@@ -1385,7 +1385,7 @@ void dvda::processFinished (int exitCode,  QProcess::ExitStatus exitStatus)
     startProgressBar = 0;
     startProgressBar3 = 0;
 
-    if (exitStatus == QProcess::CrashExit)
+    if (! extract && exitStatus == QProcess::CrashExit)
         {
             outputTextEdit->append (tr ("dvda-author crashed") );
             progress->setValue (0);
@@ -1393,7 +1393,7 @@ void dvda::processFinished (int exitCode,  QProcess::ExitStatus exitStatus)
         }
 
     else
-        if (exitCode == EXIT_FAILURE)
+        if (! extract && exitCode == EXIT_FAILURE)
             {
                 outputTextEdit->append (outputType + tr (" failed") );
                 progress->setValue (0);
