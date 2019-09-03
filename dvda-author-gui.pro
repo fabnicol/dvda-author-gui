@@ -1,21 +1,20 @@
 QT += core gui xml widgets
-TEMPLATE = app
 
+TEMPLATE = app
+QT_FOR_CONFIG += gui
 DEPENDPATH += .
 DEFINES += QT_FILE_DIALOG
-
+CONFIG += static
+CONFIG -= app_bundle
 DEFINES += LOCAL WITHOUT_STARTSECTOR
 
-QMAKE_CXXFLAGS +=-pthread  -O3
+QMAKE_CXXFLAGS +=  -O3
 
 
 
 equals(QT_MAJOR_VERSION, 5) {
 
 TARGET = dvda-author-gui-qt5
-
-QMAKE_LFLAGS += -Wl,-O2
-QMAKE_LIBS +=    -pthread
 
 win32 {
 INCLUDEPATH += . c:/msys64/mingw64/include

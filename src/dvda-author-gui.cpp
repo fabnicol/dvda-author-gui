@@ -1,4 +1,4 @@
-/*
+ /*
 
 dvda-author-gui.cpp  - Author a DVD-Audio DVD with dvda-author
 
@@ -44,10 +44,14 @@ void dvda::play_file(const QModelIndex& index)
         QString command;
         args << "-nodisp" << "-autoexit" << info.absoluteFilePath();
 
-        #ifdef WIN32
+        #ifdef Q_OS_WINDOWS
             QString binary = "bin\\ffplay.exe";
         #else
+          #ifdef Q_OS_MAC
+            QString binary = "mac/ffplay";
+          #else
             QString binary = "linux/ffplay";
+          #endif
         #endif
 
         command = QDir::toNativeSeparators(QString(binary) + " " + args.join (" "));
@@ -1249,11 +1253,16 @@ bool dvda::runLplex()
     outputTextEdit->append (tr ("Processing input directory...") );
 
 
-#if defined __unix__ || defined __apple__ || defined __linux__
+#if defined Q_OS_UNIX || defined Q_OS_OSX || defined Q_OS_LINUX
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     process.setProcessEnvironment(env);
+#ifdef Q_OS_LINUX
     env.insert("LD_LIBRARY_PATH", "$PWD/linux");
     env.insert("PATH", "$PWD:$PATH:$PWD/linux");
+#else
+    env.insert("LD_LIBRARY_PATH", "$PWD/mac");
+    env.insert("PATH", "$PWD:$PATH:$PWD/mac");
+#endif
     const QString &binary = "lplex";
 #else
 #if defined _WIN32
@@ -1359,13 +1368,20 @@ void dvda::runMkisofs()
     outputTextEdit->append (tr ("Starting mkisofs...") );
 
 
-#if defined __unix__ || defined __apple__ || defined __linux__
+#if defined Q_OS_UNIX || defined Q_OS_OSX || defined Q_OS_LINUX
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     process.setProcessEnvironment(env);
+#ifdef Q_OS_LINUX
     env.insert("LD_LIBRARY_PATH", "$PWD/linux");
+    env.insert("PATH", "$PWD:$PATH:$PWD/linux");
     const QString &binary = "linux/mkisofs";
 #else
-#if defined _WIN32
+    env.insert("LD_LIBRARY_PATH", "$PWD/mac");
+    env.insert("PATH", "$PWD/mac:$PATH");
+    const QString &binary = "mkisofs";
+#endif
+#else
+#if defined Q_OS_WINDOWS
       const QString &binary = "bin\\mkisofs.exe";
 #endif
 #endif
@@ -1565,9 +1581,17 @@ void dvda::on_cdrecordButton_clicked()
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     process.setProcessEnvironment(env);
 
-#if defined __unix__ || defined __apple__ || defined __linux__
+#if defined Q_OS_UNIX || defined Q_OS_OSX || defined Q_OS_LINUX
+#ifdef Q_OS_LINUX
     env.insert("LD_LIBRARY_PATH", "$PWD/linux");
+    env.insert("PATH", "$PWD:$PATH:$PWD/linux");
     const QString &binary = "linux/cdrecord";
+#else
+    env.insert("LD_LIBRARY_PATH", "$PWD/mac");
+    env.insert("PATH", "$PWD:$PATH:$PWD/mac");
+    const QString &binary = "mac/cdrecord";
+#endif
+
 #else
 #if defined _WIN32
     const QString &binary = "bin\\cdrecord.exe";
