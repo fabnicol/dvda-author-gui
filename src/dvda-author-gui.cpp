@@ -286,11 +286,13 @@ dvda::dvda (QWidget* parent)  : QDialog (parent)
     mainTabWidget->insertTab (0, tabWidget, tr ("AUDIO") );
     tabWidget->addTab (project[0], tr ("group 1") );
     tabWidget->setToolTip (tr ("List files in each audio group tab") );
-
+#ifndef Q_OS_OSX
     mainTabWidget->insertTab (1, tab2Widget, tr ("VIDEO") );
     tab2Widget->addTab (project2[currentIndex], tr ("titleset 1") );
     tab2Widget->setToolTip (tr ("List files in each video titleset tab") );
 
+    tab2Widget->setEnabled(false);
+#endif
     mkdirButton = new QToolButton (this);
     mkdirButton->setToolTip (tr ("Create Directory...") );
     const QIcon iconCreate = QIcon (QString::fromUtf8 ( ":/images/folder-new.png") );
@@ -1110,11 +1112,11 @@ bool dvda::run_dvda()
 
         if (dialog->menu)
             {
-    #         if defined _WIN32 || defined __linux__
+    #         if defined Q_OS_WINDOWS || defined Q_OS_LINUX
                       args << "--topmenu" << "--datadir" << QDir::currentPath() << "--bindir" << QDir::currentPath()
-    #           ifdef _WIN32
+    #           ifdef Q_OS_WINDOWS
                               +  "/bin";
-    #           elif defined(__linux__)
+    #           elif defined(Q_OS_LINUX)
                               +  "/linux";
     #           endif
                 outputTextEdit->append("Top menu editing...");
@@ -1169,7 +1171,7 @@ bool dvda::run_dvda()
 
     outputTextEdit->append (tr ("Processing input directory...") );
 
-#ifdef WIN32
+#ifdef Q_OS_WINDOWS
     QString binary = "dvda-author.exe";
 #else
     QString binary =  "dvda-author-dev";
@@ -1255,17 +1257,19 @@ bool dvda::runLplex()
 
 #if defined Q_OS_UNIX || defined Q_OS_OSX || defined Q_OS_LINUX
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-    process.setProcessEnvironment(env);
-#ifdef Q_OS_LINUX
+    processLplex.setProcessEnvironment(env);
+
+  #ifdef Q_OS_LINUX
     env.insert("LD_LIBRARY_PATH", "$PWD/linux");
     env.insert("PATH", "$PWD:$PATH:$PWD/linux");
-#else
-    env.insert("LD_LIBRARY_PATH", "$PWD/mac");
-    env.insert("PATH", "$PWD:$PATH:$PWD/mac");
-#endif
     const QString &binary = "lplex";
+  #else
+       processLplex.setWorkingDirectory(QCoreApplication::applicationDirPath());
+       const QString &binary = "mac/lplex";
+  #endif
+
 #else
-#if defined _WIN32
+#if defined Q_OS_WINDOWS
 
     const QString &binary = "lplex.exe";
 #endif
@@ -1369,16 +1373,16 @@ void dvda::runMkisofs()
 
 
 #if defined Q_OS_UNIX || defined Q_OS_OSX || defined Q_OS_LINUX
-    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-    process.setProcessEnvironment(env);
+
 #ifdef Q_OS_LINUX
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    process2.setProcessEnvironment(env);
     env.insert("LD_LIBRARY_PATH", "$PWD/linux");
     env.insert("PATH", "$PWD:$PATH:$PWD/linux");
     const QString &binary = "linux/mkisofs";
 #else
-    env.insert("LD_LIBRARY_PATH", "$PWD/mac");
-    env.insert("PATH", "$PWD/mac:$PATH");
-    const QString &binary = "mkisofs";
+    process2.setWorkingDirectory(QCoreApplication::applicationDirPath());
+    const QString &binary = "mac/mkisofs";
 #endif
 #else
 #if defined Q_OS_WINDOWS
@@ -1386,11 +1390,12 @@ void dvda::runMkisofs()
 #endif
 #endif
 
-    const QString &command = binary + " " + QDir::toNativeSeparators(args.join (" "));
+    const QString &command = QDir::toNativeSeparators(QString(binary) + " " + args.join (" "));
     outputTextEdit->append (tr ("Command line : %1").arg(command));
 
     process2.start (command);
-    if (process2.waitForStarted())
+
+   if (process2.waitForStarted())
         outputTextEdit->append (tr ("Mkisofs started...") );
 }
 
@@ -1579,26 +1584,25 @@ void dvda::on_cdrecordButton_clicked()
     startProgressBar3 = 1;
 
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
-    process.setProcessEnvironment(env);
+    process3.setProcessEnvironment(env);
 
 #if defined Q_OS_UNIX || defined Q_OS_OSX || defined Q_OS_LINUX
 #ifdef Q_OS_LINUX
     env.insert("LD_LIBRARY_PATH", "$PWD/linux");
-    env.insert("PATH", "$PWD:$PATH:$PWD/linux");
+    env.insert("PATH", "$PWD:$PWD/linux:$PATH");
     const QString &binary = "linux/cdrecord";
 #else
-    env.insert("LD_LIBRARY_PATH", "$PWD/mac");
-    env.insert("PATH", "$PWD:$PATH:$PWD/mac");
+    process3.setWorkingDirectory(QCoreApplication::applicationDirPath());
     const QString &binary = "mac/cdrecord";
 #endif
 
 #else
-#if defined _WIN32
+#if defined Q_OS_WINDOWS
     const QString &binary = "bin\\cdrecord.exe";
 #endif
 #endif
 
-    const QString &command = binary + " " + QDir::toNativeSeparators(argsCdrecord.join (" "));
+    const QString &command = QDir::toNativeSeparators(QString(binary) + " " + argsCdrecord.join (" "));
     outputTextEdit->append (tr ("Command line : %1").arg(command));
 
     process3.start (command);
