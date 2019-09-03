@@ -290,8 +290,6 @@ dvda::dvda (QWidget* parent)  : QDialog (parent)
     mainTabWidget->insertTab (1, tab2Widget, tr ("VIDEO") );
     tab2Widget->addTab (project2[currentIndex], tr ("titleset 1") );
     tab2Widget->setToolTip (tr ("List files in each video titleset tab") );
-
-    tab2Widget->setEnabled(false);
 #endif
     mkdirButton = new QToolButton (this);
     mkdirButton->setToolTip (tr ("Create Directory...") );
