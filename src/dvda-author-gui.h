@@ -73,7 +73,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #ifndef LOCAL
 #define HTMLDIR "/usr/local/share/dvda-author-gui-" VERSION
 #else
-#define HTMLDIR QDir::currentPath()
+#define HTMLDIR QCoreApplication::applicationDirPath()
 #endif
 
 class QAction;

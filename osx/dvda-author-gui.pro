@@ -5,7 +5,13 @@ QT_FOR_CONFIG += gui
 DEPENDPATH += .
 DEFINES += QT_FILE_DIALOG
 CONFIG += static
-CONFIG -= app_bundle
+
+# OSX "bundles" are useful for deployment but
+# imply some tweaks to application path localization
+# (add "/../../.." to QCoreApplication::applicationDirPath() )
+
+macosx:CONFIG += app_bundle
+
 DEFINES += LOCAL WITHOUT_STARTSECTOR
 
 QMAKE_CXXFLAGS +=  -O3

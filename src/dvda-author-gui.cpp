@@ -428,7 +428,12 @@ void dvda::recentProjectFile (const QString& projectFile)
 
 void dvda::on_helpButton_clicked()
 {
-    const QString &arg = HTMLDIR  + QString("/GUI.html") ;
+    QString arg = HTMLDIR;
+#ifdef Q_OS_OSX
+    arg = "file:///" + arg + "/../../..";
+#endif
+    arg += QString("/GUI.html") ;
+    outputTextEdit->append(arg);
     QDesktopServices::openUrl(QUrl(arg));
 }
 
@@ -1173,6 +1178,9 @@ bool dvda::run_dvda()
     QString binary = "dvda-author.exe";
 #else
     QString binary =  "dvda-author-dev";
+#ifdef Q_OS_OSX
+    process.setWorkingDirectory(QCoreApplication::applicationDirPath() + "/../../..");
+#endif
 #endif
 
     command = QDir::toNativeSeparators(QString(binary) + " " + args.join (" "));
@@ -1214,7 +1222,12 @@ bool dvda::runLplex()
 {
     QStringList args;
     QString command;
+
+#ifdef Q_OS_OSX
+    QString workpath = QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + "/../../../temp");
+#else
     QString workpath = QDir::toNativeSeparators(QCoreApplication::applicationDirPath() + "/temp");
+#endif
 
     if (!o_syntax_enabled)
     {
@@ -1249,7 +1262,11 @@ bool dvda::runLplex()
 
     if (args.isEmpty()) return false;
 
-    args << "--create" << "dvd" << "--dir" << QDir::toNativeSeparators(targetDir) << "-P" << "no" << "--video" << "pal" << "--jpeg" << QDir::toNativeSeparators(QCoreApplication::applicationDirPath()  + "/data/black_PAL_720x576.jpg") << "--workpath" << workpath << "-x" << "no";
+    args << "--create" << "dvd" << "--dir" << QDir::toNativeSeparators(targetDir) << "-P" << "no" << "--video" << "pal" << "--jpeg" << QDir::toNativeSeparators(QCoreApplication::applicationDirPath()  +
+                                                                                                                                                   #ifdef Q_OS_OSX
+                                                                                                                                                                "/../../.."
+                                                                                                                                                   #endif
+                                                                                                                                                                "/data/black_PAL_720x576.jpg") << "--workpath" << workpath << "-x" << "no";
     outputTextEdit->append (tr ("Processing input directory...") );
 
 
@@ -1262,7 +1279,7 @@ bool dvda::runLplex()
     env.insert("PATH", "$PWD:$PATH:$PWD/linux");
     const QString &binary = "lplex";
   #else
-       processLplex.setWorkingDirectory(QCoreApplication::applicationDirPath());
+       processLplex.setWorkingDirectory(QCoreApplication::applicationDirPath() + "/../../..");
        const QString &binary = "mac/lplex";
   #endif
 
@@ -1379,7 +1396,7 @@ void dvda::runMkisofs()
     env.insert("PATH", "$PWD:$PATH:$PWD/linux");
     const QString &binary = "linux/mkisofs";
 #else
-    process2.setWorkingDirectory(QCoreApplication::applicationDirPath());
+    process2.setWorkingDirectory(QCoreApplication::applicationDirPath() + "/../../..");
     const QString &binary = "mac/mkisofs";
 #endif
 #else
@@ -1590,7 +1607,7 @@ void dvda::on_cdrecordButton_clicked()
     env.insert("PATH", "$PWD:$PWD/linux:$PATH");
     const QString &binary = "linux/cdrecord";
 #else
-    process3.setWorkingDirectory(QCoreApplication::applicationDirPath());
+    process3.setWorkingDirectory(QCoreApplication::applicationDirPath() + "/../../..");
     const QString &binary = "mac/cdrecord";
 #endif
 

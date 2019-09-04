@@ -62,7 +62,11 @@ options::options (dvda* parent)
     mkisofsLayout->addWidget (mkisofsBox);
     mkisofsLayout->addStretch();
     mkisofsLayout->addWidget (mkisofsButton);
-    mkisofsPath = QCoreApplication::applicationDirPath() + QDir::separator() + "dvd.iso";
+    mkisofsPath = QCoreApplication::applicationDirPath() + QDir::separator() +
+        #ifdef Q_OS_OSX
+            "../../../"
+        #endif
+            "dvd.iso";
 
     QLabel* dvdwriterLabel = new QLabel (tr ("DVD writer:") );
     dvdwriterLineEdit = new QLineEdit;
