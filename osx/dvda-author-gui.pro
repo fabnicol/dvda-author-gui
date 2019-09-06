@@ -8,7 +8,7 @@ CONFIG += static
 
 # OSX "bundles" are useful for deployment but
 # imply some tweaks to application path localization
-# (add "/../../.." to QCoreApplication::applicationDirPath() )
+# (add "/../Resources" to QCoreApplication::applicationDirPath() )
 
 macosx:CONFIG += app_bundle
 
