@@ -91,6 +91,7 @@ class QIODevice;
 class QTreeWidget;
 class QTreeWidgetItem;
 class dvda;
+class WorkerThread;
 
 class MainWindow : public QMainWindow
 {
@@ -236,7 +237,6 @@ class options : public QDialog
 
 };
 
-
 class dvda : public QDialog
 {
         Q_OBJECT
@@ -254,7 +254,10 @@ class dvda : public QDialog
         QTabWidget* tabWidget;
         QString tempdir;
         QTextEdit*  outputTextEdit;
-
+        QEventLoop q;
+        QTimer tT;
+        QProcess play_process, pipe_process;
+        QFileInfo info;
 
     private slots:
 
@@ -266,6 +269,7 @@ class dvda : public QDialog
         void on_retrieveItemButton_clicked();
         bool on_optionsButton_clicked();
         void on_openTreeWidgetButton_clicked();
+
 #if 0
         void extract();
 #endif
@@ -296,6 +300,7 @@ class dvda : public QDialog
         void selectOutput (const QString& path = "", bool = true);
         void onMsgSent(const QString&);
         void play();
+        void play_disc(const QModelIndex& index);
         void stop();
         void playFinished (int e, QProcess::ExitStatus s);
 
@@ -320,9 +325,10 @@ class dvda : public QDialog
         QToolButton* killButton;
         QToolButton* killCdrecordButton;
 
-        QProcess process, process2, process3, play_process;
+        QProcess process, process2, process3;
         QProcess processLplex;
         QProcess helpProcess;
+        WorkerThread *workerThread;
 
         QCheckBox*  debugCheckBox;
 
@@ -402,6 +408,26 @@ class DomParser : public dvda
         //dvda *mainWidget ;
 };
 
+
+class WorkerThread : public QThread
+{
+    Q_OBJECT
+
+public:
+    WorkerThread (dvda* d, const QString& p) :
+        path {p},
+        info {d->info}
+    {
+        setTerminationEnabled();
+    }
+
+    qint64 pid;
+private:
+    void run() override;
+    QProcess play_process;
+    QString path;
+    QFileInfo info;
+};
 
 
 

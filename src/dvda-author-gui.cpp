@@ -34,6 +34,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #include <sys/stat.h>
 #include <errno.h>
 #include <QDesktopServices>
+#include <stdlib.h>
 #include "dvda-author-gui.h"
 
 
@@ -49,6 +50,7 @@ void dvda::play_file(const QModelIndex& index)
         #else
           #ifdef Q_OS_MAC
             QString binary = "mac/ffplay";
+            play_process.setWorkingDirectory(QCoreApplication::applicationDirPath() + "/../Resources");
           #else
             QString binary = "linux/ffplay";
           #endif
@@ -59,6 +61,73 @@ void dvda::play_file(const QModelIndex& index)
         startProgressBar = 1;
         outputType = "Playback";
         play_process.start (command);
+}
+
+void WorkerThread::run()
+{
+       QStringList args_play;
+       QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+       QString binDir;
+
+#ifdef Q_OS_WINDOWS
+        QString binary = "dvda-author.exe";
+        env.insert("PATH", path + ";$PATH" ); // Add an environment variable
+        binDir = "bin";
+#elif defined Q_OS_LINUX || defined Q_OS_OSX
+        QString binary =  "dvda-author-dev";
+        env.insert("PATH", path + ":$PATH" ); // Add an environment variable
+        #ifdef Q_OS_LINUX
+           binDir = "linux";
+        #else
+           binDir = "mac";
+        #endif
+#endif
+
+       args_play
+                 << "-q" << "--play" << info.absoluteFilePath()  << "-W"
+                 <<   "--bindir" << path + QDir::separator() + binDir;
+
+       QString command_play = QDir::toNativeSeparators(args_play.join (" "));
+
+       play_process.setStandardErrorFile(QProcess::nullDevice());
+       play_process.setProcessEnvironment(env);
+       play_process.setProgram(binary);
+       play_process.setArguments({args_play});
+       play_process.setWorkingDirectory(path);
+
+       // For poorly understood reasons, starting play_process normally yields a GUI crash.
+       // Only detached processes would work.
+
+       play_process.startDetached(&pid);
+
+}
+
+void dvda::play_disc(const QModelIndex& index)
+{
+       info = model->fileInfo(index);
+
+       // The thread model avoid an event loop and keeps the GUI responsive
+
+       QString path;
+
+#ifdef Q_OS_LINUX|| Q_OS_OSX
+       path = QDir::currentPath();
+#elif defined Q_OS_WINDOWS
+       path = QCoreApplication::applicationDirPath() + "/../Resources";
+#endif
+
+       workerThread = new WorkerThread(this, path);
+
+       connect(workerThread, &QThread::finished,
+                [=] {
+                     workerThread->QThread::deleteLater(); });
+
+        workerThread->start();
+        if (workerThread->isRunning())
+           outputTextEdit->append ("Playing " + info.absoluteFilePath());
+
+        startProgressBar = 1;
+        outputType = "Playback";
 }
 
 void dvda::playFinished (int e, QProcess::ExitStatus s)
@@ -117,10 +186,17 @@ void dvda::play()
 
 
     QModelIndex index = indexList.at(0);
-    play_file(index);
 
-    connect (&play_process, SIGNAL (finished (int, QProcess::ExitStatus) ), this, SLOT (playFinished (int, QProcess::ExitStatus) ) );
+    QFileInfo info = model->fileInfo(index);
 
+    if (info.isDir() || (info.isFile() && info.fileName().contains(".AOB")))
+    {
+       play_disc(index);
+    }
+    else
+       play_file(index);
+
+    //connect (&play_process, SIGNAL (finished (int, QProcess::ExitStatus) ), this, SLOT (playFinished (int, QProcess::ExitStatus) ) );
 }
 
 void dvda::stop()
@@ -137,7 +213,24 @@ void dvda::stop()
 
     startProgressBar = 0;
     outputType = "Playback";
-    play_process.kill();
+    QString killer;
+
+#ifdef Q_OS_UNIX
+    killer = "pkill ";
+#elif Q_OS_WINDOWS
+   killer = "taskkill /f /im ";
+#endif
+
+    int res = QProcess::execute(killer + "ffplay");
+
+    if (res == 0)
+    {
+        outputTextEdit->append (tr ("Playback over. "));
+    }
+    else
+    {
+        outputTextEdit->append (tr ("Failed to stop playback. "));
+    }
 
 }
 
@@ -975,7 +1068,6 @@ float dvda::discShare (qint64 directorySize)
     return share;
 }
 
-
 bool dvda::run_dvda()
 {
     QStringList args;
@@ -1120,17 +1212,21 @@ bool dvda::run_dvda()
 
         if (dialog->menu)
             {
-    #         if defined Q_OS_WINDOWS || defined Q_OS_LINUX
-                      args << "--topmenu" << "--datadir" << QDir::currentPath() << "--bindir" << QDir::currentPath()
+
+                args << "--topmenu"
     #           ifdef Q_OS_WINDOWS
+                              << "--datadir" << QDir::currentPath() << "--bindir" << QDir::currentPath()
                               +  "/bin";
-    #           elif defined(Q_OS_LINUX)
+    #           elif defined Q_OS_LINUX
+                              << "--datadir" << QDir::currentPath() << "--bindir" << QDir::currentPath()
                               +  "/linux";
+    #           elif defined Q_OS_OSX
+                              << "--datadir" << QCoreApplication::applicationDirPath() + "/../Resources"
+                              << "--bindir" << QCoreApplication::applicationDirPath() + "/../Resources"
+                              +  "/mac";
     #           endif
                 outputTextEdit->append("Top menu editing...");
-    #         else
-                outputTextEdit->append("Top menu editing deactivated [only valid for Windows and GNU/Linux]");
-    #         endif
+
             }
 
         if (dialog->activeMenu)
