@@ -196,7 +196,7 @@ void dvda::play()
     else
        play_file(index);
 
-    //connect (&play_process, SIGNAL (finished (int, QProcess::ExitStatus) ), this, SLOT (playFinished (int, QProcess::ExitStatus) ) );
+    connect (&play_process, SIGNAL (finished (int, QProcess::ExitStatus) ), this, SLOT (playFinished (int, QProcess::ExitStatus) ) );
 }
 
 void dvda::stop()
