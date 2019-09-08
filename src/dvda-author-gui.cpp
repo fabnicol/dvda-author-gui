@@ -110,9 +110,9 @@ void dvda::play_disc(const QModelIndex& index)
 
        QString path;
 
-#ifdef Q_OS_LINUX|| Q_OS_OSX
+#if defined Q_OS_LINUX|| defined Q_OS_WINDOWS
        path = QDir::currentPath();
-#elif defined Q_OS_WINDOWS
+#elif defined Q_OS_OSX
        path = QCoreApplication::applicationDirPath() + "/../Resources";
 #endif
 

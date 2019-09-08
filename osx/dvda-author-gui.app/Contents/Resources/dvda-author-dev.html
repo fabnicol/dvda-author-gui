@@ -14,7 +14,7 @@ dvda-author - manual page for dvda-author version 2019-dev
 
 <B>dvda-author</B>
 
-[<I>OPTION</I>]...
+[<I>,OPTION/</I>]...
 <A NAME="lbAD">&nbsp;</A>
 <H2>DESCRIPTION</H2>
 
@@ -25,7 +25,6 @@ from .wav, .flac and other audio files.
 <A NAME="lbAE">&nbsp;</A>
 <H2>OPTIONS</H2>
 
-<P>
 Output options
 <P>
 
@@ -55,7 +54,7 @@ Computations will be performed.
 <B>-P</B>, <B>--pause</B>              Insert a final pause before exiting.
 <P>
 
-<B>-P0</B>, <B>--pause</B>=<I>0</I>           Suppress a final pause before exiting
+<B>-P0</B>, <B>--pause</B>=<I>,0/</I>           Suppress a final pause before exiting
 <DL COMPACT>
 <DT><DD>
 if specified in configuration file.
@@ -152,6 +151,20 @@ Direct AOB file audio content extraction.
 Unlike <B>-x</B>, this option does not use .IFO files. Use this option in combination with <B>-o</B>. No wav header is generated.
 <DT><DD>
 Several AOB files may be listed, separated by commas.
+<DT><DD>
+If a directory is used, it must immediately contain an AUDIO_TS subdirectory to be read. This includes disc player roots.
+<DT><B>--sync</B> {directory or AOB[,AOB...]}<DD>
+Like <B>--aob-extract</B> but output is to stdout for piping to third-party software.
+<DT><DD>
+Only audio content is directed to stdout.
+<DT><DD>
+Extraction is slowed down to standard playback levels after extracting the equivalent of 0.5 second playback.
+<DT><B>--play</B> {directory or AOB[,AOB...]}<DD>
+Play audio content using ffplay (<A HREF="https://ffmpeg.org).">https://ffmpeg.org).</A>
+<DT><DD>
+Main process will exit automatically some time after playback is finished.
+<DT><DD>
+Limitations: currently not available under Windows. Each group in the disc must be either MLP or have same audio characteristics throughout.
 <DT><B>--aob2wav</B> {directory or AOB[,AOB...]}<DD>
 Like <B>--aob-extract</B> but a wav header is prepended to audio content.
 <DT><B>--forensic</B><DD>
@@ -184,8 +197,7 @@ Without <B>-p</B> start sector will be computed automatically.
 
 <B>-g</B>                       You may specify up to 9 groups of tracks.
 <DL COMPACT>
-<DT><DD>
-Minimum: one group.
+<DT>Minimum: one group.<DD>
 Enter full path to files if input directory is not set
 <DT><DD>
 by [-i].
@@ -415,8 +427,7 @@ to filepath.
 
 <B>-e</B>, <B>--select</B>  file       Menu Select image
 <DL COMPACT>
-<DT><DD>
-image that appears on pressing Enter with remote control
+<DT>image that appears on pressing Enter with remote control<DD>
 usually Background with a change in text color.
 </DL>
 <P>
@@ -518,7 +529,7 @@ into which titles are multiplexed.
 <DT><DD>
 Specify as many colors as there are menus, or the last color will be duplicated for missing menu colors.
 <DT><DD>
-Syntax is r,g,b:r2,g2,b2:...:rk,gkbk for <B>--nmenus</B>=<I>k</I>.
+Syntax is r,g,b:r2,g2,b2:...:rk,gkbk for <B>--nmenus</B>=<I>,k/</I>.
 </DL>
 <P>
 
@@ -643,10 +654,10 @@ if there is just one writer.
 </DL>
 <P>
 
-<B>-R</B>, <B>--growisofs</B> <I>/dev/dvd</I> Run growisofs to burn disc image.
+<B>-R</B>, <B>--growisofs</B> <I>,/dev/dvd/</I> Run growisofs to burn disc image.
 <DL COMPACT>
 <DT><DD>
-Device is of the form <I>/dev/scd0</I> under many GNU/Linux distributions.
+Device is of the form <I>,/dev/scd0/</I> under many GNU/Linux distributions.
 <DT><DD>
 It cannot be omitted.
 </DL>
@@ -852,7 +863,7 @@ after short option or after = sign if long option is used:
 <DT><DD>
 <DD>without any whitespace in between them.
 <DT><DD>
-Example: <B>--fixwav</B>=<I>simple-mode</I>,prepend,interactive,output=new
+Example: <B>--fixwav</B>=<I>,simple-mode/</I>,prepend,interactive,output=new
 <DT><DD>
 Still pictures:
 <DT><DD>
@@ -860,11 +871,11 @@ p11,p21,...,pn1-p22,p22,...,pn2-...
 <DT><DD>
 with tracks separated by hyphens and pictures by colons.
 <DT><DD>
-Examples: <B>-g</B> <I>~/a.wav</I> <B>--stillpics</B> image1.jpg,image2.jpg,image3.jpg:image4.jpg,image5.jpg,image6.jpg
+Examples: <B>-g</B> <I>,~/a.wav/</I> <B>--stillpics</B> image1.jpg,image2.jpg,image3.jpg:image4.jpg,image5.jpg,image6.jpg
 <DT><DD>
 If there are no pics for a track use :: as below (no pics for second track):
 <DT><DD>
-<B>-g</B> <I>~/a.wav</I> ~/b.wav <I>~/c.wav</I> <B>--stillpics</B> image1.jpg,image2.jpg,image3.jpg::image4.jpg,image5.jpg,image6.jpg
+<B>-g</B> <I>,~/a.wav/</I> ~/b.wav <I>,~/c.wav/</I> <B>--stillpics</B> image1.jpg,image2.jpg,image3.jpg::image4.jpg,image5.jpg,image6.jpg
 <DT><DD>
 Still picture transition effects:
 </DL>
@@ -932,7 +943,7 @@ Note: for optional arguments noted (=...) above, usage is either
 <DT><DD>
 <B>-xY</B>, with x the option flag and Y the argument, or
 <DT><DD>
-<B>--option</B>=<I>argument</I>.
+<B>--option</B>=<I>,argument/</I>.
 </DL>
 <P>
 
@@ -954,11 +965,10 @@ subdirectory relative name.
 Full Input/Output paths must be specified unless default settings are set.
 <P>
 
-By default, defaults are set in <I>/full</I> path to dvda-author folder/defaults
+By default, defaults are set in <I>,/full/</I> path to dvda-author folder/defaults
 <A NAME="lbAF">&nbsp;</A>
 <H2>EXAMPLES</H2>
 
-<P>
 -create a 3-group DVD-Audio disc (legacy syntax):
 <DL COMPACT>
 <DT><DD>
@@ -1052,6 +1062,27 @@ Latest version available from <A HREF="http://dvd-audio.sourceforge.net/">http:/
 <BR>
 
 This is free software; see the source for copying conditions.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+The full documentation for
+<B>dvda-author</B>
+
+is maintained as a Texinfo manual.  If the
+<B>info</B>
+
+and
+<B>dvda-author</B>
+
+programs are properly installed at your site, the command
+<DL COMPACT>
+<DT><DD>
+<B>info dvda-author</B>
+
+</DL>
+<P>
+
+should give you access to the complete manual.
 <P>
 
 <HR>
@@ -1065,11 +1096,12 @@ This is free software; see the source for copying conditions.
 <DT><A HREF="#lbAG">AUTHOR</A><DD>
 <DT><A HREF="#lbAH">REPORTING BUGS</A><DD>
 <DT><A HREF="#lbAI">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAJ">SEE ALSO</A><DD>
 </DL>
 <HR>
 This document was created by
 <A HREF="http://github.com/hamano/man2html/">man2html</A>,
 using the manual pages.<BR>
-Time: 22:01:27 GMT, September 02, 2019
+Time: 01:10:48 GMT, September 08, 2019
 </BODY>
 </HTML>
