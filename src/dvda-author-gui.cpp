@@ -84,13 +84,17 @@ void WorkerThread::run()
 #endif
 
        args_play
-                 << "-q" << "--play" << info.absoluteFilePath()
-                 << "--player" << (vlc ? "vlc" : "ffplay")
+                 << "-q" << "--play" << info.absoluteFilePath();
+       if (vlc)
+           args_play
+                 << "--player" << "vlc"
 #                ifdef Q_OS_OSX
                  << "--player-path"
                  << "/Applications/VLC.app/Contents/MacOS/VLC"
 #                endif
+                  ;
        // only for Mac as using defaults for Linux and Windows
+          args_play
                  << "-W"
                  <<   "--bindir" << path + QDir::separator() + binDir;
 
@@ -222,13 +226,13 @@ void dvda::stop()
     outputType = "Playback";
     QString killer;
 
-#ifdef Q_OS_UNIX
+#if defined Q_OS_LINUX || defined Q_OS_OSX
     killer = "pkill ";
 #elif Q_OS_WINDOWS
    killer = "taskkill /f /im ";
 #endif
 
-    int res = QProcess::execute(killer + (dialog->vlc ? "VLC" : "ffplay"));
+    int res = QProcess::execute(killer + (dialog->vlc ? "vlc" : "ffplay"));
 
     if (res == 0)
     {
