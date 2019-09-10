@@ -84,7 +84,14 @@ void WorkerThread::run()
 #endif
 
        args_play
-                 << "-q" << "--play" << info.absoluteFilePath()  << "-W"
+                 << "-q" << "--play" << info.absoluteFilePath()
+                 << "--player" << (vlc ? "vlc" : "ffplay")
+#                ifdef Q_OS_OSX
+                 << "--player-path"
+                 << "/Applications/VLC.app/Contents/MacOS/VLC"
+#                endif
+       // only for Mac as using defaults for Linux and Windows
+                 << "-W"
                  <<   "--bindir" << path + QDir::separator() + binDir;
 
        QString command_play = QDir::toNativeSeparators(args_play.join (" "));
@@ -116,7 +123,7 @@ void dvda::play_disc(const QModelIndex& index)
        path = QCoreApplication::applicationDirPath() + "/../Resources";
 #endif
 
-       workerThread = new WorkerThread(this, path);
+       workerThread = new WorkerThread(this, path, dialog->vlc);
 
        connect(workerThread, &QThread::finished,
                 [=] {
@@ -221,7 +228,7 @@ void dvda::stop()
    killer = "taskkill /f /im ";
 #endif
 
-    int res = QProcess::execute(killer + "ffplay");
+    int res = QProcess::execute(killer + (dialog->vlc ? "VLC" : "ffplay"));
 
     if (res == 0)
     {
@@ -1188,11 +1195,6 @@ bool dvda::run_dvda()
         if (dialog->sox)
         {
             args << "-S";
-        }
-
-        if (dialog->vlc)
-        {
-            args << "--player" << "vlc";
         }
 
         args << "--tempdir" << tempdir + QDir::separator() + "temp";

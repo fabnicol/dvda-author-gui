@@ -417,9 +417,10 @@ class WorkerThread : public QThread
     Q_OBJECT
 
 public:
-    WorkerThread (dvda* d, const QString& p) :
+    WorkerThread (dvda* d, const QString& p, bool v) :
         path {p},
-        info {d->info}
+        info {d->info},
+        vlc {v}
     {
         setTerminationEnabled();
     }
@@ -430,6 +431,7 @@ private:
     QProcess play_process;
     QString path;
     QFileInfo info;
+    bool vlc;
 };
 
 
