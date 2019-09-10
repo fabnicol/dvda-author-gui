@@ -178,6 +178,7 @@ class options : public QDialog
         QString mkisofsPath, logPath;
         bool log, runMkisofs;
         bool sox;
+        bool vlc;
         bool decode;
         bool menu;
         bool activeMenu;
@@ -190,6 +191,7 @@ class options : public QDialog
         QCheckBox*   mkisofsBox, *logBox, *menuBox, *activeMenuBox;
         QCheckBox* debugBox;
         QCheckBox* soxBox;
+        QCheckBox* vlcBox;
         QCheckBox* decodeBox;
         QCheckBox* cdrecordBox;
         QComboBox *inputRankBox[9] = {nullptr};
@@ -207,6 +209,7 @@ class options : public QDialog
         void on_menuBox_checked();
         void on_activeMenuBox_checked();
         void on_soxBox_checked();
+        void on_vlcBox_checked();
         void on_decodeBox_checked();
         void on_debugBox_checked();
 #ifndef WITHOUT_STARTSECTOR

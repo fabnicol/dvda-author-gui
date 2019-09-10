@@ -158,6 +158,7 @@ DIST          = images/about.png \
 		../../../Build/qtbase-everywhere-src-5.13.0/qtbase2/mkspecs/features/qt_config.prf \
 		../../../Build/qtbase-everywhere-src-5.13.0/qtbase2/mkspecs/linux-g++/qmake.conf \
 		../../../Build/qtbase-everywhere-src-5.13.0/qtbase2/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../Build/qtbase-everywhere-src-5.13.0/qtbase2/mkspecs/features/exclusive_builds.prf \
 		../../../Build/qtbase-everywhere-src-5.13.0/qtbase2/mkspecs/features/toolchain.prf \
 		../../../Build/qtbase-everywhere-src-5.13.0/qtbase2/mkspecs/features/default_pre.prf \
@@ -257,6 +258,7 @@ Makefile: dvda-author-gui.pro ../../../Build/qtbase-everywhere-src-5.13.0/qtbase
 		../../../Build/qtbase-everywhere-src-5.13.0/qtbase2/mkspecs/features/qt_config.prf \
 		../../../Build/qtbase-everywhere-src-5.13.0/qtbase2/mkspecs/linux-g++/qmake.conf \
 		../../../Build/qtbase-everywhere-src-5.13.0/qtbase2/mkspecs/features/spec_post.prf \
+		.qmake.stash \
 		../../../Build/qtbase-everywhere-src-5.13.0/qtbase2/mkspecs/features/exclusive_builds.prf \
 		../../../Build/qtbase-everywhere-src-5.13.0/qtbase2/mkspecs/features/toolchain.prf \
 		../../../Build/qtbase-everywhere-src-5.13.0/qtbase2/mkspecs/features/default_pre.prf \
@@ -352,6 +354,7 @@ Makefile: dvda-author-gui.pro ../../../Build/qtbase-everywhere-src-5.13.0/qtbase
 ../../../Build/qtbase-everywhere-src-5.13.0/qtbase2/mkspecs/features/qt_config.prf:
 ../../../Build/qtbase-everywhere-src-5.13.0/qtbase2/mkspecs/linux-g++/qmake.conf:
 ../../../Build/qtbase-everywhere-src-5.13.0/qtbase2/mkspecs/features/spec_post.prf:
+.qmake.stash:
 ../../../Build/qtbase-everywhere-src-5.13.0/qtbase2/mkspecs/features/exclusive_builds.prf:
 ../../../Build/qtbase-everywhere-src-5.13.0/qtbase2/mkspecs/features/toolchain.prf:
 ../../../Build/qtbase-everywhere-src-5.13.0/qtbase2/mkspecs/features/default_pre.prf:

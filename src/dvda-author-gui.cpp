@@ -124,7 +124,7 @@ void dvda::play_disc(const QModelIndex& index)
 
         workerThread->start();
         if (workerThread->isRunning())
-           outputTextEdit->append ("Playing " + info.absoluteFilePath());
+           outputTextEdit->append ("Playing " + info.absoluteFilePath() + " using " + (dialog->vlc ? "VLC" : "ffplay"));
 
         startProgressBar = 1;
         outputType = "Playback";
@@ -1188,6 +1188,11 @@ bool dvda::run_dvda()
         if (dialog->sox)
         {
             args << "-S";
+        }
+
+        if (dialog->vlc)
+        {
+            args << "--player" << "vlc";
         }
 
         args << "--tempdir" << tempdir + QDir::separator() + "temp";

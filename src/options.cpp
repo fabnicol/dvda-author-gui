@@ -36,6 +36,9 @@ options::options (dvda* parent)
     soxBox = new QCheckBox (tr ("Enable multiformat input") );
     soxBox->setChecked (true);
 
+    vlcBox = new QCheckBox (tr ("Use VLC for playback") );
+    vlcBox->setChecked (false);
+
     decodeBox = new QCheckBox (tr ("Decode MLP to WAV when extracting audio") );
     decodeBox->setChecked (false);
 
@@ -44,6 +47,7 @@ options::options (dvda* parent)
     debug = false;
     burnDisc = true;
     sox = true;
+    vlc = false;
     decode = false;
     menu = true;
     startsector = "";
@@ -94,6 +98,8 @@ options::options (dvda* parent)
     optionsLayout->addSpacing (25);
     optionsLayout->addWidget (soxBox);
     optionsLayout->addSpacing (25);
+    optionsLayout->addWidget (vlcBox);
+    optionsLayout->addSpacing (25);
     optionsLayout->addWidget (decodeBox);
     optionsLayout->addSpacing (25);
 
@@ -121,6 +127,7 @@ options::options (dvda* parent)
     connect (mkisofsButton, SIGNAL (clicked() ), this, SLOT (on_mkisofsButton_clicked() ) );
     connect (debugBox, SIGNAL (clicked() ), this, SLOT (on_debugBox_checked() ) );
     connect (soxBox, SIGNAL (clicked() ), this, SLOT (on_soxBox_checked() ) );
+    connect (vlcBox, SIGNAL (clicked() ), this, SLOT (on_vlcBox_checked() ) );
     connect (decodeBox, SIGNAL (clicked() ), this, SLOT (on_decodeBox_checked() ) );
     connect (cdrecordBox, SIGNAL (clicked() ), this, SLOT (on_cdrecordBox_checked() ) );
     connect (dvdwriterLineEdit, SIGNAL (textChanged (const QString&) ), this, SLOT (on_dvdwriterLineEdit_changed (const QString&) ) );
@@ -203,6 +210,11 @@ void options::on_logBox_checked()
 void options::on_soxBox_checked()
 {
     sox = soxBox->isChecked();
+}
+
+void options::on_vlcBox_checked()
+{
+    vlc = vlcBox->isChecked();
 }
 
 void options::on_decodeBox_checked()
