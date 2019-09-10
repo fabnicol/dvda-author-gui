@@ -1,401 +1,467 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <meta http-equiv="content-type" content="text/html; charset=us-ascii" />
-  <meta name="Description"
-  content="Welcome to DVD audio Tools - home of open source DVD-Audio authoring and playback tools.  All software is released under the GNU GPL."
-  />
-  <meta name="Keywords"
-  content="Linux, DVD-Audio, DVD-A, DVDA, authoring, playback, LPCM, GPL" />
-  <title>GUI</title>
-  <meta name="generator" content="Amaya, see http://www.w3.org/Amaya/" />
-</head>
-
-<body>
-<!--#include virtual="/include/header.html" -->
-<!--#include virtual="/include/links.html" -->
-<a ><img src="images/dvda-author.png" alt="dvda-author-19.06" style="border: 0px"/></a> 
-
-<h1><span style="color: Red;">DVDA-Author Qt GUI how to</span></h1>
-
-<p>&nbsp;</p>
-
-<p>The new Qt5 graphical user interface aims at facilitating disc
-authoring.<br />
-This webpage documents version 19.08r2 of the GUI built with Qt5.12.4. <br/>
-<h2><span style="color: Red;"></span></h2>
-
-<h3><span style="color: Red;">Full view</span></h3>
-
-<p>Just before burning a DVD, the full view of the interface is as below (here under Linux):</p>
-
-<p>&nbsp;</p>
-
-<p><img alt="screenshot" src="images/web/dvda-author-gui-1908r4.png" /></p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;</p>
-
-<p>The interface consists of four zones: </p>
-<ul>
-  <li>a directory view (top left), which is used to select files to be imported</li>
-  <li>a central tab, with an AUDIO tab for DVD-Audio and a VIDEO tab for DVD-Video.</li>
-  <li>a log window (lower half)</li>
-  <li>a project manager (leftmost panel).<br/>This panel can only be opened after launching a pre-recorded .dvp project file.
-  This can be done by selecting the menu option <i>File > Open project </i> or the first icon <img alt="open project" src="images/open-project.png" width="22" height="22" />&nbsp;.</li>
-</ul>
-
-<p>&nbsp;</p>
-
-<h3><span style="color: #ff0000;">Directory view</span></h3>
-
-<p>&nbsp;</p>
-
-<p><img alt="directory viewer" src="images/directory-viewer.png" /></p>
-
-<p>&nbsp;</p>
-
-<p>The directory view filters out all files with extensions that would not be recognized as adequate audio input.</p>
-<p>Multiple files can be selected by using the Ctrl and Shift keys.</p>
-<p>Audio files in the directory viewer can be played by clicking on the "Play" icon <img alt="play file" src="images/player_play.png" width="22" height="22" /> or the keyboard combination Alt+P followed by striking P alone.</p>
-<p>Several audio files can be selected for playing. They will be played in the top-down order of the directory view.</p>
-<p>Playback is stopped by clicking on the "Stop" icon <img alt="stop playback" src="images/player_stop.png" width="22" height="22" /> or the keyboard combination Alt+P followed by striking S alone. </p>
-<p>&nbsp;</p>
-
-
-<h3>Authoring a disc: standard import operations</h3>
-
-<p><i>1. Choosing the zone</i></p>
-<p>Files can be imported to either or both <b>zones</b> of the DVD: the Audio zone, which creates a DVD-Audio disc,
-the Video zone, which creates a DVD-Video disc </p>
-<p>with mainly audio content and possibly both of them for a <i>hybrid</i> DVD-Audio/Video or <i>universal</i> disc.</p>
-<p>Just select the appropriate AUDIO or VIDEO tab in the main tab before importing files.</p>
-<p><i>2. Selecting files</i></p>
-<p>The directory view can be used to select directories or files. You can add most common audio formats, including wav, aiff, flac, ogg and mlp.</p>
-<p>On selecting a directory, all supported audio files will be added recursively to the input tabs later on. </p>
-<p><i>3. Importing files</i></p>
-<p>Then press the "Right arrow" or "Import" button   <img alt="import" src="images/document-import.png" width="22" height="22" />&nbsp; to add the selection to the central tab.</p>
-<p>In the tree view select any number of files (you may have to press on Ctrl and/or Shift as is usual).</p>
-<p>You may import as many as 99 files per group from the tree view by
-clicking on the import file icon <img alt="import file" src="images/document-import.png" width="22" height="22" /> (even more if your
-files have same audio characteristics). </p>
-<p><i>4. Drag-and-dropping files</i></p>
-<p>Alternatively to importing files from the tree view, you may also opt for dragging and dropping files from your favorite file system explorer.</p>
-<p>Just click on the tab of the destination group and drop files into the application. </p>
-<p><i>5. Option Video import</i></p>
-<p>Optionally, you can add a video input directory, which must contain all VIDEO_TS files (with extensions IFO, BUP and VOB). </p>
-
-<p>Then press the Video button  <img alt="video folder" src="images/video.png" width="22" height="22" /> in the toolbar. </p>
-
-<p>&nbsp;</p>
-<h3>Extracting audio from a disc</h3>
-<p>If you do not want to create a DVD-Audio disc but instead extract audio
-from an existing DVD-Audio structure, first select the AUDIO tab in the main import tab, </p>
-<p>then the DVD-Audio directory or
-disc containing the audio to be extracted in the directory view on the left, then click on the "Inport" button <img alt="import" src="images/document-import.png" width="22" height="22" />&nbsp;</p>
-<p>Check the resulting tab then click on the <img alt="decode" src="images/burn.png" width="22" height="22" /> "Burn" icon. When AOB files are imported, this icon triggers audio extraction, not disc burning.</p>
-<p>&nbsp;</p>
-<img alt="decode-cd" src="images/decode_cd.PNG" />
-<p>&nbsp;</p>
-
-<h3>Standard output operations</h3>
-
-<p>You can also select existing directories as output directories. If the
-directory is not empty, a dialog window will warn you that it will be</p>
-
-<p>erased then recreated. Then press the Output  <img alt="output folder" src="images/output.png" width="22" height="22" /> toolbar button.</p>
-
-<p>Should you omit this step, the GUI will output a DVD-Audio file structure
-in a directory named <b>output</b> adjacent to the GUI executable.</p>
-
-<p>To avoid overwriting an existing directory, you may choose to erase it
-manually (with all its subfolders and files) by pressing the cross icon <img
-alt="erase folder" src="images/edit-delete.png" width="22" height="22" />.</p>
-
-<p>It may also be useful to create an empty new directory with the add
-directory icon <img alt="new folder" src="images/folder-new.png" width="22"
-height="22" /></p>
-
-<p>In this case, an input dialog will pop up requesting a directory name.</p>
-
-<p>&nbsp;</p>
-
-
-<h3><span style="color: Red;">Managing files</span></h3>
-
-<p>&nbsp;</p>
-
-<p><img alt="project maker" src="images/web/dvda-author-gui3.png" /></p>
-
-<p>&nbsp;</p>
-
-
-<p>Click on the tab corresponding to the group that you would like to
-create.</p>
-
-<p>The read minus icon <img alt="retrieve a file" src="images/retrieve.png"
-width="22" height="22" /> on the right may be used to withdraw a selected
-file from the audio list.</p>
-
-<p>Use the up <img alt="file up" src="images/arrow-up.png" width="22"
-height="22" /> and down <img alt="file down" src="images/arrow-down.png"
-width="22" height="22" /> arrows to move a selected file within the same
-audio group so that it is played sooner (up arrow) or later (down arrow):</p>
-
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-
-<p><img alt="up&amp;down" src="images/web/new3.png" /></p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;</p>
-
-<p>Create as many groups as are necessary (with a maximum of 9) by clicking
-on the Add group icon <img alt="" src="images/tab-new.png" width="22"
-height="22" /> </p>
-
-<p>You may delete a selected group by clicking on the Delete group button
-<img alt="delete group tab" src="images/tab-close-other.png" width="22"
-height="22" /></p>
-
-<p>&nbsp;</p>
-
-<h3><span style="color: Red;">Menu and Toolbar</span></h3>
-
-<p><img alt="buttons" src="images/iconbar.png" /></p>
-
-<p>&nbsp;</p>
-
-<p>The toolbar contains the following buttons:<br/>
-  <ul>
-    <li>file buttons
-          <ul> 
-                <li>Open project &nbsp;<img src="images/open-project.png"/></li>
-			          <li>Save project &nbsp;<img src="images/document-save.png" /> </li>
-							  <li>Exit button &nbsp;<img src="images/application-exit.png" /></li>
-		      </ul>
-	  </li>
-	  <li>edit/show buttons</li>
-       <ul>
-               <li>Full screen/Normal screen &nbsp;<img src="images/show-maximized.png" /></li>
-               <li>Display/Close project manager &nbsp;<img src="images/view-list-tree.png" /></li>
-       </ul>
-   <li>process buttons</li>
+  <head>
+    <meta http-equiv="content-type" content="text/html;
+      charset=windows-1252">
+    <meta name="Description" content="Welcome to DVD audio Tools - home
+      of open source DVD-Audio authoring and playback tools. All
+      software is released under the GNU GPL.">
+    <meta name="Keywords" content="Linux, DVD-Audio, DVD-A, DVDA,
+      authoring, playback, LPCM, GPL">
+    <title>GUI</title>
+    <meta name="generator" content="Amaya, see http://www.w3.org/Amaya/">
+  </head>
+  <body>
+    <!--#include virtual="/include/header.html" -->
+    <!--#include virtual="/include/links.html" --> <a><img
+        src="images/dvda-author.png" alt="dvda-author-19.06"
+        style="border: 0px"></a>
+    <h1><a name="mozTocId948437" class="mozTocH1"></a><span
+        style="color: Red;">DVDA-Author Qt GUI how to</span></h1>
+    <p>&nbsp;</p>
+    <p>The new Qt5 graphical user interface aims at facilitating disc
+      authoring.<br>
+      This webpage documents version 19.08r2 of the GUI built with
+      Qt5.12.4. <br>
+    </p>
+    <p>&nbsp;</p>
+    <ol>
+      <li><a href="#mozTocId92143">Full view</a></li>
+      <li><a href="#mozTocId737554">Directory view</a></li>
+      <li><a href="#mozTocId947499">Authoring a disc: standard import
+          operations</a></li>
+      <li><a href="#mozTocId394497">Extracting audio from a disc</a></li>
+      <li><a href="#mozTocId289722">Standard output operations</a></li>
+      <li><a href="#mozTocId366871">Managing files</a></li>
+      <li><a href="#mozTocId829310">Menu and Toolbar</a></li>
+      <li><a href="#mozTocId521077">The project manager</a></li>
+      <li><a href="#mozTocId324026"> Burning a disc</a></li>
+      <li><a href="#mozTocId700860">Log messages</a></li>
+      <li><a href="#mozTocId422189">Options</a></li>
+      <li><a href="#mozTocId965799">GUI options</a></li>
+      <li><a href="#mozTocId105820">Progress bars</a></li>
+    </ol>
+    <p><br>
+    </p>
+    <h2><a name="mozTocId93420" class="mozTocH2"></a><span style="color:
+        Red;"></span></h2>
+    <h3><a name="mozTocId92143" class="mozTocH3"></a><span style="color:
+        Red;">Full view</span></h3>
+    <p>Just before burning a DVD, the full view of the interface is as
+      below (here under Linux):</p>
+    <p>&nbsp;</p>
+    <p><img alt="screenshot" src="images/web/dvda-author-gui-1908r4.png"></p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>The interface consists of four zones: </p>
+    <ul>
+      <li>a directory view (top left), which is used to select files to
+        be imported</li>
+      <li>a central tab, with an AUDIO tab for DVD-Audio and a VIDEO tab
+        for DVD-Video.</li>
+      <li>a log window (lower half)</li>
+      <li>a project manager (leftmost panel).<br>
+        This panel can only be opened after launching a pre-recorded
+        .dvp project file. This can be done by selecting the menu option
+        <i>File &gt; Open project </i> or the first icon <img
+          alt="open project" src="images/open-project.png" width="22"
+          height="22">&nbsp;.</li>
+    </ul>
+    <p>&nbsp;</p>
+    <h3><a name="mozTocId737554" class="mozTocH3"></a><span
+        style="color: #ff0000;">Directory view</span></h3>
+    <p>&nbsp;</p>
+    <p><img alt="directory viewer" src="images/directory-viewer.png"></p>
+    <p>&nbsp;</p>
+    <p>The directory view filters out all files with extensions that
+      would not be recognized as adequate audio input.</p>
+    <p>Multiple files can be selected by using the Ctrl and Shift keys.</p>
+    <p>Audio files in the directory viewer can be played by clicking on
+      the "Play" icon <img alt="play file" src="images/player_play.png"
+        width="22" height="22"> or the keyboard combination Alt+P
+      followed by striking P alone.</p>
+    <p>Several audio files can be selected for playing. They will be
+      played in the top-down order of the directory view.</p>
+    <p>Playback is stopped by clicking on the "Stop" icon <img
+        alt="stop playback" src="images/player_stop.png" width="22"
+        height="22"> or the keyboard combination Alt+P followed by
+      striking S alone. </p>
+    <p>DVD-Audio discs (mounted or not) and AOB files can also be
+      played. MLP-encoded discs are supported.</p>
+    <p><i>Limitations</i></p>
+    <p>Ordinary PCM (non-MLP) discs can only be played as long as the
+      audio characteristics (bit rate, sample rate and number of
+      channels) of the first track are the same in the following tracks.</p>
+    <p>Discs and AOB files can only be played from start.</p>
+    <p>To play group X of a disc, select the ATS_0X_1.AOB file under the
+      AUDIO_TS directory.<br>
+    </p>
+    <p>If the group is large, and this file reaches the 1GB limit of
+      DVD-Audio specifications, playback will stop at the end of this
+      group, possibly in the middle of a track.</p>
+    <p>To avoid this, it may be preferable to play the disc (or the
+      filesystem in the directory view) at the root. The root is just
+      above the AUDIO_TS directory.<br>
+    </p>
+    <p>All .AOB files under this root will be played back continuously
+      until the "Stop" icon <img alt="stop playback"
+src="file:///home/fab/T%C3%A9l%C3%A9chargements/DVD%20audio%20Tools_fichiers/player_stop.png"
+        width="22" height="22"> is clicked.</p>
+    <p>&nbsp;</p>
+    <h3><a name="mozTocId947499" class="mozTocH3"></a>Authoring a disc:
+      standard import operations</h3>
+    <p><i>1. Choosing the zone</i></p>
+    <p>Files can be imported to either or both <b>zones</b> of the DVD:
+      the Audio zone, which creates a DVD-Audio disc, the Video zone,
+      which creates a DVD-Video disc </p>
+    <p>with mainly audio content and possibly both of them for a <i>hybrid</i>
+      DVD-Audio/Video or <i>universal</i> disc.</p>
+    <p>Just select the appropriate AUDIO or VIDEO tab in the main tab
+      before importing files.</p>
+    <p><i>2. Selecting files</i></p>
+    <p>The directory view can be used to select directories or files.
+      You can add most common audio formats, including wav, aiff, flac,
+      ogg and mlp.</p>
+    <p>On selecting a directory, all supported audio files will be added
+      recursively to the input tabs later on. </p>
+    <p><i>3. Importing files</i></p>
+    <p>Then press the "Right arrow" or "Import" button <img
+        alt="import" src="images/document-import.png" width="22"
+        height="22">&nbsp; to add the selection to the central tab.</p>
+    <p>In the tree view select any number of files (you may have to
+      press on Ctrl and/or Shift as is usual).</p>
+    <p>You may import as many as 99 files per group from the tree view
+      by clicking on the import file icon <img alt="import file"
+        src="images/document-import.png" width="22" height="22"> (even
+      more if your files have same audio characteristics). </p>
+    <p><i>4. Drag-and-dropping files</i></p>
+    <p>Alternatively to importing files from the tree view, you may also
+      opt for dragging and dropping files from your favorite file system
+      explorer.</p>
+    <p>Just click on the tab of the destination group and drop files
+      into the application. </p>
+    <p><i>5. Option Video import</i></p>
+    <p>Optionally, you can add a video input directory, which must
+      contain all VIDEO_TS files (with extensions IFO, BUP and VOB). </p>
+    <p>Then press the Video button <img alt="video folder"
+        src="images/video.png" width="22" height="22"> in the toolbar. </p>
+    <p>&nbsp;</p>
+    <h3><a name="mozTocId394497" class="mozTocH3"></a>Extracting audio
+      from a disc</h3>
+    <p>If you do not want to create a DVD-Audio disc but instead extract
+      audio from an existing DVD-Audio structure, first select the AUDIO
+      tab in the main import tab, </p>
+    <p>then the DVD-Audio directory or disc containing the audio to be
+      extracted in the directory view on the left, then click on the
+      "Inport" button <img alt="import"
+        src="images/document-import.png" width="22" height="22">&nbsp;</p>
+    <p>Check the resulting tab then click on the <img alt="decode"
+        src="images/burn.png" width="22" height="22"> "Burn" icon. When
+      AOB files are imported, this icon triggers audio extraction, not
+      disc burning.</p>
+    <p>&nbsp;</p>
+    <img alt="decode-cd" src="images/decode_cd.PNG">
+    <p>&nbsp;</p>
+    <h3><a name="mozTocId289722" class="mozTocH3"></a>Standard output
+      operations</h3>
+    <p>You can also select existing directories as output directories.
+      If the directory is not empty, a dialog window will warn you that
+      it will be</p>
+    <p>erased then recreated. Then press the Output <img alt="output
+        folder" src="images/output.png" width="22" height="22"> toolbar
+      button.</p>
+    <p>Should you omit this step, the GUI will output a DVD-Audio file
+      structure in a directory named <b>output</b> adjacent to the GUI
+      executable.</p>
+    <p>To avoid overwriting an existing directory, you may choose to
+      erase it manually (with all its subfolders and files) by pressing
+      the cross icon <img alt="erase folder"
+        src="images/edit-delete.png" width="22" height="22">.</p>
+    <p>It may also be useful to create an empty new directory with the
+      add directory icon <img alt="new folder"
+        src="images/folder-new.png" width="22" height="22"></p>
+    <p>In this case, an input dialog will pop up requesting a directory
+      name.</p>
+    <p>&nbsp;</p>
+    <h3><a name="mozTocId366871" class="mozTocH3"></a><span
+        style="color: Red;">Managing files</span></h3>
+    <p>&nbsp;</p>
+    <p><img alt="project maker" src="images/web/dvda-author-gui3.png"></p>
+    <p>&nbsp;</p>
+    <p>Click on the tab corresponding to the group that you would like
+      to create.</p>
+    <p>The read minus icon <img alt="retrieve a file"
+        src="images/retrieve.png" width="22" height="22"> on the right
+      may be used to withdraw a selected file from the audio list.</p>
+    <p>Use the up <img alt="file up" src="images/arrow-up.png"
+        width="22" height="22"> and down <img alt="file down"
+        src="images/arrow-down.png" width="22" height="22"> arrows to
+      move a selected file within the same audio group so that it is
+      played sooner (up arrow) or later (down arrow):</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p><img alt="up&amp;down" src="images/web/new3.png"></p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p>Create as many groups as are necessary (with a maximum of 9) by
+      clicking on the Add group icon <img alt=""
+        src="images/tab-new.png" width="22" height="22"> </p>
+    <p>You may delete a selected group by clicking on the Delete group
+      button <img alt="delete group tab"
+        src="images/tab-close-other.png" width="22" height="22"></p>
+    <p>&nbsp;</p>
+    <h3><a name="mozTocId829310" class="mozTocH3"></a><span
+        style="color: Red;">Menu and Toolbar</span></h3>
+    <p><img alt="buttons" src="images/iconbar.png"></p>
+    <p>&nbsp;</p>
+    <p>The toolbar contains the following buttons:<br>
+    </p>
+    <ul>
+      <li>file buttons
+        <ul>
+          <li>Open project &nbsp;<img src="images/open-project.png"></li>
+          <li>Save project &nbsp;<img src="images/document-save.png"> </li>
+          <li>Exit button &nbsp;<img src="images/application-exit.png"></li>
+        </ul>
+      </li>
+      <li>edit/show buttons</li>
       <ul>
-               <li>Burn <img src="images/burn.png" /></li>
-               <li>Play <img src="images/player_play.png" /></li>
-               <li>Stop <img src="images/player_stop.png" /></li>
+        <li>Full screen/Normal screen &nbsp;<img
+            src="images/show-maximized.png"></li>
+        <li>Display/Close project manager &nbsp;<img
+            src="images/view-list-tree.png"></li>
       </ul>
-   </li>
-   <li>data buttons:
+      <li>process buttons</li>
       <ul>
- 	        <li>Video <img src="images/video.png" /></li>
-          <li>Output <img src="images/output.png" /></li>
-			      
-		  </ul>
-   </li>
-   <li>and standard interface buttons:
-         <ul>
-             <li>Options <img  src="images/configure.png" /></li>
-             <li>Help <img src="images/help-contents.png" /></li>
-         </ul>
-   </li>
-  </ul>
-</p>
-<p>&nbsp;</p>
-<p>A Menu displays the same commands/options as the toolbar buttons:
-<p>&nbsp;</p>
-<p><img src="images/menu.png" /></p>
-<p>&nbsp;</p>
-<p>You can use keyboard shortcuts (e.g. under Windows, Alt+F followed by S to save a project).</p>
-<p>&nbsp;</p>
-<h3>The project manager</h3>
-<p>On opening a project file (with .dvp extension), the interface shows the parameters of the project on the left of the file explorer.</p>
-<p><img alt="Project manager" src="images/project.png" /></p>
-<p>System settings are all session-specific variables, which are collected by the Options dialog (see below).</p>
-<p>Data settings are related to input-output variables (like audio files or target output directory).You can expand or collapse the data by pressing on the +/- sign.</p>
-<p></p>
-<p>To display a project manager, you should first load it by pressing on the Open project button <img src="images/open-project.png" />.</p>
-<p>The project manager window will automatically open and all files initially listed in the project maker tab widget (top right) will be displayed.</p>
-<p></p>
-<p>Should you like to save both session-specific system settings and input/ouput data, create a .dvp project file by pressing on the Save project button <img src="images/document-save.png" />.</p>
-<p>An XML file will be created with all necessary information.</p>
+        <li>Burn <img src="images/burn.png"></li>
+        <li>Play <img src="images/player_play.png"></li>
+        <li>Stop <img src="images/player_stop.png"></li>
+      </ul>
+      <li>data buttons:
+        <ul>
+          <li>Video <img src="images/video.png"></li>
+          <li>Output <img src="images/output.png"></li>
+        </ul>
+      </li>
+      <li>and standard interface buttons:
+        <ul>
+          <li>Options <img src="images/configure.png"></li>
+          <li>Help <img src="images/help-contents.png"></li>
+        </ul>
+      </li>
+    </ul>
+    <p>&nbsp;</p>
+    <p>A Menu displays the same commands/options as the toolbar buttons:
+    </p>
+    <p>&nbsp;</p>
+    <p><img src="images/menu.png"></p>
+    <p>&nbsp;</p>
+    <p>You can use keyboard shortcuts (e.g. under Windows, Alt+F
+      followed by S to save a project).</p>
+    <p>&nbsp;</p>
+    <h3><a name="mozTocId521077" class="mozTocH3"></a>The project
+      manager</h3>
+    <p>On opening a project file (with .dvp extension), the interface
+      shows the parameters of the project on the left of the file
+      explorer.</p>
+    <p><img alt="Project manager" src="images/project.png"></p>
+    <p>System settings are all session-specific variables, which are
+      collected by the Options dialog (see below).</p>
+    <p>Data settings are related to input-output variables (like audio
+      files or target output directory).You can expand or collapse the
+      data by pressing on the +/- sign.</p>
+    <p>To display a project manager, you should first load it by
+      pressing on the Open project button <img
+        src="images/open-project.png">.</p>
+    <p>The project manager window will automatically open and all files
+      initially listed in the project maker tab widget (top right) will
+      be displayed.</p>
+    <p>Should you like to save both session-specific system settings and
+      input/ouput data, create a .dvp project file by pressing on the
+      Save project button <img src="images/document-save.png">.</p>
+    <p>An XML file will be created with all necessary information.</p>
+    <h3><a name="mozTocId324026" class="mozTocH3"></a><span
+        style="color: red;"> Burning a disc</span></h3>
+    <p>To burn a disc, use the Burn button <img alt="burn"
+        src="images/burn.png"> on the left of the command zone.</p>
+    <p>You need to have an ISO image of the disc before burning your
+      DVD-Audio. </p>
+    <p>This is managed by the Options dialog (see below).</p>
+    <p>&nbsp;</p>
+    <p>To create a DVD-Audio disc press on the Burn icon. </p>
+    <p>You can deselect ISO file creation and burning in the options
+      dialog to just create the file structure under the default output
+      repertory (in you home directory), or under the selected Output
+      directory.</p>
+    <h3><a name="mozTocId700860" class="mozTocH3"></a><span
+        style="color: Red;">Log messages</span></h3>
+    <p>The lower part of the interface is a log window that displays
+      information on what is being done by the GUI or processed by
+      dvda-author, notably</p>
+    <p>directory sizes. Below are a few messages generated while
+      authoring a project with the project maker:</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p><img alt="log window" src="images/web/dvda-author-gui4.png"></p>
+    <p>&nbsp;</p>
+    <h3><a name="mozTocId422189" class="mozTocH3"></a><span
+        style="color: Red;">Options</span></h3>
+    <p>An options dialog will pop up on pressing on the Options button <img
+        src="images/configure.png"> in the command zone.</p>
+    <p><img alt="" src="images/options.png"></p>
+    <p><i>1. Logging</i></p>
+    <p>To enable log file creation, check the Log process checkbox then
+      press on the Log output button to select a log.</p>
+    <p>If the log file already exists, the new log will be appended to
+      it and a confirmation dialog will appear (KDE linux view):</p>
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <p><img alt="options" src="images/log.png"></p>
+    <p>&nbsp;</p>
+    <p>The output directory can be changed by pressing on the Browse
+      button to select an existing filename.</p>
+    <p>Just enter a new filename in the file dialog window and save.</p>
+    &nbsp;
+    <p><i>2. Image and disc authoring </i></p>
+    <p>To enable ISO file creation, the mkisofs checkbox is checked by
+      default.</p>
+    <p>Similarly the "Burn disc" box is checked by default. Unchek if
+      you just want to create the ISO image.</p>
+    <p>If there is only one DVD writer in the platform, it is usually
+      automatically selected.</p>
+    <p>In some cases (several devices) it may be necessary to indicate
+      the right DVD burner.</p>
+    <p>By default the scanbus value for cdrecord is 0,0,0. If this does
+      not give correct results, manually change to 1,0,0 or 2,0,0 and so
+      on.</p>
+    <p>&nbsp;</p>
+    <p><i>3. Menu authoring and videozone linking</i></p>
+    <p>By default, a top menu in the DVD-Audio zone will be generated
+      that allows the user to navigate between tracks and groups using a
+      remote control.</p>
+    <p>This option can be deselected in the Options dialog.</p>
+    <p>If a menu is created, one or several track links can be created
+      optionally to one or several tracks in the DVD-Video zone.</p>
+    <p>This is only possible if files have been previously imported to
+      the VIDEO tab.</p>
+    <p>&nbsp;</p>
+    <img alt="files in the video zone" src="images/videofiles.png">
+    <p>&nbsp;</p>
+    <p>Then select the track to be linked to: click on the widget right
+      to "Link to video titleset" and change the value from <b>No</b>
+      to the rank of the track in the first titleset.</p>
+    <p>If a track in the second titleset is to be linked to, use the
+      widget coming second to the right and so on. </p>
+    <img alt="files in the video zone" src="images/videolink.png">
+    <p><i>Note: The total number of audio groups in the AUDIO tab and of
+        video links cannot be greater than 9. </i></p>
+    <p>The "Active menu" checkbox may be checked to allow the top menu
+      to remain visible on playback. By default, it disappears after a
+      track link is clicked.</p>
+    <p>&nbsp;</p>
+    <p><i>4. Audio formats</i></p>
+    <p>By default, converting usual audio formats into wav before
+      processing the disc is enabled. </p>
+    <p>The following formats are supported using <a
+        href="http://sox.sourceforge.net/">SoX</a>: </p>
+    <ul>
+      <li>wav</li>
+      <li>flac</li>
+      <li>oga</li>
+      <li>aif</li>
+      <li>aiff</li>
+      <li>aiffc</li>
+      <li>al</li>
+      <li>amb</li>
+      <li>au</li>
+      <li>avr</li>
+      <li>cdda</li>
+      <li>cdr</li>
+      <li>cvu</li>
+      <li>gsm</li>
+      <li>gsrt</li>
+      <li>hcom</li>
+      <li>ima</li>
+      <li>ircam</li>
+      <li>la</li>
+      <li>lpc</li>
+      <li>lpc10</li>
+      <li>lu</li>
+      <li>maud</li>
+      <li>mlp</li>
+      <li>nist</li>
+      <li>ogg</li>
+      <li>s16</li>
+      <li>s2</li>
+      <li>s3</li>
+      <li>s32</li>
+      <li>s4</li>
+      <li>s8</li>
+      <li>sb</li>
+      <li>sf</li>
+      <li>sl</li>
+      <li>sln</li>
+      <li>smp</li>
+      <li>snd</li>
+      <li>sndr</li>
+      <li>sndt</li>
+      <li>sph</li>
+      <li>sndt</li>
+      <li>sw</li>
+      <li>txw</li>
+      <li>vms</li>
+      <li>voc</li>
+      <li>vorbis</li>
+      <li>vox</li>
+      <li>wavpcm</li>
+      <li>wv</li>
+      <li>wve</li>
+      <li>xa</li>
+    </ul>
+    <p>&nbsp;</p>
+    <p>An internal MLP (<a
+        href="https://en.wikipedia.org/wiki/Meridian_Lossless_Packing">Meridian
 
-<h3><span style="color: red;"> Burning a disc</span></h3>
-
-<p>To burn a disc, use the Burn button <img alt="burn" src="images/burn.png"/> on the left of the command zone.</p>
-<p>You need to have an ISO image of the disc before burning your DVD-Audio. </p>
-<p>This is managed by the Options dialog (see below).</p>
-<p>&nbsp;</p>
-
-<p>To create a DVD-Audio disc press on the Burn icon. </p>
-<p>You can deselect ISO file creation and burning in the options dialog to just create the file 
-structure under the default output repertory (in you home directory), or under the selected Output directory.</p>
 
 
-<h3><span style="color: Red;">Log messages</span></h3>
 
-<p>The lower part of the interface is a log window that displays information
-on what is being done by the GUI or processed by dvda-author, notably</p>
-
-<p>directory sizes. Below are a few messages generated while authoring a
-project with the project maker:</p>
-
-<p>&nbsp;</p>
-
-<p>&nbsp;</p>
-
-<p><img alt="log window" src="images/web/dvda-author-gui4.png" /></p>
-
-<p>&nbsp;</p>
-
-
-<h3><span style="color: Red;">Options</span></h3>
-
-<p>An options dialog will pop up on pressing on the Options button <img  src="images/configure.png" /> in the
-command zone.</p>
-
-<p><img alt="" src="images/options.png" /></p>
-
-<p><i>1. Logging</i></p>
-<p>To enable log file creation, check the Log process checkbox then press on
-the Log output button to select a log.</p>
-
-<p>If the log file already exists, the new log will be appended to it and a
-confirmation dialog will appear (KDE linux view):</p>
-
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-
-<p><img alt="options" src="images/log.png"  /></p>
-
-
-<p>&nbsp;</p>
-<p>The output directory can be changed by pressing on the Browse button to select an existing filename.</p>
-<p>Just enter a new filename in the file dialog window and save.</p>
-<p></p>&nbsp;</p>
-
-<p><i>2. Image and disc authoring </i></p>
-<p>To enable ISO file creation, the mkisofs checkbox is checked by default.</p>
-<p>Similarly the "Burn disc" box is checked by default. Unchek if you just want to create the ISO image.</p>
-<p>If there is only one DVD writer in the platform, it is usually automatically selected.</p>
-<p>In some cases (several devices) it may be necessary to indicate the right DVD burner.</p>
-<p>By default the scanbus value for cdrecord is 0,0,0. If this does not give correct results, manually change to 1,0,0 or 2,0,0 and so on.</p>
-<p>&nbsp;</p>
-
-<p><i>3. Menu authoring and videozone linking</i></p>
-<p>By default, a top menu in the DVD-Audio zone will be generated that allows the user to navigate between tracks and groups using a remote control.</p>
-<p>This option can be deselected in the Options dialog.</p>
-<p>If a menu is created, one or several track links can be created optionally to one or several tracks in the DVD-Video zone.</p>
-<p>This is only possible if files have been previously imported to the VIDEO tab.</p>
-<p>&nbsp;</p>
-<img alt="files in the video zone" src="images/videofiles.png" />
-<p>&nbsp;</p>
-<p>Then select the track to be linked to: click on the widget right to "Link to video titleset" and change the value from <b>No</b> to the rank of the track in the first titleset.</p>
-<p>If a track in the second titleset is to be linked to, use the widget coming second to the right and so on. </p>
-<img alt="files in the video zone" src="images/videolink.png" />
-<p><i>Note: The total number of audio groups in the AUDIO tab and of video links cannot be greater than 9. </i></p>
-<p>The "Active menu" checkbox may be checked to allow the top menu to remain visible on playback. By default, it disappears after a track link is clicked.</p>
-<p>&nbsp;</p>
-
-<p><i>4. Audio formats</i></p>
-<p>By default, converting usual audio formats into wav before processing the disc is enabled. </p>
-<p>The following formats are supported using <a href="http://sox.sourceforge.net/">SoX</a>: </p>
-<ul>
-  <li>wav</li>
-  <li>flac</li>
-  <li>oga</li>
-  <li>aif</li>
-  <li>aiff</li>
-  <li>aiffc</li>
-  <li>al</li>
-  <li>amb</li>
-  <li>au</li>
-  <li>avr</li>
-  <li>cdda</li>
-  <li>cdr</li>
-  <li>cvu</li>
-  <li>gsm</li>
-  <li>gsrt</li>
-  <li>hcom</li>
-  <li>ima</li>
-  <li>ircam</li>
-  <li>la</li>
-  <li>lpc</li>
-  <li>lpc10</li>
-  <li>lu</li>
-  <li>maud</li>
-  <li>mlp</li>
-  <li>nist</li>
-  <li>ogg</li>
-  <li>s16</li>
-  <li>s2</li>
-  <li>s3</li>
-  <li>s32</li>
-  <li>s4</li>
-  <li>s8</li>
-  <li>sb</li>
-  <li>sf</li>
-  <li>sl</li>
-  <li>sln</li>
-  <li>smp</li>
-  <li>snd</li>
-  <li>sndr</li>
-  <li>sndt</li>
-  <li>sph</li>
-  <li>sndt</li>
-  <li>sw</li>
-  <li>txw</li>
-  <li>vms</li>
-  <li>voc</li>
-  <li>vorbis</li>
-  <li>vox</li>
-  <li>wavpcm</li>
-  <li>wv</li>
-  <li>wve</li>
-  <li>xa</li>
-</ul>
-<p>&nbsp;</p>
-<p>An internal MLP (<a href="https://en.wikipedia.org/wiki/Meridian_Lossless_Packing">Meridian Lossless Packing</a>) decoder is integrated using capabilities developed by the <a href="https://ffmpeg.org/">ffmpeg</a> project.</p>
-<p><i>Warning</i></p>
-<p>Using this decoder may raise legal issues in some countries (outside of the European Union). </P>
-<p>Please make sure that using the <b>ffmpeg</b> MLP decoder/encoder is legal in your country before checking the "Decode MLP" box to activate automatic MLP conversion to WAV.</p>
-<p>This decoder is optionally used when disc audio is extracted as indicated above. When the box is checked, discs with MLP-encoded content will be extracted both as .mlp and .wav files.</p>
-<p>&nbsp;</p>
-<h3>GUI options</h3>
-
-<p>The Full screen button <img alt="Full screen" src="images/show-maximized.png" />
-maximizes the size of the application.</p>
-
-<p>The icon automatically toggles to the Show normal icon 
-<img alt="Show normal" src="images/show-normal.png" /> when the window is maximized.</p>
-
-<p>If you press again on the same button, the size of the window will be changed back to normal size.</p>
-<p>&nbsp;</p>
-<h3>Progress bars</h3>
-
-<p>A progress bar will display the real-time percentage of expected ouput
-that was already processed by dvda-author.</p>
-
-<p>If an ISO image is created, another will appear to indicate progress of ISO file
-creation below the first progress bar.</p>
-
-<p>If you burn your disc, a third bar will appear to indicate
-progress of DVD burning. </p>
-
-<p>If the burning process appears frozen, reset your writer and open/close
-your tray. Wait for a while then launch again by pressing on the "Burn" icon.
-</p>
-
-<p>You can kill any process by pressing on the Stop process button <img
-alt="kill process" src="images/process-stop.png" width="22" height="22" /> on
-the left of the progress bar.</p>
-
-<p><img alt="progress bars" src="images/web/dvda-author-gui6.png" /></p>
-
-<p>&nbsp;</p>
-
-<p></p>
-</body>
+        Lossless Packing</a>) decoder is integrated using capabilities
+      developed by the <a href="https://ffmpeg.org/">ffmpeg</a>
+      project.</p>
+    <p><i>Warning</i></p>
+    <p>Using this decoder may raise legal issues in some countries
+      (outside of the European Union). </p>
+    <p>Please make sure that using the <b>ffmpeg</b> MLP
+      decoder/encoder is legal in your country before checking the
+      "Decode MLP" box to activate automatic MLP conversion to WAV.</p>
+    <p>This decoder is optionally used when disc audio is extracted as
+      indicated above. When the box is checked, discs with MLP-encoded
+      content will be extracted both as .mlp and .wav files.</p>
+    <p>&nbsp;</p>
+    <h3><a name="mozTocId965799" class="mozTocH3"></a>GUI options</h3>
+    <p>The Full screen button <img alt="Full screen"
+        src="images/show-maximized.png"> maximizes the size of the
+      application.</p>
+    <p>The icon automatically toggles to the Show normal icon <img
+        alt="Show normal" src="images/show-normal.png"> when the window
+      is maximized.</p>
+    <p>If you press again on the same button, the size of the window
+      will be changed back to normal size.</p>
+    <p>&nbsp;</p>
+    <h3><a name="mozTocId105820" class="mozTocH3"></a>Progress bars</h3>
+    <p>A progress bar will display the real-time percentage of expected
+      ouput that was already processed by dvda-author.</p>
+    <p>If an ISO image is created, another will appear to indicate
+      progress of ISO file creation below the first progress bar.</p>
+    <p>If you burn your disc, a third bar will appear to indicate
+      progress of DVD burning. </p>
+    <p>If the burning process appears frozen, reset your writer and
+      open/close your tray. Wait for a while then launch again by
+      pressing on the "Burn" icon. </p>
+    <p>You can kill any process by pressing on the Stop process button <img
+        alt="kill process" src="images/process-stop.png" width="22"
+        height="22"> on the left of the progress bar.</p>
+    <p><img alt="progress bars" src="images/web/dvda-author-gui6.png"></p>
+    <p>&nbsp;</p>
+  </body>
 </html>
