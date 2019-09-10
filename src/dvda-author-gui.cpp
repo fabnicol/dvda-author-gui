@@ -228,7 +228,7 @@ void dvda::stop()
    killer = "taskkill /f /im ";
 #endif
 
-    int res = QProcess::execute(killer + (dialog->vlc ? "VLC" : "ffplay"));
+    int res = QProcess::execute(killer + (dialog->vlc ? "vlc" : "ffplay"));
 
     if (res == 0)
     {
