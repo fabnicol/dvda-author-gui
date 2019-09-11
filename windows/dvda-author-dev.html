@@ -2,13 +2,13 @@
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
 </HEAD><BODY>
 <H1>DVDA-AUTHOR</H1>
-Section: User Commands (1)<BR>Updated: septembre 2019<BR><A HREF="#index">Index</A>
+Section: User Commands (1)<BR>Updated: September 2019<BR><A HREF="#index">Index</A>
 <A HREF="http://localhost/cgi-bin/man/man2html">Return to Main Contents</A><HR>
 
 <A NAME="lbAB">&nbsp;</A>
 <H2>NAME</H2>
 
-dvda-author - manual page for dvda-author version 2019-dev
+dvda-author - manual page for dvda-author version dev-9999
 <A NAME="lbAC">&nbsp;</A>
 <H2>SYNOPSIS</H2>
 
@@ -18,7 +18,7 @@ dvda-author - manual page for dvda-author version 2019-dev
 <A NAME="lbAD">&nbsp;</A>
 <H2>DESCRIPTION</H2>
 
-dvda-author 2019-dev creates high-resolution DVD-Audio discs
+dvda-author dev-9999 creates high-resolution DVD-Audio discs
 <P>
 
 from .wav, .flac and other audio files.
@@ -118,14 +118,14 @@ By default, launches dvda-author.dap in the current directory.
 </DL>
 <P>
 
-<B>-i</B>, <B>--input</B> directory    Input directory with audio files.
+<B>-i</B>, <B>--input</B> directory [dir]   Input directory with audio files.
 <DL COMPACT>
 <DT><DD>
 Each subdirectory is a group.
 </DL>
 <P>
 
-<B>-o</B>, <B>--output</B> directory   Output directory.
+<B>-o</B>, <B>--output</B> directory  [dir]  Output directory.
 <P>
 
 <B>-x</B>, <B>--extract</B> {disc or directory} Extract DVD-Audio to directory <B>-o</B>.
@@ -152,6 +152,32 @@ Direct AOB file audio content extraction.
 Unlike <B>-x</B>, this option does not use .IFO files. Use this option in combination with <B>-o</B>. No wav header is generated.
 <DT><DD>
 Several AOB files may be listed, separated by commas.
+<DT><DD>
+If a directory is used, it must immediately contain an AUDIO_TS subdirectory to be read. This includes disc player roots.
+<DT><B>--sync</B> {directory or AOB[,AOB...]}<DD>
+Like <B>--aob-extract</B> but output is to stdout for piping to third-party software.
+<DT><DD>
+Only audio content is directed to stdout.
+<DT><DD>
+Extraction is slowed down to standard playback levels after extracting the equivalent of 0.5 second playback.
+<DT><B>--play</B> {directory or AOB[,AOB...]}<DD>
+Play audio content using ffplay (<A HREF="https://ffmpeg.org).">https://ffmpeg.org).</A>
+<DT><DD>
+Main process will exit automatically some time after playback is finished.
+<DT><DD>
+Limitations: currently not available under Windows. Each group in the disc must be either MLP or have same audio characteristics throughout.
+<DT><B>--player</B> [ffplay | vlc]<DD>
+Choose a player for play-back (with <B>--play</B>).
+<DT><DD>
+Currently only ffplay (default) and vlc (default for Windows) are supported.
+<DT><DD>
+ffplay may have issues (Sept. 2019) with some mlp files under Windows.
+<DT><DD>
+Prior installation of VLC is requested for
+<DT><B>--player-path</B> [path]<DD>
+Full path with filename and extension to the player, if <B>--player</B>=<I>vlc</I> is used
+<DT><DD>
+and the path is not the standard install path (under Program Files for Windows or <I>/usr/bin</I> otherwise)
 <DT><B>--aob2wav</B> {directory or AOB[,AOB...]}<DD>
 Like <B>--aob-extract</B> but a wav header is prepended to audio content.
 <DT><B>--forensic</B><DD>
@@ -1052,6 +1078,27 @@ Latest version available from <A HREF="http://dvd-audio.sourceforge.net/">http:/
 <BR>
 
 This is free software; see the source for copying conditions.
+<A NAME="lbAJ">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+The full documentation for
+<B>dvda-author</B>
+
+is maintained as a Texinfo manual.  If the
+<B>info</B>
+
+and
+<B>dvda-author</B>
+
+programs are properly installed at your site, the command
+<DL COMPACT>
+<DT><DD>
+<B>info dvda-author</B>
+
+</DL>
+<P>
+
+should give you access to the complete manual.
 <P>
 
 <HR>
@@ -1065,11 +1112,12 @@ This is free software; see the source for copying conditions.
 <DT><A HREF="#lbAG">AUTHOR</A><DD>
 <DT><A HREF="#lbAH">REPORTING BUGS</A><DD>
 <DT><A HREF="#lbAI">COPYRIGHT</A><DD>
+<DT><A HREF="#lbAJ">SEE ALSO</A><DD>
 </DL>
 <HR>
 This document was created by
 <A HREF="http://github.com/hamano/man2html/">man2html</A>,
 using the manual pages.<BR>
-Time: 22:01:27 GMT, September 02, 2019
+Time: 00:00:06 GMT, September 11, 2019
 </BODY>
 </HTML>
