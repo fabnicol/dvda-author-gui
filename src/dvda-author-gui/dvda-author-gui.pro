@@ -6,6 +6,9 @@ DEFINES += QT_FILE_DIALOG
 
 DEFINES += LOCAL WITHOUT_STARTSECTOR
 
+
+DEFINES += VERSION=\\\"20.08-2\\\"
+
 QMAKE_CXXFLAGS += -static -static-libgcc -static-libstdc++ -pthread  -O3
 
 equals(QT_MAJOR_VERSION, 5) {

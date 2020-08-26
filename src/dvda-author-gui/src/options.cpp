@@ -132,6 +132,7 @@ options::options (dvda* parent)
     connect (cdrecordBox, SIGNAL (clicked() ), this, SLOT (on_cdrecordBox_checked() ) );
     connect (dvdwriterLineEdit, SIGNAL (textChanged (const QString&) ), this, SLOT (on_dvdwriterLineEdit_changed (const QString&) ) );
     connect (menuBox, SIGNAL (clicked() ), this,     SLOT (on_menuBox_checked() ) );
+    connect (menuBox, SIGNAL (clicked() ), this,     SLOT (on_activeMenuBox_checked() ) );
     connect (activeMenuBox, SIGNAL (clicked() ), this,     SLOT (on_activeMenuBox_checked() ) );
     connect(inputRankBox[0],
             QOverload<int>::of(&QComboBox::activated),
@@ -199,7 +200,7 @@ void options::on_menuBox_checked()
 
 void options::on_activeMenuBox_checked()
 {
-    activeMenu = activeMenuBox->isChecked();
+    activeMenu = activeMenuBox->isChecked() & menuBox->isChecked();
 }
 
 void options::on_logBox_checked()
