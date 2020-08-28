@@ -1206,6 +1206,11 @@ bool dvda::run_dvda()
         args << "-d";
     }
 
+    if (dialog->mlp)
+    {
+        args << "--encode";
+    }
+
     selectOutput (targetDir, false);
 
     args << "-o" << targetDir;

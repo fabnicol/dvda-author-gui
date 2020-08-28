@@ -180,6 +180,7 @@ class options : public QDialog
         bool sox;
         bool vlc;
         bool decode;
+        bool mlp;
         bool menu;
         bool activeMenu;
         bool debug;
@@ -193,6 +194,7 @@ class options : public QDialog
         QCheckBox* soxBox;
         QCheckBox* vlcBox;
         QCheckBox* decodeBox;
+        QCheckBox* mlpBox;
         QCheckBox* cdrecordBox;
         QComboBox *inputRankBox[9] = {nullptr};
         void addInputRankBox(int);
@@ -211,6 +213,7 @@ class options : public QDialog
         void on_soxBox_checked();
         void on_vlcBox_checked();
         void on_decodeBox_checked();
+        void on_mlpBox_checked();
         void on_debugBox_checked();
 #ifndef WITHOUT_STARTSECTOR
         void on_startsectorLineEdit_changed (const QString& startsectorValue);
