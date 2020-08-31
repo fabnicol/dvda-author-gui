@@ -42,6 +42,9 @@ options::options (dvda* parent)
     decodeBox = new QCheckBox (tr ("Decode MLP to WAV when extracting audio") );
     decodeBox->setChecked (false);
 
+    mlpBox = new QCheckBox (tr ("Encode audio to MLP before authoring disc") );
+    mlpBox->setChecked (false);
+
     log = false;
     runMkisofs = true;
     debug = false;
@@ -49,6 +52,7 @@ options::options (dvda* parent)
     sox = true;
     vlc = false;
     decode = false;
+    mlp = false;
     menu = true;
     startsector = "";
 
@@ -102,6 +106,8 @@ options::options (dvda* parent)
     optionsLayout->addSpacing (25);
     optionsLayout->addWidget (decodeBox);
     optionsLayout->addSpacing (25);
+    optionsLayout->addWidget (mlpBox);
+    optionsLayout->addSpacing (25);
 
 #ifndef WITHOUT_STARTSECTOR
     startsectorLabel = new QLabel (tr ("&Start sector:") );
@@ -129,6 +135,7 @@ options::options (dvda* parent)
     connect (soxBox, SIGNAL (clicked() ), this, SLOT (on_soxBox_checked() ) );
     connect (vlcBox, SIGNAL (clicked() ), this, SLOT (on_vlcBox_checked() ) );
     connect (decodeBox, SIGNAL (clicked() ), this, SLOT (on_decodeBox_checked() ) );
+    connect (mlpBox, SIGNAL (clicked() ), this, SLOT (on_mlpBox_checked() ) );
     connect (cdrecordBox, SIGNAL (clicked() ), this, SLOT (on_cdrecordBox_checked() ) );
     connect (dvdwriterLineEdit, SIGNAL (textChanged (const QString&) ), this, SLOT (on_dvdwriterLineEdit_changed (const QString&) ) );
     connect (menuBox, SIGNAL (clicked() ), this,     SLOT (on_menuBox_checked() ) );
@@ -223,7 +230,10 @@ void options::on_decodeBox_checked()
     decode = decodeBox->isChecked();
 }
 
-
+void options::on_mlpBox_checked()
+{
+    mlp = mlpBox->isChecked();
+}
 void options::on_debugBox_checked()
 {
     debug = debugBox->isChecked();

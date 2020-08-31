@@ -12,7 +12,7 @@
 !include "MUI2.nsh"
 !include "x64.nsh"
 
-!define version  "20.08-2"
+!define version  "20-08-5" ; no dots please
 !define prodname "dvda-author-package"
 !define mainexe  "dvda-author"
 !define guiexe   "dvda-author-gui"
