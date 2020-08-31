@@ -12,7 +12,7 @@
 !include "MUI2.nsh"
 !include "x64.nsh"
 
-!define version  "19.09"
+!define version  "20.08-2"
 !define prodname "dvda-author-package"
 !define mainexe  "dvda-author"
 !define guiexe   "dvda-author-gui"
@@ -98,8 +98,8 @@
 
 
 
- LicenseLangString myLicenseData ${LANG_ENGLISH} "${srcdir}\COPYING"
- LicenseLangString myLicenseData ${LANG_FRENCH} "${srcdir}\COPYING"
+ LicenseLangString myLicenseData ${LANG_ENGLISH} "${srcdir}\..\COPYING"
+ LicenseLangString myLicenseData ${LANG_FRENCH} "${srcdir}\..\COPYING"
  LicenseData $(myLicenseData)
  LangString Name ${LANG_ENGLISH} "${prodname} English version"
  LangString Name ${LANG_FRENCH}  "${prodname} version française"
@@ -120,7 +120,7 @@
 
 
 
-!insertmacro MUI_PAGE_LICENSE "${srcdir}\COPYING"
+!insertmacro MUI_PAGE_LICENSE "${srcdir}\..\COPYING"
 !insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
@@ -232,9 +232,9 @@ Section  ; allways done
   WriteUninstaller "${uninstaller}"
 
   SetOutPath $INSTDIR ; for working directory
-  File "${srcdir}\README"
-  File "${srcdir}\COPYING"
-  File "${srcdir}\ChangeLog" 
+  File "${srcdir}\..\README"
+  File "${srcdir}\..\COPYING"
+  File "${srcdir}\..\ChangeLog" 
   File "${srcdir}\GUI.html" 
   File "${srcdir}\GUI.pdf" 
   File /r  "${srcdir}\images"  
@@ -263,7 +263,7 @@ Section $(Sec4Name) sec4 ; source code
 
   SetOutPath $INSTDIR ; for working directory
   
-  File  "${srcdir}\*.pro*" "${srcdir}\Makefile.Release"  "${srcdir}\*.nsi"  "${srcdir}\src\*.qrc" 
+  File  "${srcdir}\..\src\${guiexe}\*.pro*" "${srcdir}\..\src\${guiexe}\Makefile.Release"  "${srcdir}\*.nsi"  "${srcdir}\..\src\${guiexe}\src\*.qrc" "${srcdir}\..\src\${guiexe}\src\*.cpp" "${srcdir}\..\src\${guiexe}\src\*.h" 
 
 SectionEnd
 
