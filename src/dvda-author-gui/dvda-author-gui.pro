@@ -7,15 +7,15 @@ DEFINES += QT_FILE_DIALOG
 DEFINES += LOCAL WITHOUT_STARTSECTOR
 
 
-DEFINES += VERSION=\\\"20.08-5\\\"
+DEFINES += VERSION=\\\"20.10-1\\\"
 
 QMAKE_CXXFLAGS += -static -static-libgcc -static-libstdc++ -pthread  -O3
 
-equals(QT_MAJOR_VERSION, 5) {
+equals(QT_MAJOR_VERSION, 6) {
 
 TARGET = dvda-author-gui-qt5
 
-QMAKE_LFLAGS += -Wl,-O2
+QMAKE_LFLAGS += -Wl,-O2 -L/usr/local/lib
 QMAKE_LIBS +=    -pthread
 
 win32 {

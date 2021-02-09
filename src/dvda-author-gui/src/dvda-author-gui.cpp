@@ -35,6 +35,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #include <errno.h>
 #include <QDesktopServices>
 #include <stdlib.h>
+#include <QRegularExpression>
 #include "dvda-author-gui.h"
 
 
@@ -267,7 +268,7 @@ void dvda::addDraggedFiles (QList<QUrl> urls)
 
     for (int i = 0; i < urls.size(); ++i)
         {
-            selectedFile[i] = urls.at (i).toLocalFile();
+            selectedFile[i] = QFileInfo(urls.at (i).toLocalFile());
             project[currentIndex]->addItem (selectedFile[i].filePath());
             inputSize[currentIndex] += QFileInfo (selectedFile[i]).size();
             inputSizeCount += QFileInfo (selectedFile[i]).size();
@@ -1099,7 +1100,6 @@ bool dvda::run_dvda()
 {
     QStringList args;
     QString command;
-    qint64 totalSize;
     progress->reset();
 
     if (progress3 != nullptr)
@@ -1146,8 +1146,8 @@ bool dvda::run_dvda()
             const QString &file = project[i]->item (row)->text();
             if (! file.isEmpty())
             {
-                QRegExp q(".*ATS_0[1-9]_[1-9].AOB");
-                if (q.exactMatch(file))
+                QRegularExpression q(".*ATS_0[1-9]_[1-9].AOB");
+                if (q.match(file).hasMatch())
                 {
                     argsExtract << file;
                     outputTextEdit->append("Detected AOB file in input: will ignore non-AOB files in tabs and only extract audio.");
@@ -1188,12 +1188,12 @@ bool dvda::run_dvda()
             for (int row = 0; project[i] && row < project[i]->count() &&  project[i]->item (row) != nullptr; ++row)
             {
                 const QString &file = project[i]->item (row)->text();
-                if (! file.isEmpty()) args2 << "\"" + file + "\"" ;
+                if (! file.isEmpty()) args2 << file;
             }
 
             if (args2.isEmpty()) continue;
             else
-               args << "-g " + args2.join(" ");
+               args << "-g " << args2;
         }
     }
 
@@ -1316,11 +1316,12 @@ bool dvda::run_dvda()
 #endif
 #endif
 
-    command = QDir::toNativeSeparators(QString(binary) + " " + args.join (" "));
+    command = QDir::toNativeSeparators(binary + " " + args.join (" "));
     outputTextEdit->append (tr ("Command line : %1").arg ( command ) );
     startProgressBar = 1;
     outputType = "DVD-Audio authoring";
-    process.start (command);
+    process.start (binary, args);
+    process.waitForStarted();
     return true;
 }
 
@@ -1379,7 +1380,7 @@ bool dvda::runLplex()
             for (int row = 0; row < project2[i]->count() && project2[i]->item (row) != nullptr; ++row)
                 {
                     const QString &file = project2[i]->item (row)->text();
-                    if (! file.isEmpty()) args2 <<  "\"" + file + "\"";
+                    if (! file.isEmpty()) args2 << file;
                 }
 
                 if (args2.isEmpty()) continue;
@@ -1389,17 +1390,20 @@ bool dvda::runLplex()
                     args << "ts" ;
                 }
 
-                args << args2.join(" ");
+                args << args2;
 
         }
 
     if (args.isEmpty()) return false;
 
-    args << "--create" << "dvd" << "--dir" << QDir::toNativeSeparators(targetDir) << "-P" << "no" << "--video" << "pal" << "--jpeg" << QDir::toNativeSeparators(QCoreApplication::applicationDirPath()  +
-                                                                                                                                                   #ifdef Q_OS_OSX
-                                                                                                                                                                "/../Resources"
-                                                                                                                                                   #endif
-                                                                                                                                                                "/data/black_PAL_720x576.jpg") << "--workpath" << workpath << "-x" << "no";
+    args << "--create" << "dvd" << "--dir" << QDir::toNativeSeparators(targetDir) << "-P" << "no" << "--video"
+         << "pal" << "--jpeg" << QDir::toNativeSeparators(QCoreApplication::applicationDirPath()
+                                                          +
+                                                      #ifdef Q_OS_OSX
+                                                           "/../Resources"
+                                                      #endif
+                                                    "/data/black_PAL_720x576.jpg") << "--workpath" << workpath << "-x" << "no";
+
     outputTextEdit->append (tr ("Processing input directory...") );
 
 
@@ -1428,7 +1432,7 @@ bool dvda::runLplex()
     startProgressBar = 1;
     outputType = "audio DVD-Video disc authoring";
     processLplex.setWorkingDirectory(QDir::currentPath());
-    processLplex.start(command);
+    processLplex.start(binary, args);
     return true;
 }
 
@@ -1494,7 +1498,7 @@ void dvda::runMkisofs()
         process2.terminate();
     }
 
-    args << cli.join(" ") << "-o" << dialog->mkisofsPath << targetDir;
+    args << cli << "-o" << dialog->mkisofsPath << targetDir;
 
     QFile(dialog->mkisofsPath).remove();
 
@@ -1538,10 +1542,10 @@ void dvda::runMkisofs()
 #endif
 #endif
 
-    const QString &command = QDir::toNativeSeparators(QString(binary) + " " + args.join (" "));
+    const QString &command = QDir::toNativeSeparators(binary + " " + args.join (" "));
     outputTextEdit->append (tr ("Command line : %1").arg(command));
 
-    process2.start (command);
+    process2.start (binary, args);
 
    if (process2.waitForStarted())
         outputTextEdit->append (tr ("Mkisofs started...") );
@@ -1690,11 +1694,11 @@ void dvda::on_cdrecordButton_clicked()
 
     if (dialog->dvdwriterPath.isEmpty() )
         {
-            QMessageBox::warning (this, tr ("Record"), tr ("You need to enter the path to a valid DVD writer device.<br>By defaut, choosing 0,0,0...."),
+            QMessageBox::warning (this, tr ("Record"), tr ("You need to enter the path to a valid DVD writer device.<br>By default, letting cdrecord guess."),
                                   QMessageBox::Ok );
 
-            dialog->dvdwriterPath = "0,0,0";
-            dialog->dvdwriterLineEdit->setText("0,0,0");
+            dialog->dvdwriterPath = "";
+            dialog->dvdwriterLineEdit->setText("");
          }
 
     QFileInfo f (dialog->mkisofsPath);
@@ -1708,7 +1712,9 @@ void dvda::on_cdrecordButton_clicked()
         }
 
     outputTextEdit->append (tr ("\nBurning disc...please wait.") );
-    argsCdrecord << "-eject" << "blank=fast" << "dev=" + dialog->dvdwriterPath << dialog->mkisofsPath;
+    argsCdrecord << "-eject" << "blank=fast";
+    if (! dialog->dvdwriterPath.isEmpty()) argsCdrecord << "dev=" + dialog->dvdwriterPath;
+    argsCdrecord << dialog->mkisofsPath;
     outputTextEdit->append (tr ("Command line: cdrecord %1").arg (argsCdrecord.join (" ") ) );
 
     if (progress3 == nullptr)
@@ -1750,10 +1756,10 @@ void dvda::on_cdrecordButton_clicked()
 #endif
 #endif
 
-    const QString &command = QDir::toNativeSeparators(QString(binary) + " " + argsCdrecord.join (" "));
+    const QString &command = QDir::toNativeSeparators(binary + " " + argsCdrecord.join (" "));
     outputTextEdit->append (tr ("Command line : %1").arg(command));
 
-    process3.start (command);
+    process3.start (binary, argsCdrecord);
     if (process3.waitForStarted())
         outputTextEdit->append (tr ("Cdrecord started...") );
 
@@ -1872,8 +1878,8 @@ void dvda::saveProject()
 #define GROUP(X)  "  <switch label=\""+ QString(X) + "\">\n"
 #define SWITCH(X) GROUP(X) + "    <value>"
 #define EO_SWITCH QString("</value>\n  </switch>\n")
-    out.setCodec ("UTF-8");
-    out << "<?xml version=\"1.0\"?>\n" << "<project>\n";
+
+    out << "<?xml version=\"1.0\"  gui=" VERSION "?>\n" << "<project>\n";
     out << " <system>\n";
     out << SWITCH ("startsector") << dialog->startsector << EO_SWITCH;
     out << SWITCH ("sox") << QString::number (dialog->sox) << EO_SWITCH;

@@ -36,9 +36,9 @@ int main (int argc, char* argv[])
     QApplication app (argc, argv);
 //    dvda dvda_author(0);
     //  dvda_author.show();
-    MainWindow* mainWin = new MainWindow;
-    mainWin->show();
-    mainWin->setFont(QFont("Verdana"));
-    mainWin->setWindowTitle ("dvd-author GUI");
+    MainWindow mainWin;
+    mainWin.show();
+    mainWin.setFont(QFont("Verdana"));
+    mainWin.setWindowTitle ("dvd-author GUI");
     return app.exec();
 }
