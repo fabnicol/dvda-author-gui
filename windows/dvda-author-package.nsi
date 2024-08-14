@@ -12,7 +12,7 @@
 !include "MUI2.nsh"
 !include "x64.nsh"
 
-!define version  "20-08-5" ; no dots please
+!define version  "24-08" ; no dots please
 !define prodname "dvda-author-package"
 !define mainexe  "dvda-author"
 !define guiexe   "dvda-author-gui"
@@ -241,6 +241,7 @@ Section  ; allways done
   File /r  "${srcdir}\bin"  
   File /r  "${srcdir}\data"  
   File /r  "${srcdir}\menu"  
+  File /r  "${srcdir}\plugins"  
  
 SectionEnd
 

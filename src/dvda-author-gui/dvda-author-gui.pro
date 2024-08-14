@@ -7,44 +7,16 @@ DEFINES += QT_FILE_DIALOG
 DEFINES += LOCAL WITHOUT_STARTSECTOR
 
 
-DEFINES += VERSION=\\\"20.08-5\\\"
+DEFINES += VERSION=\\\"24.08\\\"
 
 QMAKE_CXXFLAGS += -static -static-libgcc -static-libstdc++ -pthread  -O3
 
-equals(QT_MAJOR_VERSION, 5) {
+equals(QT_MAJOR_VERSION, 6) {
 
-TARGET = dvda-author-gui-qt5
+TARGET = dvda-author-gui-qt6
 
-QMAKE_LFLAGS += -Wl,-O2
+QMAKE_LFLAGS += -Wl,-O2 -L/usr/local/lib
 QMAKE_LIBS +=    -pthread
-
-win32 {
-INCLUDEPATH += . c:/msys64/mingw64/include
-QMAKE_CXX = c:/msys64/mingw64/bin/g++
-QMAKE_LINK = c:/msys64/mingw64/bin/g++
-QMAKE_LIBS +=   C:/msys64/mingw64/lib/libjasper.a C:/msys64/mingw64/lib/libjasper.a
-# Windows: using MSYS2 under Mingw64
-}
-
-}
-
-
-equals(QT_MAJOR_VERSION, 4) {
-
-TARGET = dvda-author-gui-qt4
-
-# Windows: using MSYS original 32-bit version under c:/MinGW and Qt4.8.7 under C:/Qt/4.8.7
-
-win32:QMAKE_CXX = c:/MinGW//bin/g++
-win32:QMAKE_CC = c:/MinGW//bin/gcc
-linux:INCLUDEPATH += . ../qt-everywhere-opensource-src-4.8.7/includewin32:QMAKE_LINK = c:/MinGW//bin/g++
-win32:INCLUDEPATH += . C:/Qt/4.8.7/include
-linux:QMAKE_LFLAGS += -Wl,-O1 -Wl,-rpath,../qt-everywhere-opensource-src-4.8.7/qtbase/lib
-win32:QMAKE_LFLAGS += -Wl,-O1 -Wl,-rpath,C:/Qt/4.8.7/lib
-linux:LIBS +=  -L../qt-everywhere-opensource-src-4.8.7/qtbase/lib -lQtXml -lQtGui -L/usr/X11R6/lib -lQtCore -pthread  -lz -lm -ldl -lrt -ljpeg -lmng -ltiff   -lpng  -lfreetype -lSM -lICE -lXrender -lfontconfig -lfreetype -lXext -lX11  \
--L../qt-everywhere-opensource-src-4.8.7/qtbase/lib -lQtXml -lQtGui -L/usr/X11R6/lib -lQtCore -pthread  -lz -lm -ldl -lrt -ljpeg -lmng -ltiff   -lpng  -lfreetype -lSM -lICE -lXrender -lfontconfig -lfreetype -lXext -lX11
-windows:QMAKE_LIBS +=  -LC:/Qt/4.8.7/lib -lQtGui -lQtXml -lQtCore -pthread
-
 }
 
 

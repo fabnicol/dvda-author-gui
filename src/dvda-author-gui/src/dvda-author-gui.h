@@ -174,7 +174,7 @@ class options : public QDialog
 
     public:
 
-        options (dvda* parent);
+        options ();
         QString mkisofsPath, logPath;
         bool log, runMkisofs;
         bool sox;
@@ -308,7 +308,7 @@ class dvda : public QDialog
         void play();
         void play_disc(const QModelIndex& index);
         void stop();
-        void playFinished (int e, QProcess::ExitStatus s);
+        void playFinished ();
 
     private:
 
