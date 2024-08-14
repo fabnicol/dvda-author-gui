@@ -3,7 +3,7 @@
 #include "dvda-author-gui.h"
 #include <QComboBox>
 
-options::options (dvda* parent)
+options::options ()
 {
     okButton = new QPushButton (tr ("&Ok") ) ;
     logButton = new QPushButton (tr ("&Log output ") );

@@ -1,0 +1,2488 @@
+<HTML><HEAD><TITLE>Manpage of DVDA-AUTHOR</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8">
+</HEAD><BODY>
+<H1>DVDA-AUTHOR</H1>
+Section: User Commands (1)<BR>Updated: août 2020<BR><A HREF="#index">Index</A>
+<A HREF="http://localhost/cgi-bin/man/man2html">Return to Main Contents</A><HR>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>NAME</H2>
+
+dvda-author - manual page for dvda-author version 2019-dev
+<A NAME="lbAC">&nbsp;</A>
+<H2>SYNOPSIS</H2>
+
+<B>dvda-author</B>
+
+[<I>OPTION</I>]...
+<A NAME="lbAD">&nbsp;</A>
+<H2>DESCRIPTION</H2>
+
+<P>
+dvda-author 2019-dev creates high-resolution DVD-Audio discs
+<P>
+
+<P>
+from .wav, .flac and other audio files.
+<P>
+
+<P>
+<P>
+
+<P>
+Options:
+<P>
+
+<P>
+Output options
+<P>
+
+<P>
+<B>-h</B>, <B>--help</B>               Display this help.
+<P>
+
+<P>
+<B>-v</B>, <B>--version</B>            Display version.
+<P>
+
+<P>
+<B>-q</B>, <B>--quiet</B>              Quiet mode.
+<P>
+
+<P>
+<B>-d</B>, <B>--debug</B>              Increased verbosity (debugging level)
+<P>
+
+<P>
+<B>-t</B>, <B>--veryverbose</B>        Like <B>-d</B> with enhanced verbosity for sample counts.
+<P>
+
+<P>
+<DL COMPACT>
+<DT>, <B>--maxverbose</B><DD>
+Like <B>-t</B> with maximum verbosity on audio buffers (devel info).
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--no-output</B><DD>
+Does not produce any file structure except for <B>--fixwav</B>.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Computations will be performed.
+</DL>
+<P>
+
+<P>
+<P>
+
+<P>
+<P>
+
+<P>
+<B>-P</B>, <B>--pause</B>              Insert a final pause before exiting.
+<P>
+
+<P>
+<B>-P0</B>, <B>--pause</B>=<I>0</I>           Suppress a final pause before exiting
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+if specified in configuration file.
+</DL>
+<P>
+
+<P>
+<B>-l</B>, <B>--log</B>  path          Ouput a log to (absolute or relative) filepath.
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Argument must be supplied.
+</DL>
+<P>
+
+<P>
+<B>-L</B>, <B>--logrefresh</B> path    Same as <B>-l</B> but prior log will be erased on launching again.
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--loghtml</B><DD>
+Transform the log into HTML format, with colorized messages, adjacent to log with extension .html added.
+</DL>
+<P>
+
+<P>
+<B>-k</B>, <B>--text</B>               Generates text table in IFO files
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Under development, implemented for 1-group discs.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Use file information as arguments separated by commas.
+</DL>
+<P>
+
+<P>
+<B>-W</B>, <B>--disable-lexer</B>      Deactivates configuration file parsing.
+<P>
+
+<P>
+Playback options
+<P>
+
+<P>
+<B>-a</B>, <B>--autoplay</B>           Launches playback on loading disc.
+<P>
+
+<P>
+Authoring options
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Soundfile authoring
+</DL>
+<P>
+
+<P>
+<P>
+
+<P>
+<P>
+
+<P>
+Supported audio types:   .wav
+<P>
+
+<P>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+.flac and .oga (Ogg FLAC, see below)
+</DL>
+<P>
+
+<P>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+SoX-supported formats with <B>-S</B> enabled
+</DL>
+<P>
+
+<P>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+except for lossy formats.
+<DT><B>--project</B> [file]<DD>
+Launches a dvda-author project.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+The project file should have the same syntax as dvda-author.conf [see file HOW_TO.conf]
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+By default, launches dvda-author.dap in the current directory.
+</DL>
+<P>
+
+<P>
+<B>-i</B>, <B>--input</B> directory [dir]   Absolute or relative path to input directory with audio files.
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Each subdirectory is a group.
+</DL>
+<P>
+
+<P>
+<B>-o</B>, <B>--output</B> directory  [dir]  Absolute or relative path to output directory.
+<P>
+
+<P>
+<B>-x</B>, <B>--extract</B> {disc or directory} Extract DVD-Audio to directory <B>-o</B>.
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Groups are labelled g1, g2 in output directory.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--xlist</B> 1:1,...,t1n-2:1,...,t2n-...-N:1,...,tNn<DD>
+Optional hyphen-separated list of groups to be extracted
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+may be added with <B>-x</B>.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Tracks to be extracted in a given group are indicated after a colon.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Tracks to be extracted may be listed separated by commas after colon.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+If not specified, all the group will be extracted.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Contiguous tracks may be represented by `...` between commas
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+e.g. 2-3-4:1,2,...,7,9 means: extract groups 2 and 3 entirely and tracks 2 to 7 and 9 for in group 4.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--aob-extract</B> {directory or AOB[,AOB...]}<DD>
+Direct AOB file audio content extraction. 
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Unlike <B>-x</B>, this option does not use .IFO files. Use this option in combination with <B>-o</B>. No wav header is generated.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Several AOB files may be listed, separated by commas.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+If a directory is used, it must immediately contain an AUDIO_TS subdirectory to be read. This includes disc player roots.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--sync</B> {directory or AOB[,AOB...]}<DD>
+Like <B>--aob-extract</B> but output is to stdout for piping to third-party software.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Only audio content is directed to stdout.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Extraction is slowed down to standard playback levels after extracting the equivalent of 0.5 second playback.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--play</B> {directory or AOB[,AOB...]}<DD>
+Play audio content using ffplay (<A HREF="https://ffmpeg.org).">https://ffmpeg.org).</A>
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Main process will exit automatically some time after playback is finished.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Limitations: currently not available under Windows. Each group in the disc must be either MLP or have same audio characteristics throughout.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--player</B> [ffplay | vlc]<DD>
+Choose a player for play-back (with <B>--play</B>).
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Currently only ffplay (default) and vlc (default for Windows) are supported.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+ffplay may have issues (Sept. 2019) with some mlp files under Windows.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Prior installation of VLC is requested for 
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--player-path</B> [path]<DD>
+Absolute or relative path with filename and extension to the player, if <B>--player</B>=<I>vlc</I> is used
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+and the path is not the standard install path (under Program Files for Windows or <I>/usr/bin</I> otherwise)
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--aob2wav</B> {directory or AOB[,AOB...]}<DD>
+Like <B>--aob-extract</B> but a wav header is prepended to audio content.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--forensic</B><DD>
+Use this mode with <B>--aob-extract</B>, <B>--aob2wav</B> or <B>-x</B> if IFO files are missing or mangled, or AOB files
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+have been partially restored using recovery tools.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--strict</B><DD>
+Use this option with <B>--aob-extract</B>, <B>--aob2wav</B> or <B>-x</B> to stop extraction in case of severe header issues. May be useful in combination with <B>--forensic</B> to manually repair header issues.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--decode</B><DD>
+Use this option with <B>--extract</B> or <B>--aob2wav</B> to decode MLP audio to the WAV format.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+This option is based onthe ffmpeg decoder and is subject to the same legal restrictions as those applying to the MLP ffmpeg decoder.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--log-decode</B> [AOB]<DD>
+Decode AOB file and log MPEG specifics. Should be used only in conjunction with <B>--outfile</B>
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--outfile</B> [file]<DD>
+Absolute or relative path to the log generated by <B>--log-decode</B>. Caution : should be alone in its own directory.
+</DL>
+<P>
+
+<P>
+<B>-p</B>, <B>--startsector</B> NNN    Specify the number of the first sector
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+of the AUDIO_PP.IFO file in the output of mkisofs.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+If NNN=0, falling back on 281 (default).
+</DL>
+<P>
+
+<P>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Without <B>-p</B> start sector will be computed automatically.
+</DL>
+<P>
+
+<P>
+<B>-g</B>                       Start of a group. You may specify up to 9 groups of tracks.
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Minimum: one group.
+Enter full or relative path to files if input directory is not set
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+by [-i].
+</DL>
+<P>
+
+<P>
+<B>-z</B>,                      BROKEN. Separate two consecutive titles when files have same audio
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+characteritics within a group.(
+</DL>
+<P>
+
+<B>-Z</B>, <B>--playlist</B>           You may specify up to 9 group copies.
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Total number of groups and copy groups should not exceed 9.
+</DL>
+<P>
+
+<B>-n</B>, <B>--no-videozone</B>       Do not generate an empty VIDEO_TS directory.
+<P>
+
+<P>
+<B>-w</B>, <B>--rights</B>             Access rights to directories created (octal values)
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--merge</B> [channels]<DD>
+The following tracks are mono and will be merged into multichannel.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+They must be ordered as Lf-Rf-C-LFE-Ls-Rs (see table below) and may be specified further by <B>--cga</B> to disambiguate combinations wrt group1/group2 types.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+To be used with <B>-g</B> (e.g. <B>-g</B> <B>--merge</B> ... <B>--merge</B> ... <B>-g</B> <B>--merge</B> ...). Under development.
+</DL>
+<P>
+
+<B>-c</B>, <B>--cga</B>                Enter channel group assignment right after group, e.g: <B>-g</B> file1...fileN <B>-c</B> cga1...cgaN
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Channel assignment should match number of channels of each file
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+If <B>--merge</B> is used, each cga value applies to the respective merged channels in linear order.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Combine channels using either decimal indexes in following table or hyphenated channel assignement labels
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+e.g. <B>-g</B> a.wav <B>--merged</B> b1.wav b2.wav b3.wav b4.wav b5.wav b6.wav <B>-c</B> Lf-Rf-C2-Lfe2-S2 <B>--cga</B> 17
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+means: apply channel assignment Lf-Rf-C2-Lfe2-S2 to first track and Lf-Rf-C-Lfe2-Ls2-Rs2 (index 17)
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+to second track formed by 6 merged mono channels b1.wav to b6.wav
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Channel group assignment (CGA)
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>Index<DD>
+1    2        3         4        5       6
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>0<DD>
+Mono
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>1<DD>
+L     R
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>2<DD>
+Lf    Rf      S2
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>3<DD>
+Lf    Rf      Ls2      Rs2
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>4<DD>
+Lf    Rf      Lfe2
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>5<DD>
+Lf    Rf      Lfe2     S2
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>6<DD>
+Lf    Rf      Lfe2     Ls2      Rs2
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>7<DD>
+Lf    Rf      C2
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>8<DD>
+Lf    Rf      C2       S2
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>9<DD>
+Lf    Rf      C2       Ls2      Rs2
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>0xA-10<DD>
+Lf    Rf      C2       Lfe2
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>0xB-11<DD>
+Lf    Rf      C2       Lfe2     S2
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>0xC-12<DD>
+Lf    Rf      C2       Lfe2     Ls2      Rs2
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>0xD-13<DD>
+Lf    Rf      C        S2
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>0xE-14<DD>
+Lf    Rf      C        Ls2      Rs2
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>0xF-15<DD>
+Lf    Rf      C        Lfe2
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>0x10-16 Lf<DD>
+Rf      C        Lfe2     S2
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>0x11-17 Lf<DD>
+Rf      C        Lfe2     Ls2      Rs2
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>0x12-18 Lf<DD>
+Rf      Ls       Rs       Lfe2
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>0x13-19 Lf<DD>
+Rf      Ls       Rs       C2
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>0x14-20 Lf<DD>
+Rf      Ls       Rs       C2       Lfe2
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Keys:
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Index 2 means channel belongs to Group2
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+L-R: Stereo
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Lf: Left front
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Rf: Right front
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Ls: Left surround (behind)
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Rs: Right front
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>C:<DD>
+Center
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Lfe: Low Frequency Effect (Subwoofer)
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+S: Surround (just one behind)
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>Ls: Left<DD>
+surround
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Rs: Right surround
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Each group must have either same sample rate or be even multiples (e.g. 96kHz/48 kHz or 88.2 kHz/44.1 kHz).
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+The latter case is not yet supported.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Within groups, bit rate may differ but sample rate cannot. 
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--downmix</B><DD>
+Enter downmix coefficients in dB. If track has more than 2 channels, each channel (Lf, Rf, C, Ls or S, Rs, LFE)
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+will be mapped to left (l) and/or right (r) stereo channel
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+with volume reduced by x dB, x the channel downmix coefficient.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Enter positive dB values corresponding to each channel volume reduction, mapped to left or right stereo, separated by commas.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Schema is <B>--downmix</B> Lf.l,Lf.r,Rf.l,Rf.r,C.l,C.r,S.l,S.r,Rs.l,Rs.r,LFE.l,LFE.r
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Use 100 for 'off' value and 0 for no volume reduction.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+This option can be repeated up to 16 times. It is cyclically recycled to 16 times to provide as many downmix tables.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Each track can be indexed using <B>--dtable</B> to be downmixed with the corresponding table.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Example : <B>--downmix</B> 6.2,100,100,7.2,0,0,13,13,16,16,0,0 <B>--downmix</B> 5.2,100,100,8.2,0,0,10,10,12,12,0,0 <B>--dtable</B> 2 <B>--dtable</B> 1
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+means that track 1 will be downmixed using the second table and track 2 the first one.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--dtable</B><DD>
+Enter downmix table rank (1-based) as indicated above.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--provider</B><DD>
+Enter provider name.
+</DL>
+<P>
+
+<P>
+<B>-F</B>, <B>--fixwav</B>(options)    Bad wav headers will be fixed by fixwav.
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Can be run alone without DVD-AUDIO output by adding <B>--nooutput</B>.
+</DL>
+<P>
+
+<P>
+<B>-f</B>, <B>--fixwav-virtual</B>(options)  Use .wav header repair utility 
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+without any write operation.
+</DL>
+<P>
+
+<P>
+<B>-S</B>, <B>--sox</B>                Use SoX to convert file format to .wav.
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Without <B>-S</B> or <B>--resample</B> (see below), only flac, Ogg FLAC 
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+and .wav files are accepted.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--resample</B> c b s<DD>
+Use SoX to convert file format to .wav, and/or change channel to c, bitrate to b, samplerate to s.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+You do not need to use <B>-S</B> with <B>--resample</B>.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Always provide the three values c b and s separated by white space in the same order as in the previous <B>-g</B> files.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--padding</B><DD>
+Reverse default behaviour for transition between audio tracks with identical
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+characteristics (number of channels, bit depth and sample rate).
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+If necessary, audio will be padded with 0s instead of being joined (default). 
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Use <B>--pad-cont</B> for padding with last-known byte.
+</DL>
+<P>
+
+<P>
+<B>-C</B>, <B>--pad-cont</B>           When padding, pad with last known byte, not 0. See <B>--padding</B> above.
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Deactivates <B>--lossy-rounding</B>
+</DL>
+<P>
+
+<P>
+<B>-L</B>, <B>--lossy-rounding</B>     Sample count rounding will be performed by cutting audio files 
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+instead of padding (see <B>--padding</B> and <B>--pad-cont</B>).
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Deactivates <B>--pad-cont</B> and <B>--padding</B>.
+</DL>
+<P>
+
+<P>
+Menu authoring
+<P>
+
+<P>
+<B>-m</B>, <B>--topmenu</B>(=mpgfiles) Generates top menu from comma-separated list of mpgfiles.
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Without argument, automatic menu generation is launched.
+</DL>
+<P>
+
+<P>
+<B>-u</B>, <B>--duration</B> hh:mm:ss Duration of top menu file, if provided.
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+It is mandatory when <B>--topmenu</B> has an argument file.
+</DL>
+<P>
+
+<P>
+<B>-M</B>, <B>--xml</B> filepath       Generates dvdauthor xml project
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+to (absolute or relative) filepath.
+</DL>
+<P>
+
+<P>
+<B>-H</B>, <B>--spuxml</B> filepath    Generates spumux xml project
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+to (absolute or relative) filepath.
+</DL>
+<P>
+
+<P>
+<B>-G</B>, <B>--image</B> file         Menu Background image for customized menu authoring.
+<P>
+
+<P>
+<B>-E</B>, <B>--highlight</B> file     Menu Highlight image for customized menu authoring.
+<P>
+
+<P>
+<B>-e</B>, <B>--select</B>  file       Menu Select image 
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+image that appears on pressing Enter with remote control
+usually Background with a change in text color.
+</DL>
+<P>
+
+<P>
+<B>-N</B>, <B>--blankscreen</B> file   For automatic menu authoring, you can replace black video background with this image.
+<P>
+
+<P>
+<B>-O</B>, <B>--screentext</B> string  Text for top menu. Format is
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+&quot;album_text=group1_text=text(track11),text(track21),...,text(trackn1):group2_text=text(track12),text(track22)...,text(trackn2):...&quot;
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+with text(tracknk) the text for track n of group k and
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+groupk_text the text for group k.
+</DL>
+<P>
+
+<P>
+<B>-U</B>, <B>--loop</B>               loop background video.
+<P>
+
+<P>
+<B>-K</B>, <B>--highlightformat</B>    <B>-1</B> for automatic menu authoring
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+with little square before titles, 0 for underlining, 1 for button highlight.
+</DL>
+<P>
+
+<P>
+<B>-J</B>, <B>--font</B> a,b,c         Font name,font size,font width
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+(number of pixels for width of font size 10).
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Font name should be compatible with Image magick specifications (mogrify <B>-list</B> font).
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--fontname</B> a<DD>
+Font name.
+<DT><B>--fontsize</B> b<DD>
+Font size.
+<DT><B>--fontwidth</B> b<DD>
+Font width.
+</DL>
+<P>
+
+<B>-Y</B>, <B>--topmenu-palette</B> string     Text for system palette. Format is
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+either &quot;norefresh&quot;, to block the refreshing of menu images, or:
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+textcolor:highlight_color:select_action color
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+in alpha-YCrCb 32-bit hexa coding. Here textcolor is the non-highlighted text for tracks, 
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+,highlight_color is the underline or mobile motif color,
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+and select_action_color is album and group labels
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+as well as color of tracks on pressing the highlighted track.
+</DL>
+<P>
+
+<P>
+<B>-8</B>, <B>--activemenu-palette</B> string     Text for menu colors. Format is:
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+textcolor:highlight_text_color:highlight_color:select_action color
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+in alpha-YCrCb 32-bit hexa coding. Here textcolor is the text for tracks, 
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+highlight_text_color is the color of album and group labels and highlighted text (broken feature)
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+highlight_color is the underline or mobile motif color,
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+and select_action_color is on pressing the highlighted track.
+</DL>
+<P>
+
+<P>
+<B>-y</B>, <B>--topmenu-colors</B> string     Text for menu colors. This is a developer's switch. 
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Use the <B>-palette</B> switches for modifying display colors. 
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+This switch determines the colors of pictures generated in the temporary directory before creating the mpg background files.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Format is either &quot;norefresh&quot;, to block the refreshing of menu images, or 
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+textcolor:backgroundcolor:highlightcolor:select action color in rgb values a,b,c between 0 and 255.
+</DL>
+<P>
+
+<P>
+<B>-b</B>, <B>--background</B>         Background jpg files (comma-separated) to create a background mpg file
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+into which titles are multiplexed.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Specify as many files as there are menus, or the last file will be duplicated for missing menu files.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--background-colors</B><DD>
+Background RGB colors to colorize background mpg files
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+into which titles are multiplexed.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Specify as many colors as there are menus, or the last color will be duplicated for missing menu colors.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Syntax is r,g,b:r2,g2,b2:...:rk,gkbk for <B>--nmenus</B>=<I>k</I>.
+</DL>
+<P>
+
+<P>
+<B>-B</B>, <B>--background-mpg</B> list  Background mpg file(s) in a comma-separated list
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+into which titles are multiplexed.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>
+<B>--topmenu-slides</B> file(s) .jpg image files to be multiplexed with sound tracks (see option below) into a slideshow.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+<DD>By default a black screen will be used.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Each menu screen should have at least one associated .jpg slide. List of slides is comma-separated for each menu.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Menu lists are colon-separated: menu1_pic1,menu1_pic2:menu2_pic1,menu2_pic2, etc.
+</DL>
+<P>
+
+<P>
+<B>-Q</B>, <B>--soundtracks</B> file(s)  Background wav file(s)
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+to be multiplexed into a slideshow, with option <B>--topmenu-slides</B>.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+By default a silent track will be multiplexed.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Each menu screen should have its own sound track. List of tracks follows same usage as for <B>--topmenu-slides</B>.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Note that currently with several menus there can be only one track/slide per menu.
+</DL>
+<P>
+
+<P>
+<B>-A</B>, <B>--topvob</B> f           Import already authored top vob menu f.
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--import-topmenu</B> f<DD>
+Import VIDEO_TS stream (VOB format) into AUDIO_TS top menu (AUDIO_TS.VOB).
+</DL>
+<P>
+
+<P>
+<B>-0</B>, <B>--menustyle</B> desc     Specifies top menu style
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+By default, tracks are listed under group headers.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+If desc='hierarchical', the first menu screen lists groups.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+If desc='active', all tracks will have an associated still picture with menu links that remain active while listening to the track.
+</DL>
+<P>
+
+<P>
+<B>-1</B>, <B>--stillvob</B> f         Import already authored still pictures vob.
+<P>
+
+<P>
+<B>-2</B>, <B>--stilloptions</B> ...   Still picture options (add after <B>--stillpics</B>). Each option applies to ranked pic, e.g.
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+rank=0,manual,starteffect=fade,rank=1,starteffect=dissolve.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Suboptions are:
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+rank=[number], starteffect=[effect], endeffect=[effect]
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+manual, lag=[number], start=[number], active
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+See details below. 
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--stillpics</B><DD>
+Background jpg files to create one or more still pictures
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+for each track.See usage below.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+If a track has no still picture, use two colons in a row.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+You may otherwise indicate a directory containing pictures
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+named pic_abc.jpg, with a,b,c between 0 and 9.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--stillpics</B> dir/<DD>
+Directory for background jpg files to create one still picture for each track.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Pics should be named pic_000.jpg, ..., up to pic_999.jpg (maximum).
+</DL>
+<P>
+
+<P>
+<B>-4</B>, <B>--norm</B>               Argument is 'ntsc', 'pal' or 'secam', depending on TV standard.
+<P>
+
+<P>
+<B>-5</B>, <B>--aspect</B>             Set the playback aspect ratio code of the encoded video. By default, this value is inferred from  the input header.
+<P>
+
+<P>
+<DL COMPACT>
+<DT>1<DD>
+- 1:1 display
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>2<DD>
+- 4:3 display
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>3<DD>
+- 16:9 display
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>4<DD>
+- 2.21:1 display
+</DL>
+<P>
+
+<P>
+<B>-6</B>, <B>--nmenus</B> int         Generates int top menus (default 1).
+<P>
+
+<P>
+<B>-7</B>, <B>--ncolumns</B> int       Top menus will have at most int columns (default 3).
+<P>
+
+<P>
+Disc authoring
+<P>
+
+<P>
+<B>-I</B>, <B>--mkisofs</B>(=file)     Run mkisofs to author disc image using file
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+as an ISO image. If file is empty, use tempdir/dvd.iso.
+</DL>
+<P>
+
+<P>
+<B>-r</B>, <B>--cdrecord</B>(=a,b,c)   Run cdrecord to burn disc image.
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Unless specified, <B>--mkisofs</B> will be automatically triggered with default tempdir/dvd.iso value.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Device is of the form a,b,c, see cdrecord <B>-scanbus</B>. It can be omitted
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+if there is just one writer.
+</DL>
+<P>
+
+<P>
+<B>-R</B>, <B>--growisofs</B> <I>/dev/dvd</I> Run growisofs to burn disc image.
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Device is of the form <I>/dev/scd0</I> under many GNU/Linux distributions.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+It cannot be omitted.
+</DL>
+<P>
+
+<P>
+DVD-VIDEO zone authoring
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--lplex-output</B> dir<DD>
+Output directory for lplex
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Default is same as specified <B>-o</B> value
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+or default output directory.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--dvdv-tracks</B> ...<DD>
+Add tracks to be added to DVD-VIDEO zone using lplex:
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+track11,...,trackn1:track12,...,trackn2:...
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+for trackij the ith track of video titleset j.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--dvdv-slides</B> ...<DD>
+Add slides to be added to DVD-VIDEO zone using lplex:
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+slide11,...,sliden1:slide12,...,slide2:...
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+for slideij the ith slide of video titleset j.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Each track should have a corresponding slide.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Add two commas in a row for repeating previous slide.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+There can be a maximum of 1 slide per track.
+</DL>
+<P>
+
+<P>
+<B>-V</B>, <B>--videodir</B> directory Absolute or relative Path to VIDEO_TS input directory
+<P>
+
+<P>
+<B>-T</B>, <B>--videolink</B> rank     Rank of video titleset linked to in video zone
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+(XX in VTS_XX_0.IFO).
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+In this case the path to the VIDEO_TS linked to
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+must be indicated.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--dvdv-import</B><DD>
+Create DVD-VIDEO zone from DVD-AUDIO zone.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Import DVD-Video standard compliant files (16-24 bit/48-96 kHz
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+from DVD-AUDIO to DVD-VIDEO.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--mirror</B><DD>
+Like <B>--dvdv-import</B> but resample audio tracks
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+if they are not DVD-Video compliant (.wav files only)
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>
+<B>--mirror-strategy</B> st Values for st are: 'high'' or 'low'.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+<DD>If necessary, <B>--mirror</B> will resample audio tracks
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+by upsampling (high) or downsampling (low)
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--hybridate</B><DD>
+Alias for <B>--dvdv-import</B>
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+<B>--dvdv-slides=</B>... with each slide the first slide of <B>--stillpics=</B>... for each audio track.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--full-hybridate</B><DD>
+Alias for <B>--mirror</B> <B>--miror-strategy</B> high
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+<B>--dvdv-slides=</B>... with each slide the first slide of <B>--stillpics=</B>... for each audio track.
+</DL>
+<P>
+
+<P>
+Software configuration
+<P>
+
+<P>
+<B>-D</B>, <B>--tempdir</B> directory  Temporary directory for DVD-Audio files (dvda-author).
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Optional. CAUTION: tempdir will be erased unless <B>--no-refresh-tempdir</B> is used.
+</DL>
+<P>
+
+<P>
+<B>-9</B>, <B>--datadir</B> directory  Data directory with subdirectory `menu' containing at least default backgrounds for menus. Optional, only to be used when menus are created.
+<P>
+
+<P>
+<DL COMPACT>
+<DT>, <B>--lplex-tempdir</B> directory<DD>
+Temporary directory for DVD-Video files (lplex)
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Optional.
+</DL>
+<P>
+
+<P>
+<B>-X</B>, <B>--workdir</B> directory  Absolute or relative path to working directory: current directory in command line relative paths.
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+By default, the current directory.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+With Code::Blocks and similar IDE, you may have to specify your root package directory as argument to <B>--workdir</B>.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>
+<B>--no-refresh-tempdir</B> Do not erase and recreate the DVD-Audio temporary directory on launch.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--no-refresh-outdir</B><DD>
+<DD>Do not erase and recreate the output directory on launch.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><B>--bindir</B> path<DD>
+Absolute or relative path to auxiliary binaries.
+</DL>
+<P>
+
+<P>
+Sub-options
+<P>
+
+<P>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+fixwav sub-options:
+</DL>
+<P>
+
+<P>
+simple-mode
+<DL COMPACT>
+<DT><DD>
+Deactivate default automatic mode and advanced options.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+User will be asked for more information.
+</DL>
+<P>
+
+<P>
+prepend
+<DL COMPACT>
+<DT><DD>
+Prepend header to raw file, maybe virtually
+</DL>
+<P>
+
+<P>
+in-place
+<DL COMPACT>
+<DT><DD>
+Correct header in the original file (not advised) unless real is set later
+</DL>
+<P>
+
+<P>
+cautious
+<DL COMPACT>
+<DT><DD>
+Be cautious when overwriting files in-place
+</DL>
+<P>
+
+<P>
+interactive
+<DL COMPACT>
+<DT><DD>
+Request information from user.
+</DL>
+<P>
+
+<P>
+padding
+<DL COMPACT>
+<DT><DD>
+Pad files according to WAV standard
+</DL>
+<P>
+
+<P>
+prune
+<DL COMPACT>
+<DT><DD>
+Cuts off silence at end of files
+</DL>
+<P>
+
+<P>
+force
+<DL COMPACT>
+<DT><DD>
+Launches fixwav before SoX for mangled headers
+</DL>
+<P>
+
+<P>
+output=sf
+<DL COMPACT>
+<DT><DD>
+Copy corrected file to new filepath with string suffix sf
+</DL>
+<P>
+
+<P>
+infodir=db
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Copy info chunks from wav headers to file db\database
+</DL>
+<P>
+
+<P>
+virtual
+<DL COMPACT>
+<DT><DD>
+Forces virtual behavior over previous settings (files will be unmodified)
+</DL>
+<P>
+
+<P>
+real
+<DL COMPACT>
+<DT><DD>
+Forces real behavior over previous settings (files will be modified)
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Sub-options should be separated by commas and appended
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+after short option or after = sign if long option is used:
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT>
+<B>-f</B>/-Fsuboption or <B>--fixwav</B>(<B>-virtual</B>)=suboption
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+<DD>without any whitespace in between them.
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Example: <B>--fixwav</B>=<I>simple-mode</I>,prepend,interactive,output=new
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Still pictures:
+</DL>
+<P>
+
+<P>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+p11,p21,...,pn1-p22,p22,...,pn2-...
+</DL>
+<P>
+
+<P>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+with tracks separated by hyphens and pictures by colons.
+</DL>
+<P>
+
+<P>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Examples: <B>-g</B> <I>~/a.wav</I> <B>--stillpics</B> image1.jpg,image2.jpg,image3.jpg:image4.jpg,image5.jpg,image6.jpg
+</DL>
+<P>
+
+<P>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+If there are no pics for a track use :: as below (no pics for second track):
+</DL>
+<P>
+
+<P>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+<B>-g</B> <I>~/a.wav</I> ~/b.wav <I>~/c.wav</I> <B>--stillpics</B> image1.jpg,image2.jpg,image3.jpg::image4.jpg,image5.jpg,image6.jpg
+</DL>
+<P>
+
+<P>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Still picture transition effects:
+</DL>
+<P>
+
+<P>
+rank=k
+<DL COMPACT>
+<DT><DD>
+k is the absolute rank of stillpic (0-based) to which the following options apply (order-dependent).
+</DL>
+<P>
+
+<P>
+start=k
+<DL COMPACT>
+<DT><DD>
+picture starts at k sec from start of track.
+</DL>
+<P>
+
+<P>
+manual
+<DL COMPACT>
+<DT><DD>
+Enable browsable (manual advance) pictures (experimental).
+</DL>
+<P>
+
+<P>
+starteffect=effect
+<DL COMPACT>
+<DT><DD>
+transition effect at start of pic: cut (default), fade, dissolve, top-wipe, bottom-wipe, left-wipe, right-wipe.
+</DL>
+<P>
+
+<P>
+endeffect=effect
+<DL COMPACT>
+<DT><DD>
+like starteffect at end of pic show (under development)
+</DL>
+<P>
+
+<P>
+lag=k
+<DL COMPACT>
+<DT><DD>
+k is the duration of transition effect in multiples of 0.32 second (k &lt; 16).
+</DL>
+<P>
+
+<P>
+active
+<DL COMPACT>
+<DT><DD>
+menu links will be displayed on still picture and remain active while listening.
+</DL>
+<P>
+
+<P>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Example: <B>--stilloptions</B> rank=0,start=03,starteffect=fade,lag=12,rank=1,start=20,starteffect=dissolve,lag=15
+</DL>
+<P>
+
+<P>
+<P>
+
+<P>
+<P>
+
+<P>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+Transition effects like fade or dissolve may vary depending on hardware.
+</DL>
+<P>
+
+<P>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+End effects may be visible only when several pictures are used for a track slide.
+</DL>
+<P>
+
+<P>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+If a track has just one still pic, only start effects may be visible.
+</DL>
+<P>
+
+<P>
+<P>
+
+<P>
+<P>
+
+<P>
+Note: for optional arguments noted (=...) above, usage is either
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+<B>-xY</B>, with x the option flag and Y the argument, or
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+<B>--option</B>=<I>argument</I>.
+</DL>
+<P>
+
+<P>
+<P>
+
+<P>
+There must be a maximum of 9 audio groups.
+<P>
+
+<P>
+Each subdirectory of an audio input directory will contain titles
+<P>
+
+<P>
+for a separate audio group.
+<P>
+
+<P>
+A number between 1 and 9 must be included as the second character of the
+<P>
+
+<P>
+subdirectory relative name.
+<P>
+
+<P>
+Examples:
+<P>
+
+<P>
+<B>-create</B> a 3-group DVD-Audio disc (legacy syntax):
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+dvda-author <B>-g</B> file1.wav file2.flac <B>-g</B> file3.flac <B>-g</B> file4.wav
+</DL>
+<P>
+
+<P>
+<B>-create</B> a hybrid DVD disc with both AUDIO_TS mirroring audio_input_directory
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+and VIDEO_TS imported from directory VID, outputs disc structure to directory
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+DVD_HYBRID and links video titleset #2 of VIDEO_TS to AUDIO_TS:
+</DL>
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+dvda-author <B>-i</B> ~\audio\audio_input_directory
+<DT><DD>
+<B>-o</B> DVD_HYBRID <B>-V</B> Video\VID <B>-T</B> 2 
+</DL>
+<P>
+
+<P>
+<B>-create</B> an audio folder from an existing DVD-Audio disc:
+<P>
+
+<P>
+<DL COMPACT>
+<DT><DD>
+dvda-author <B>--extract</B> <I>/media/cdrom</I> <B>-xlist</B> 1-3:2-5:3,...,7,9-6-7 <B>-o</B> dir
+</DL>
+<P>
+
+<P>
+will extract audio groups 1, 3 (track 2), 5 (tracks 3 to 7 and 9), 6 and 7 of the disc to
+<P>
+
+<P>
+dir\g1, dir\g3, dir\g5, dir\g6, and dir\g7 respectively.
+<P>
+
+<P>
+<P>
+
+<P>
+Required compile-time constants:
+<P>
+
+<P>
+_GNU_SOURCE, __CB__ if compiling with Code::Blocks or similar IDE.
+<P>
+
+<P>
+Optional compile-time constants:
+<P>
+
+<P>
+LONG_OPTIONS for the above long options (starting with <B>--</B>)
+<P>
+
+<P>
+SHORT_OPTIONS_ONLY to block all long options.
+<P>
+
+<P>
+LOCALE to recompile for another locale than the default &quot;C&quot;.
+<P>
+
+<P>
+SETTINGSFILE to specify default filepath of the configuration file.
+<P>
+
+<P>
+FLAC__HAS_OGG to enable Ogg FLAC support.
+<P>
+
+<P>
+_LARGEFILE_SOURCE,_LARGE_FILES,_FILE_OFFSET_BITS=64
+<P>
+
+<P>
+to enable large file support.
+<P>
+
+<P>
+ALWAYS_INLINE forces code inlining.
+<P>
+
+<P>
+WITHOUT_sox to compile without SoX code
+<P>
+
+<P>
+WITHOUT_FLAC to compile without FLAC/OggFLAC code
+<P>
+
+<P>
+<P>
+
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>AUTHOR</H2>
+
+Written by Dave Chapman, Fabrice Nicol, Lee and Tim Feldkamp.
+<A NAME="lbAF">&nbsp;</A>
+<H2>REPORTING BUGS</H2>
+
+Report bugs to fabnicol@users.sourceforge.net
+<A NAME="lbAG">&nbsp;</A>
+<H2>COPYRIGHT</H2>
+
+Copyright  2005 Dave Chapman; 2008-2009 Lee and Tim Feldkamp; 2007-2016 Fabrice Nicol.
+<P>
+
+<P>
+See file AUTHORS for other contributors.
+<P>
+
+<P>
+Latest version available from <A HREF="http://dvd-audio.sourceforge.net/">http://dvd-audio.sourceforge.net/</A>
+<P>
+
+<P>
+<BR>
+
+This is free software; see the source for copying conditions.
+<P>
+
+<P>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">NAME</A><DD>
+<DT><A HREF="#lbAC">SYNOPSIS</A><DD>
+<DT><A HREF="#lbAD">DESCRIPTION</A><DD>
+<DT><A HREF="#lbAE">AUTHOR</A><DD>
+<DT><A HREF="#lbAF">REPORTING BUGS</A><DD>
+<DT><A HREF="#lbAG">COPYRIGHT</A><DD>
+</DL>
+<HR>
+This document was created by
+<A HREF="http://github.com/hamano/man2html/">man2html</A>,
+using the manual pages.<BR>
+Time: 
+</BODY>
+</HTML>
