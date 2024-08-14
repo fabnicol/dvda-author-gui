@@ -8,8 +8,9 @@ Under linux or Mac OSX, run sudo tar xpJvf *.tar.xz && sudo chown $USER dvdc-aut
 Building
 ———————-
 
-To build the GUI use the Qt5 project (*.pro) preferably using a static build of Qt5. 
-The project only uses Qtbase.
+To build the GUI use the Qt6 project (*.pro). 
+The project only uses Qtbase. 
+Dynamic library (.dll) dependencies for Windows are distributed in the windows/ subfolder.
 
 Linux note
 ----------
@@ -24,21 +25,11 @@ It will be kept in memory until changed.
 If this does not work you can also enter a SCSI bus code, like: 0,0,0
 To know which kind of path/bus code you should enter, open a command line window and type cdrecord -devices and cdrecord -scanbus
 if this fails.
-On Ubuntu, cdrecord -devices yields the following output:
-
-cdrecord -devices
-wodim: Overview of accessible drives (1 found) :
--------------------------------------------------------------------------
- 0  dev='/dev/scd0'     rwrw-- : 'TSSTcorp' 'CD/DVDW SH-S182M'
--------------------------------------------------------------------------
-
 
 LICENSE
 
-This package is distributed under GPL version 3 license terms, combined with usual Qt 4.4 licensing terms. 
-
+This package is distributed under GPL version 3 license terms, combined with usual Qt licensing terms. 
 See further details on the GUI webpage http://dvd-audio.sourceforge.net/GUI.shtml
-
 
 AUTHORS
 
